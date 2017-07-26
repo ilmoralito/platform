@@ -1,0 +1,29 @@
+<div class="form-group">
+    <label for="name">Nombre</label>
+    <g:textField name="name" value="${coordination?.name}" class="form-control"/>
+</div>
+
+<div class="form-group">
+    <label for="acronym">Siglas</label>
+    <g:textField name="acronym" value="${coordination?.acronym}" class="form-control"/>
+</div>
+
+<div class="form-group">
+    <label for="extensionNumber">Extension</label>
+    <g:textField name="extensionNumber" value="${coordination?.extensionNumber}" class="form-control"/>
+</div>
+
+<div class="form-group">
+    <label for="copyFee">Cuota de copias</label>
+    <g:textField name="copyFee" value="${coordination?.copyFee}" class="form-control"/>
+</div>
+
+<div class="form-group">
+    <label for="area">Area</label>
+    <g:select
+        name="area"
+        from="['Academica', 'Administrativo', 'Facultad']"
+        keys="['academic', 'administrative', 'school']"
+        value="${coordination?.area}"
+        class="form-control"/>
+</div>

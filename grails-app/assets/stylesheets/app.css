@@ -1,0 +1,38 @@
+/*
+*= require bootstrap
+*= require_self
+*/
+
+body {
+    padding-top: 70px;
+    padding-bottom: 20px;
+}
+
+label {
+    font-weight: normal;
+}
+
+textarea {
+    resize: none;
+    min-height: 100px;
+}
+
+textarea.vertical-only { resize: vertical; }
+
+.well {
+    background: #FEFEFE;
+    margin-bottom: 5px;
+}
+
+.alert {
+    margin: 10px 0;
+}
+
+.table th {
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+.nav-tabs {
+    margin-bottom: 15px;
+}

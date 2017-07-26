@@ -1,0 +1,16 @@
+/*
+*= require bootstrap
+*= require_self
+*/
+
+body {
+    margin-top: 45px;
+}
+
+label {
+    font-weight: normal;
+}
+
+.alert {
+    margin: 10px 0;
+}
