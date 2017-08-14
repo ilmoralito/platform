@@ -260,17 +260,39 @@ class BootStrap {
     }
 
     private void production() {
-        // if(!Coordination.findByName('Soporte tecnico')) {
-        //     new Coordination(
-        //         name: 'Soporte tecnico',
-        //         extensionNumber: '129',
-        //         copyFee: 50,
-        //         area: 'administrative'
-        //     ).save(failOnError: true)
-        // }
+        Coordination technicalSupport = Coordination.findByName('Soporte tecnico')
+        if (!technicalSupport) {
+            technicalSupport = new Coordination(
+                name: 'Soporte tecnico',
+                extensionNumber: '129',
+                copyFee: 50,
+                area: 'administrative'
+            ).save(failOnError: true)
+        }
 
-        // if (!Role.findByAuthority('ROLE_ADMIN')) {
-        //     new Role(authority: 'ROLE_ADMIN').save(failOnError: true)
-        // }
+        Role role = Role.findByAuthority('ROLE_ADMIN')
+        if (!role) {
+            role = new Role(authority: 'ROLE_ADMIN').save(failOnError: true)
+        }
+
+        Employee employee = Employee.findByIdentityCard('291-290180-0001W')
+        if (!employee) {
+            employee = new Employee(
+                fullName: 'Mario Martinez',
+                identityCard: '291-290180-0001W'
+            ).save(failOnError: true)
+
+            EmployeeCoordination.create(employee, technicalSupport, 'assistant', 'Asistente de soporte tecnico')
+        }
+
+        User user = User.findByEmail('mario.martinez@ucc.edu.ni')
+        if (!user) {
+            user = new User(email: 'mario.martinez@ucc.edu.ni').save(failOnError: true)
+
+            UserRole.create(user, role, true)
+
+            employee.user = user
+            employee.save(failOnError: true)
+        }
     }
 }
