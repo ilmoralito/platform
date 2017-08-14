@@ -7,6 +7,7 @@ buildscript {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath "org.grails.plugins:hibernate5:${gormVersion-".RELEASE"}"
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:2.14.2"
+        classpath 'org.grails.plugins:database-migration:3.0.3'
     }
 }
 
@@ -68,6 +69,8 @@ dependencies {
     runtime 'mysql:mysql-connector-java:5.1.40'
     compile 'org.grails.plugins:mail:2.0.0.RC6'
     compile 'org.grails.plugins:quartz:2.0.12'
+    compile 'org.grails.plugins:database-migration:3.0.3'
+    compile 'org.liquibase:liquibase-core:3.5.3'
 }
 
 bootRun {
@@ -78,4 +81,16 @@ bootRun {
 assets {
     minifyJs = true
     minifyCss = true
+}
+
+war {
+    archiveName "${war.baseName}.war"
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDir 'grails-app/migrations'
+        }
+    }
 }
