@@ -44,7 +44,7 @@ grails {
                 [pattern: '/**/images/**',                  access: ['permitAll']],
                 [pattern: '/**/favicon.ico',                access: ['permitAll']],
                 [pattern: '/console/**',                    access: ['ROLE_ADMIN']],
-                [pattern:  '/static/console/**',            access: ['ROLE_ADMIN']],
+                [pattern: '/static/console/**',             access: ['ROLE_ADMIN']],
                 [pattern: '/login/**',                      access: ['permitAll']],
                 [pattern: '/login/authfail',                access: ['permitAll']],
                 [pattern: '/logout/**',                     access: ['permitAll']],

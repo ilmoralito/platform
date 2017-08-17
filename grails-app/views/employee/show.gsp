@@ -60,7 +60,7 @@
                     <tr>
                         <td>Roles</td>
                         <td>
-                            <g:join in="${employee.user.authorities.authority*.reverse()*.take(5)*.reverse()}"/>
+                            <g:join in="${employee.user.authorities.authority}"/>
                         </td>
                     </tr>
                 </g:if>
@@ -75,6 +75,5 @@
         <g:else>
             <g:link resource="employee/user" action="create" employeeId="${employee.id}" method="GET" class="btn btn-default">Crear cuenta de usuario</g:link>
         </g:else>
-        <g:link resource="employee" action="index" method="GET" class="btn btn-default">Ir a lista de empleados</g:link>
     </content>
 </g:applyLayout>

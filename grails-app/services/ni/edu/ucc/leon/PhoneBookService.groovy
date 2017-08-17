@@ -24,7 +24,7 @@ class PhoneBookService {
                         ec.position = 'manager'
                             AND ec.coordination_id = c.id) manager,
                 (SELECT 
-                        GROUP_CONCAT(e.full_name)
+                        GROUP_CONCAT(e.full_name SEPARATOR ', ')
                     FROM
                         employees e
                             LEFT JOIN
