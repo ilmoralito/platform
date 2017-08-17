@@ -29,10 +29,18 @@
                         <tbody>
                             <g:each in="${phoneBook}" var="pb">
                                 <tr>
-                                    <td>${pb.extensionNumber}</td>
-                                    <td>${pb.coordination}</td>
-                                    <td>${pb.manager}</td>
-                                    <td>${pb.assistants}</td>
+                                    <td style="vertical-align: middle;">
+                                        ${pb.extensionNumber}
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        ${pb.coordination}
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        ${pb.manager}
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        ${pb.assistants}
+                                    </td>
                                 </tr>
                             </g:each>
                         </tbody>

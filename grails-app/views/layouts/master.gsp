@@ -8,7 +8,7 @@
         </title>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-        <asset:stylesheet src="auth.css"/>
+        <asset:stylesheet src="master.css"/>
         <g:layoutHead/>
     </head>
     <body>
@@ -16,22 +16,10 @@
 
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-4 col-md-offset-4">
-                    <div class="text-center" style="margin-top: 25px;">
-                        <asset:image src="logo.png"/>
-                    </div>
-
-                    <g:layoutBody/>
-
-                    <g:if test="${flash?.message}">
-                        <div class="alert alert-info">
-                            ${flash.message}
-                        </div>
-                    </g:if>
-                </div>
+                <g:layoutBody/>
             </div>
         </div>
 
-        <asset:javascript src="auth.js"/>
+        <asset:javascript src="master.js"/>
     </body>
 </html>

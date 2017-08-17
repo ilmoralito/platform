@@ -20,10 +20,10 @@
             <table class="table table-hover">
                 <colgroup>
                     <col span="1" style="width: 12%;">
-                    <col span="1" style="width: 73%;">
+                    <col span="1" style="width: 65%;">
+                    <col span="1" style="width: 17%;">
                     <col span="1" style="width: 5%;">
-                    <col span="1" style="width: 5%;">
-                    <col span="1" style="width: 5%;">
+                    <col span="1" style="width: 1%;">
                 </colgroup>
 
                 <thead>
@@ -31,7 +31,9 @@
                         <th>Estado</th>
                         <th>Asunto</th>
                         <th>Recurso</th>
-                        <th>Tareas</th>
+                        <th class="text-center">
+                            <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                        </th>
                         <th class="text-center">
                             <span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
                         </th>
@@ -44,10 +46,12 @@
                                 <platform:ticketStatus status="${ticket.status}"/>
                             </td>
                             <td style="vertical-align: middle;">
-                                <g:link resource="ticket/task" action="index" ticketId="${ticket.id}" method="GET">
-                                    ${ticket.subject}
-                                </g:link>
                                 <div>
+                                    <g:link resource="ticket/task" action="index" ticketId="${ticket.id}" method="GET">
+                                        ${ticket.subject}
+                                    </g:link>
+                                </div>
+                                <div style="margin-top: 2px;">
                                     <small>#${ticket.id}</small>
                                     <small>
                                         <g:if test="${ticket.status == 'open'}">
@@ -62,7 +66,7 @@
                                     </small>
                                 </div>
                             </td>
-                            <td style="vertical-align: middle;" class="text-center">
+                            <td style="vertical-align: middle;">
                                 <g:if test="${ticket.device}">
                                     <g:link resource="ticket" action="filterByDevice" params="[name: ticket.device.name]" method="GET">
                                         ${ticket?.device?.name}

@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <meta name="layout" content="main"/>
+        <meta name="layout" content="master"/>
         <title><g:layoutTitle/></title>
         <g:layoutHead/>
     </head>

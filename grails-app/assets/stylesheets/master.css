@@ -1,0 +1,19 @@
+/*
+*= require bootstrap
+*/
+
+body {
+    padding-top: 70px;
+    padding-bottom: 20px;
+}
+
+.table th {
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+.table tbody tr > td.mark {
+    background-color: #FFFF00 !important;
+}
+
+.triggers { cursor: pointer; }
