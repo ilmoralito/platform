@@ -3,8 +3,13 @@ markdown:
     autoLinks: true
 
 ---
-server:
-    port: 9090
+environments:
+    development:
+        server:
+            port: 9090
+    production:
+        server:
+            port: 8000
 
 ---
 grails:
