@@ -2,14 +2,32 @@ package ni.edu.ucc.leon
 
 import grails.gorm.services.Service
 
-@Service(Employee)
-interface EmployeeService {
+interface IEmployeeService {
 
     List<Employee> list()
 
-    Employee find(Serializable id)
+    Employee find(final Serializable id)
 
-    Employee save(String fullName, String identityCard, String contract)
+    Employee save(final String fullName, final String identityCard, final String contract)
 
-    Employee update(Serializable id, String fullName, String identityCard, String contract, Boolean enabled)
+    Employee update(final Serializable id, final String fullName, final String identityCard, final String contract, final Boolean enabled)
+}
+
+@Service(Employee)
+abstract class EmployeeService implements IEmployeeService {
+    Employee update(final Serializable id, final String fullName, final String identityCard, final String contract, final Boolean enabled) {
+        Employee employee = find(id)
+
+        if (employee != null) {
+            employee.fullName = fullName
+            employee.identityCard = identityCard
+            employee.contract = contract
+            employee.enabled = enabled
+            employee.user.enabled = enabled
+
+            employee.save(failOnError: true)
+        }
+
+        employee
+    }
 }
