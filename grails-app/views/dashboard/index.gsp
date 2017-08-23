@@ -9,42 +9,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Guia Telefónica</div>
 
-                    <table class="table table-hover table-bordered">
-                        <colgroup>
-                            <col span="1" style="width: 5%;">
-                            <col span="1" style="width: 30%;">
-                            <col span="1" style="width: 30%;">
-                            <col span="1" style="width: 35%;">
-                        </colgroup>
-
-                        <thead>
-                            <tr>
-                                <th>EXT</th>
-                                <th>DEPT</th>
-                                <th>Coordinador</th>
-                                <th>Colaboradores</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <g:each in="${phoneBook}" var="pb">
-                                <tr>
-                                    <td style="vertical-align: middle;">
-                                        ${pb.extensionNumber}
-                                    </td>
-                                    <td style="vertical-align: middle;">
-                                        ${pb.coordination}
-                                    </td>
-                                    <td style="vertical-align: middle;">
-                                        ${pb.manager}
-                                    </td>
-                                    <td style="vertical-align: middle;">
-                                        ${pb.assistants}
-                                    </td>
-                                </tr>
-                            </g:each>
-                        </tbody>
-                    </table>
+                    <g:render template="/partials/phoneBook" model="[phoneBook: phoneBook]"/>
                 </div>
             </div>
 

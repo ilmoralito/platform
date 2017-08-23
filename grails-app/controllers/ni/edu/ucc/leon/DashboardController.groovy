@@ -14,7 +14,7 @@ class DashboardController {
 
     def index() {
         [
-            phoneBook: phoneBookService.listPhoneBook(),
+            phoneBook: phoneBookService.phoneBookSummary(),
             summaryStatus: ticketService.summaryStatus(),
             holidaysInMonth: holidayService.listInCurrentMonth(),
             holidayList: holidayService.listOfHolidaysGroupedByMonth(),

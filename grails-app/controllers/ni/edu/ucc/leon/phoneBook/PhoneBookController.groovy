@@ -7,6 +7,6 @@ class PhoneBookController {
     PhoneBookService phoneBookService
 
     def index() {
-        [phoneBook: phoneBookService.listPhoneBook()]
+        [phoneBook: phoneBookService.phoneBookSummary()]
     }
 }

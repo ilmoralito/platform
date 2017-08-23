@@ -7,7 +7,7 @@ class PhoneBookService {
 
     @Autowired SessionFactory sessionFactory
 
-    List<Map> listPhoneBook() {
+    List<Map<String, Object>> list() {
         final session = sessionFactory.currentSession
 
         final String query = """
@@ -45,5 +45,23 @@ class PhoneBookService {
         }
 
         results
+    }
+
+    List<Map<String, Object>> phoneBookSummary() {
+        List<Map<String, Object>> phoneBook = list();
+        List<String> extensionNumbers = phoneBook.extensionNumber.unique().sort()
+
+        extensionNumbers.collect { extensionNumber ->
+            [
+                extensionNumber: extensionNumber,
+                coordinations: phoneBook.findAll { it.extensionNumber == extensionNumber }.collect { coordination ->
+                    [
+                        name: coordination.coordination,
+                        manager: coordination.manager,
+                        assistants: coordination.assistants
+                    ]
+                }
+            ]
+        }
     }
 }

@@ -37,18 +37,27 @@ class BootStrap {
             password: 'password'
         ).save(failOnError: true)
 
+        User employee5UserAccount = new User(email: 'employee.5@ucc.edu.ni').save failOnError: true
+
+        User employee6UserAccount = new User(email: 'employee.6@ucc.edu.ni').save failOnError: true
+
+        User employee7UserAccount = new User(email: 'employee.7@ucc.edu.ni').save failOnError: true
+
         UserRole.create adminUser, adminRole
         UserRole.create anotherAdminUser, adminRole
         UserRole.create userUser, userRole
+        UserRole.create employee5UserAccount, userRole
+        UserRole.create employee6UserAccount, userRole
+        UserRole.create employee7UserAccount, userRole
 
         UserRole.withSession {
             it.flush()
             it.clear()
         }
 
-        assert User.count() == 3
+        assert User.count() == 6
         assert Role.count() == 2
-        assert UserRole.count() == 3
+        assert UserRole.count() == 6
 
         // EMPLOYEES
         Employee employee1 = new Employee(
@@ -75,7 +84,25 @@ class BootStrap {
             contract: 'schedule'
         ).save(failOnError: true)
 
-        assert Employee.count() == 4
+        Employee employee5 = new Employee(
+            fullName: 'Employee five Full name',
+            identityCard: '281-240890-0001W',
+            user: employee5UserAccount
+        ).save(failOnError: true)
+
+        Employee employee6 = new Employee(
+            fullName: 'Employee six Full name',
+            identityCard: '281-250890-0001W',
+            user: employee6UserAccount
+        ).save(failOnError: true)
+
+        Employee employee7 = new Employee(
+            fullName: 'Employee seven Full name',
+            identityCard: '281-200890-0001W',
+            user: employee7UserAccount
+        ).save(failOnError: true)
+
+        assert Employee.count() == 7
 
         // COORDINATIONS
         Coordination warehouse = new Coordination(
@@ -107,7 +134,28 @@ class BootStrap {
             area: 'school'
         ).save failOnError: true
 
-        assert Coordination.count() == 4
+        Coordination continuingEducation = new Coordination(
+            name: 'Educacion continua',
+            extensionNumber: '112',
+            copyFee: 220,
+            area: 'academic'
+        ).save failOnError: true
+
+        Coordination studiesByMeeting = new Coordination(
+            name: 'Estudios por encuentro',
+            extensionNumber: '112',
+            copyFee: 200,
+            area: 'academic'
+        ).save failOnError: true
+
+        Coordination projects = new Coordination(
+            name: 'Proyectos',
+            extensionNumber: '112',
+            copyFee: 100,
+            area: 'academic'
+        ).save failOnError: true
+
+        assert Coordination.count() == 7
 
         // CLASSROOMS
         Classroom C109A = new Classroom(
@@ -139,38 +187,87 @@ class BootStrap {
         assert Classroom.count() == 4
 
         // CAREERS
-        Career programming1 = new Career(name: 'Programacion 1').save failOnError: true
-        Career drawing1 = new Career(name: 'Dibujo 1').save failOnError: true
-        Career technicalWriting = new Career(name: 'Redaccion tecnica').save failOnError: true
-        Career projectsFormulation = new Career(name: 'Formulacion de proyectos').save failOnError: true
-        Career algorithms1 = new Career(name: 'Algoritmos 1').save failOnError: true
-        Career math1 = new Career(name: 'Matematica 1').save failOnError: true
+        new Career(name: 'Programacion 1').save failOnError: true
+        new Career(name: 'Dibujo 1').save failOnError: true
+        new Career(name: 'Redaccion tecnica').save failOnError: true
+        new Career(name: 'Formulacion de proyectos').save failOnError: true
+        new Career(name: 'Algoritmos 1').save failOnError: true
+        new Career(name: 'Matematica 1').save failOnError: true
 
         assert Career.count() == 6
 
         // EMPLOYEE COORDINATIONS
-        EmployeeCoordination userEmployeeCoordinations = new EmployeeCoordination(
+        new EmployeeCoordination(
             employee: employee1,
             coordination: warehouse,
             position: 'manager',
             jobTitle: 'Director de bodega'
         ).save failOnError: true
 
-        EmployeeCoordination adminEmployeeCoordinations = new EmployeeCoordination(
+        new EmployeeCoordination(
             employee: employee2,
             coordination: technicalSupport,
             position: 'assistant',
             jobTitle: 'Asistente de soporte tecnico'
         ).save failOnError: true
 
-        EmployeeCoordination anotherAdminEmployeeCoordinations = new EmployeeCoordination(
+        new EmployeeCoordination(
             employee: employee3,
             coordination: technicalSupport,
             position: 'manager',
             jobTitle: 'Responsable de soporte tecnico'
         ).save failOnError: true
 
-        assert EmployeeCoordination.count() == 3
+        new EmployeeCoordination(
+            employee: employee5,
+            coordination: continuingEducation,
+            position: 'manager',
+            jobTitle: 'Responsable'
+        ).save failOnError: true
+
+        new EmployeeCoordination(
+            employee: employee5,
+            coordination: studiesByMeeting,
+            position: 'manager',
+            jobTitle: 'Responsable'
+        ).save failOnError: true
+
+        new EmployeeCoordination(
+            employee: employee5,
+            coordination: projects,
+            position: 'manager',
+            jobTitle: 'Responsable'
+        ).save failOnError: true
+
+        new EmployeeCoordination(
+            employee: employee6,
+            coordination: continuingEducation,
+            position: 'assistant',
+            jobTitle: 'Colaborador'
+        ).save failOnError: true
+
+        new EmployeeCoordination(
+            employee: employee6,
+            coordination: studiesByMeeting,
+            position: 'assistant',
+            jobTitle: 'Colaborador'
+        ).save failOnError: true
+
+        new EmployeeCoordination(
+            employee: employee7,
+            coordination: continuingEducation,
+            position: 'assistant',
+            jobTitle: 'Colaborador'
+        ).save failOnError: true
+
+        new EmployeeCoordination(
+            employee: employee7,
+            coordination: studiesByMeeting,
+            position: 'assistant',
+            jobTitle: 'Colaborador'
+        ).save failOnError: true
+
+        assert EmployeeCoordination.count() == 10
 
         // DEVICES
         List<String> deviceList = ['Network', 'Display', 'Keyboard', 'Mouse', 'UPS', 'Printer', 'Scanner']
