@@ -9,7 +9,12 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/">UCC LEON</a>
+                <sec:ifNotLoggedIn>
+                    <a class="navbar-brand" href="/">UCC LEON</a>
+                </sec:ifNotLoggedIn>
+                <sec:ifLoggedIn>
+                    <a class="navbar-brand" href="/dashboard">UCC LEON</a>
+                </sec:ifLoggedIn>
             </div>
 
             <div class="collapse navbar-collapse" id="nami">
