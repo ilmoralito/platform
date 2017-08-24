@@ -72,7 +72,7 @@ grails {
                 // TICKETS
                 [pattern: '/tickets',                       access: ['ROLE_ADMIN']],
                 [pattern: '/tickets/*/assignment',          access: ['ROLE_ADMIN']],
-                [pattern: '/tickets/*/sendCloseOrder',      access: ['ROLE_ADMIN']],
+                [pattern: '/tickets/*/swap/*',              access: ['ROLE_ADMIN']],
                 [pattern: '/tickets/filter/*',              access: ['ROLE_ADMIN']],
                 [pattern: '/tickets/filterByEmployee/*',    access: ['ROLE_ADMIN']],
                 [pattern: '/tickets/filterByDevice/*',      access: ['ROLE_ADMIN']],

@@ -1,11 +1,9 @@
 package ni.edu.ucc.leon.ticket
 
 import static org.springframework.http.HttpStatus.NOT_FOUND
-import grails.validation.ValidationException
-
 import grails.plugin.springsecurity.SpringSecurityService
+import grails.validation.ValidationException
 import ni.edu.ucc.leon.TicketService
-
 import ni.edu.ucc.leon.Ticket
 
 class TicketController {
@@ -17,7 +15,7 @@ class TicketController {
         update: 'PUT',
         delete: 'DELETE',
         assignment: 'POST',
-        sendCloseOrder: 'POST'
+        swap: 'POST'
     ]
 
     def index(Long employeeId) {
@@ -118,16 +116,11 @@ class TicketController {
         redirect uri: "/tickets/$command.id/tasks"
     }
 
-    def sendCloseOrder(Long id) {
-        Ticket ticket = ticketService.close(id)
+    def swap(final Long id, final String status) {
+        Ticket ticket = ticketService.swap(id, status)
 
-        // TODO: notFound method needs employeeId parameter
-        if (!ticket) {
-            notFound()
-            return
-        }
+        flash.message = !ticket ? 'Ticket no encontrada' : 'Ticket actualizada'
 
-        flash.message = 'Ticket cerrada'
         redirect uri: "/tickets/$id/tasks", method: 'GET'
     }
 

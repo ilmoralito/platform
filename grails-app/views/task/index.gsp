@@ -13,7 +13,7 @@
                 </div>
             </g:form>
         </g:if>
-    
+
         <g:if test="${taskList}">
             <g:each in="${taskList}" var="task">
                 <div class="panel panel-${task.state}">
@@ -60,13 +60,24 @@
     </content>
 
     <content tag="right">
-        <g:if test="${ticket.status == 'pending' && ticket.tasks}">
-            <a href="#" onclick="if (confirm('¿Seguro?')) { document.getElementById('sendCloseOrderForm').submit(); } else { return false; }" class="btn btn-danger btn-block" style="margin-bottom: 15px;">Cerrar</a>
-            <g:form name="sendCloseOrderForm" resource="ticket" action="sendCloseOrder" id="${ticket.id}" method="POST" autocomplete="off" class="hide"></g:form>
+        <g:if test="${ticket.status in ['pending', 'closed'] && ticket.tasks}">
+            <a
+                href="#"
+                onclick="if (confirm('¿Seguro?')) { document.getElementById('swapForm').submit(); } else { return false; }"
+                class="btn ${ ticket.status == 'pending' ? 'btn-warning' : 'btn-danger' } btn-block"
+                style="margin-bottom: 15px;">
+                ${ticket.status == 'pending' ? 'Cerrar' : 'Reabrir'}
+            </a>
+
+            <g:form
+                name="swapForm"
+                resource="ticket"
+                action="swap"
+                params="[id: ticket.id, status: ticket.status == 'pending' ? 'closed' : 'pending']"
+                method="POST"
+                class="hide">
+            </g:form>
         </g:if>
-        <g:elseif test="${ticket.status == 'closed'}">
-            <div class="well">Esta ticket esta cerrada</div>
-        </g:elseif>
 
         <g:if test="${ticket.status != 'closed'}">
             <g:form resource="ticket" action="assignment" id="${params.ticketId}" method="POST" autocomplete="off">

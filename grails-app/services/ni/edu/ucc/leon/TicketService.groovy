@@ -28,7 +28,7 @@ interface ITicketService {
 
     Ticket assignment(Serializable id, Serializable deviceId)
 
-    Ticket close(Serializable id)
+    Ticket swap(final Serializable id, final String status)
 
     Map summaryStatus()
 
@@ -152,11 +152,11 @@ abstract class TicketService implements ITicketService {
     }
 
     @Override
-    Ticket close(Serializable id) {
+    Ticket swap(final Serializable id, final String status) {
         Ticket ticket = find(id)
 
         if (ticket) {
-            ticket.status = 'closed'
+            ticket.status = status
             ticket.save(flush: true)
         }
 
