@@ -9,7 +9,7 @@ interface ITaskService {
 
     Task find(Serializable id)
 
-    Task save(String description, Serializable ticketId)
+    Task save(final String description, final Serializable ticketId)
 
     Task update(Serializable id, String description)
 
@@ -33,14 +33,14 @@ abstract class TaskService implements ITaskService {
     }
 
     @Override
-    Task save(String description, Serializable ticketId) {
+    Task save(final String description, final Serializable ticketId) {
         User user = springSecurityService.currentUser
         Task task = new Task(createdBy: user, description: description)
         Ticket ticket = ticketService.find(ticketId)
 
         ticket.addToTasks(task)
 
-        task.save()
+        task.save(failOnError: true)
     }
 
     @Override

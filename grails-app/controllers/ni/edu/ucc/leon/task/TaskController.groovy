@@ -39,17 +39,18 @@ class TaskController {
         }
     }
 
-    def save(TaskSaveCommand command) {
-        if (command.hasErrors()) {
-            flash.errors = command.errors
-            flash.message = 'A ocurrido un error'
+    def save(final String description, final Long ticketId) {
+        try {
+            Task task = taskService.save(description, ticketId)
 
-            redirect uri: "/tickets/${command.ticketId}/tasks", method: 'GET'
-        } else {
-            Task task = taskService.save(command.description, command.ticketId)
-
-            flash.message = 'Tarea guardada'
-            redirect uri: "/tickets/$command.ticketId/tasks/$task.id", method: 'GET'
+            flash.message = 'Tarea agregada'
+            redirect uri: "/tickets/$ticketId/tasks", method: 'GET'
+        } catch(ValidationException e) {
+            respond e.errors, view: 'index', model: [
+                taskList: taskService.listByTicket(ticketId),
+                ticket: ticketService.find(ticketId),
+                deviceList: deviceService.list()
+            ]
         }
     }
 
