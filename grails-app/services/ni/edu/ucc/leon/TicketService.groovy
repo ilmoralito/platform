@@ -1,7 +1,6 @@
 package ni.edu.ucc.leon
 
 import org.hibernate.transform.AliasToEntityMapResultTransformer
-import grails.plugin.springsecurity.SpringSecurityService
 import grails.gorm.services.Service
 import grails.gorm.services.Where
 import grails.gorm.services.Query
@@ -26,7 +25,7 @@ interface ITicketService {
 
     Ticket update(Serializable id, String subject)
 
-    Ticket assignment(Serializable id, Serializable deviceId)
+    Ticket assignment(final Serializable id, final Serializable employeeId, final Serializable deviceId)
 
     Ticket swap(final Serializable id, final String status)
 
@@ -99,7 +98,6 @@ interface ITicketService {
 @Service(Ticket)
 abstract class TicketService implements ITicketService {
 
-    @Autowired SpringSecurityService springSecurityService
     @Autowired EmployeeService employeeService
     @Autowired DeviceService deviceService
 
@@ -127,17 +125,12 @@ abstract class TicketService implements ITicketService {
     }
 
     @Override
-    Ticket assignment(Serializable id, Serializable deviceId) {
-        Employee employee = springSecurityService.currentUser.employee
+    Ticket assignment(final Serializable id, final Serializable employeeId, Serializable deviceId) {
+        Employee employee = employeeService.find(employeeId)
+        Device device = deviceService.find(deviceId)
         Ticket ticket = find(id)
 
-        if (ticket) {
-            Device device = deviceService.find(deviceId)
-
-            if (!device) {
-                throw new IllegalArgumentException('Device does not exist')
-            }
-
+        if (ticket && employee && device) {
             ticket.device = device
             ticket.status = 'pending'
 

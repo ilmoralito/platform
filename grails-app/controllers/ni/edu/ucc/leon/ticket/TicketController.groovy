@@ -104,16 +104,12 @@ class TicketController {
         respond ticketService.listByDevice(name), model: [summaryStatus: ticketService.summaryStatus()], view: 'tickets'
     }
 
-    def assignment(TicketAssignmentCommand command) {
-        if (command.hasErrors()) {
-            flash.errors = command.errors
-        } else {
-            Ticket ticket = ticketService.assignment(command.id, command.device)
+    def assignment(final Long id, final Long employeeId, final Long deviceId) {
+        Ticket ticket = ticketService.assignment(id, employeeId, deviceId)
 
-            flash.message = 'Asignado a ticket'
-        }
+        flash.message = !ticket ? 'Ticket no encontrada' : 'Ticket asignada'
 
-        redirect uri: "/tickets/$command.id/tasks"
+        redirect uri: "/tickets/$id/tasks", method: 'GET'
     }
 
     def swap(final Long id, final String status) {

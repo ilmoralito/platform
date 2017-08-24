@@ -80,10 +80,10 @@
         </g:if>
 
         <g:if test="${ticket.status != 'closed'}">
-            <g:form resource="ticket" action="assignment" id="${params.ticketId}" method="POST" autocomplete="off">
+            <g:form resource="ticket" action="assignment" params="[id: ticket.id, employeeId: ticket.employee.id]" method="POST" autocomplete="off">
                 <div class="form-group">
                     <label>Recursos</label>
-                    <g:select name="device" from="${deviceList}" optionValue="name" optionKey="id" value="${ticket?.device?.id}" class="form-control"/>
+                    <g:select name="deviceId" from="${deviceList}" optionValue="name" optionKey="id" value="${ticket?.device?.id}" class="form-control"/>
                 </div>
 
                 <div class="form-group">
