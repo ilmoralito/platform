@@ -82,8 +82,10 @@ class UrlMappings {
 
         '/logout'(controller: 'logout')
 
-        '500'(view: '/error')
+        '403'(view: '/forbidden')
 
         '404'(view: '/notFound')
+
+        '500'(view: '/error')
     }
 }
