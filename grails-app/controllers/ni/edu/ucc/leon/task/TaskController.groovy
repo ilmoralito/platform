@@ -14,10 +14,14 @@ class TaskController {
     @Autowired DeviceService deviceService
     @Autowired TaskService taskService
 
-    static allowedMethods = [ save: 'POST', update: 'PUT', delete: 'DELETE', clone: 'POST', updateState: 'PUT' ]
+    static allowedMethods = [save: 'POST', update: 'PUT', delete: 'DELETE']
 
     def index(Long ticketId) {
-        respond taskService.listByTicket(ticketId), model: [ticket: ticketService.find(ticketId), deviceList: deviceService.list()]
+        respond taskService.listByTicket(ticketId), model: [
+            ticket: ticketService.find(ticketId),
+            deviceList: deviceService.list(),
+            stateList: stateList()
+        ]
     }
 
     def show(Long id, Long ticketId) {
@@ -49,7 +53,8 @@ class TaskController {
             respond e.errors, view: 'index', model: [
                 taskList: taskService.listByTicket(ticketId),
                 ticket: ticketService.find(ticketId),
-                deviceList: deviceService.list()
+                deviceList: deviceService.list(),
+                stateList: stateList()
             ]
         }
     }
@@ -65,7 +70,7 @@ class TaskController {
         }
     }
 
-    def clone(Long ticketId, Long id) {
+    def clone(final Long ticketId, final Long id) {
         try {
             Task task = taskService.clone(ticketId, id)
 
@@ -80,7 +85,7 @@ class TaskController {
         }
     }
 
-    def updateState(Long ticketId, Long id, String state) {
+    def changeState(final Long ticketId, final Long id, final String state) {
         try {
             Task task = taskService.updateState(id, state)
 
@@ -98,5 +103,9 @@ class TaskController {
     protected notFound(Long ticketId) {
         flash.message = 'Tarea no encontrada'
         redirect uri: "/tickets/todo/$ticketId"
+    }
+
+    private List<Map<String, String>> stateList() {
+        [[es: 'Predeterminado', en: 'default'], [es: 'Informacion', en: 'info'], [es: 'Advertencia', en: 'warning']]
     }
 }

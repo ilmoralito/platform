@@ -61,8 +61,8 @@ class UrlMappings {
         get "/tickets/$ticketId/tasks/$id/edit"(controller: 'task', action: 'edit')
         put "/tickets/$ticketId/tasks/$id"(controller: 'task', action: 'update')
         delete "/tickets/$ticketId/tasks/$id"(controller: 'task', action: 'delete')
-        post "/tickets/$ticketId/tasks/$id/clone"(controller: 'task', action: 'clone')
-        put "/tickets/$ticketId/tasks/$id/updateState"(controller: 'task', action: 'updateState')
+        get "/tickets/$ticketId/tasks/$id/clone"(controller: 'task', action: 'clone')
+        get "/tickets/$ticketId/tasks/$id/changeState/$state"(controller: 'task', action: 'changeState')
 
         // REPORTS
         group '/reports', {

@@ -4,7 +4,6 @@
     </head>
 
     <content tag="main">
-
         <g:if test="${ticket.status != 'closed'}">
             <g:form resource="ticket/task" action="save" params="[ticketId: params.ticketId]" method="POST" autocomplete="off">
                 <g:render template="/task/form"/>
@@ -27,32 +26,39 @@
                     </div>
 
                     <div class="panel-footer">
-                        <div class="clearfix">
-                            <div class="pull-left">
-                                <g:link resource="ticket/task" action="show" ticketId="${task.ticket.id}" id="${task.id}" class="btn btn-default btn btn-primary btn-sm">
-                                    Mostrar
-                                </g:link>
-                            </div>
-
-                            <g:if test="${ticket.status != 'closed'}">
-                                <g:form resource="ticket/task" action="clone" params="[id: task.id, ticketId: task.ticket.id]" method="POST" class="pull-left" style="margin-left: 5px;">
-                                    <button type="submit" value class="btn btn-default btn-sm">Clonar</button>
-                                </g:form>
-                            </g:if>
-
-                            <g:form resource="ticket/task" action="updateState" params="[id: task.id, ticketId: task.ticket.id]" method="PUT" class="form-inline pull-right">
-                                <g:hiddenField name="_method" value="PUT"/>
-                                <div class="form-group">
-                                    <g:select
-                                        name="state"
-                                        from="['Predeterminado', 'Informacion', 'Advertencia']"
-                                        keys="['default', 'info', 'warning']"
-                                        value="${task.state}"
-                                        class="form-control input-sm"/>
-                                </div>
-
-                                <button type="submit" id="updateState" value class="btn btn-primary btn-sm">Aplicar</button>
-                            </g:form>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Action <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <g:link resource="ticket/task" action="show" id="${task.id}" ticketId="${task.ticket.id}">Mostrar</g:link>
+                                </li>
+                                <g:if test="${ticket.status != 'closed'}">
+                                    <li>
+                                        <g:link resource="ticket/task" action="clone" id="${task.id}" ticketId="${task.ticket.id}" method="GET">Clonar</g:link>
+                                    </li>
+                                </g:if>
+                                <g:if test="${task.ticket.status != 'closed'}">
+                                    <li>
+                                        <g:link resource="ticket/task" action="edit" id="${task.id}" ticketId="${task.ticket.id}">Editar</g:link>
+                                    </li>
+                                    <li>
+                                        <a href="#" onclick="if (confirm('¿Seguro?')) { document.getElementById('deleteForm').submit(); } else { return false; }">Eliminar</a>
+                                        <g:form name="deleteForm" resource="ticket/task" action="delete" params="[id: task.id, ticketId: task.ticket.id]" method="DELETE" class="hide">
+                                            <g:hiddenField name="_method" value="DELETE"/>
+                                        </g:form>
+                                    </li>
+                                </g:if>
+                                <li role="separator" class="divider"></li>
+                                <g:each in="${stateList}" var="state">
+                                    <li>
+                                        <g:link resource="ticket/task" action="changeState" params="[id: task.id, ticketId: task.ticket.id, state: state.en]" method="GET">
+                                            ${state.es}
+                                        </g:link>
+                                    </li>
+                                </g:each>
+                            </ul>
                         </div>
                     </div>
                 </div>
