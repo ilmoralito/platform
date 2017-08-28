@@ -4,6 +4,7 @@
     </head>
 
     <content tag="main">
+
         <g:if test="${ticket.status != 'closed'}">
             <g:form resource="ticket/task" action="save" params="[ticketId: params.ticketId]" method="POST" autocomplete="off">
                 <g:render template="/task/form"/>
@@ -57,10 +58,14 @@
                 </div>
             </g:each>
         </g:if>
+
+        <g:hasErrors bean="${task}">
+            <g:renderErrors bean="${task}"/>
+        </g:hasErrors>
     </content>
 
     <content tag="right">
-        <g:if test="${ticket.status in ['pending', 'closed'] && ticket.tasks}">
+        <g:if test="${ticket.status in ['pending', 'closed'] && taskList}">
             <a
                 href="#"
                 onclick="if (confirm('¿Seguro?')) { document.getElementById('swapForm').submit(); } else { return false; }"

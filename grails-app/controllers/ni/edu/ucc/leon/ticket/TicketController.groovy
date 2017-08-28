@@ -26,15 +26,15 @@ class TicketController {
         respond id ? ticketService.find(id) : null
     }
 
-    def create(Long employeeId) {
-        respond new Ticket(params), model: [ticketList: ticketService.listByEmployee(employeeId)]
+    def create(final Long employeeId) {
+        respond new Ticket(params), model: [ticketIssuesList: ticketService.issuesPerEmployee(employeeId)]
     }
 
-    def save(Long employeeId, String subject) {
+    def save(final Long employeeId, final String subject) {
         Ticket ticket = ticketService.save(employeeId, subject)
 
         if (ticket.hasErrors()) {
-            respond ticket.errors, view: 'create', model: [ticketList: ticketService.listByEmployee(employeeId)]
+            respond ticket.errors, view: 'create', model: [ticketIssuesList: ticketService.issuesPerEmployee(employeeId)]
             return
         } else {
             flash.message = 'Ticket creada'
@@ -42,15 +42,16 @@ class TicketController {
         }
     }
 
-    def edit(Long employeeId, Long id) {
+    def edit(final Long employeeId, final Long id) {
         if (!id) {
             notFound(employeeId)
-        } else {
-            respond ticketService.find(id), model: [ticketList: ticketService.listByEmployee(employeeId)]
+            return
         }
+        
+        respond ticketService.find(id), model: [ticketIssuesList: ticketService.issuesPerEmployee(employeeId)]
     }
 
-    def update(Long employeeId, Long id, String subject) {
+    def update(final Long employeeId, final Long id, final String subject) {
         try {
             Ticket ticket = ticketService.update(id, subject)
 
@@ -61,11 +62,11 @@ class TicketController {
                 redirect uri: "/employees/$employeeId/tickets/$id", method: 'GET'
             }
         } catch(ValidationException e) {
-            respond e.errors, view: 'edit'
+            respond e.errors, view: 'edit', model: [ticketIssuesList: ticketService.issuesPerEmployee(employeeId)]
         }
     }
 
-    def delete(Long employeeId, Long id) {
+    def delete(final Long employeeId, final Long id) {
         Ticket ticket = ticketService.delete(id)
 
         if (ticket == null) {

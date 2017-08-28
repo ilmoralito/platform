@@ -15,6 +15,8 @@ interface ITicketService {
 
     List<Ticket> listByEmployee(Long employeeId)
 
+    List<Map<String, String>> issuesPerEmployee(final Serializable employeeId)
+
     List<Ticket> listByStatusAndEmployee(String status, Serializable employeeId)
 
     List<Ticket> listByDevice(String name)
@@ -264,6 +266,18 @@ abstract class TicketService implements ITicketService {
         Ticket.where {
             employee.id == employeeId
         }.list()
+    }
+
+    @Override
+    List<Map<String, String>> issuesPerEmployee(final Serializable employeeId) {
+        Ticket.executeQuery("""
+            SELECT
+                DISTINCT new map (t.subject AS subject)
+            FROM
+                Ticket t
+            WHERE
+                t.employee.id = :employeeId
+            """, [employeeId: employeeId])
     }
 
     @Override
