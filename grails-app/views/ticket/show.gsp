@@ -82,6 +82,6 @@
             </g:form>
         </g:if>
 
-        <g:link resource="employee/ticket" action="index" employeeId="${params.employeeId}" method="GET" class="btn btn-default">Regresar</g:link>
+        <g:link uri="${request.getHeader('referer')}" method="GET" class="btn btn-default">Regresar</g:link>
     </content>
 </g:applyLayout>

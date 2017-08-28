@@ -22,7 +22,7 @@ class TicketController {
         respond ticketService.listByStatusAndEmployee('open', employeeId)
     }
 
-    def show(Long id) {
+    def show(final Long id) {
         respond id ? ticketService.find(id) : null
     }
 
@@ -119,6 +119,10 @@ class TicketController {
         flash.message = !ticket ? 'Ticket no encontrada' : 'Ticket actualizada'
 
         redirect uri: "/tickets/$id/tasks", method: 'GET'
+    }
+
+    def resume(final Long id) {
+        respond ticketService.find(id), view: 'show'
     }
 
     protected void notFound(Long employeeId) {

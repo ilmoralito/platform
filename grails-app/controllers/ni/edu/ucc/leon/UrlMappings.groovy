@@ -52,6 +52,7 @@ class UrlMappings {
         get "/tickets/filterByEmployee/$employeeId"(controller: 'ticket', action: 'filterByEmployee')
         post "/tickets/$id/assignment"(controller: 'ticket', action: 'assignment')
         post "/tickets/$id/swap/$status"(controller: 'ticket', action: 'swap')
+        get "/tickets/$id/resume/"(controller: 'ticket', action: 'resume')
 
         // TASK
         get "/tickets/$ticketId/tasks"(controller: 'task', action: 'index')

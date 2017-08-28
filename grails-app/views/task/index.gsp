@@ -27,7 +27,7 @@
 
                     <div class="panel-footer">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Action <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
@@ -102,10 +102,10 @@
                 </div>
             </g:form>
         </g:if>
-        <g:elseif test="${ticket.status == 'closed'}">
-            <p>Recurso</p>
-            <p>${ticket.device.name}</p>
-        </g:elseif>
+
+        <g:if test="${ticket.status == 'closed'}">
+            <g:link resource="ticket" action="resume" id="${ticket.id}" method="GET">Mostrar resumen</g:link>
+        </g:if>
 
         <platform:attendedByEmployeeList ticket="${ticket}"/>
     </content>

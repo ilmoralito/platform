@@ -110,7 +110,7 @@ class PlatformTagLib {
         List<Employee> employeeList = AttendedBy.listEmployeesByTicket(ticket)
 
         if (employeeList) {
-            builder.div {
+            builder.div(style: 'margin-top: 10px;') {
                 label 'Asignado a'
 
                 ol {
