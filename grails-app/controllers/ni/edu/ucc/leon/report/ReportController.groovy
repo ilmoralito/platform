@@ -6,31 +6,53 @@ import ni.edu.ucc.leon.Ticket
 class ReportController {
     @Autowired TicketService ticketService
 
-    static defaultAction = 'summary'
+    static defaultAction = 'resume'
 
-    def summary() {
-        [results: ticketService.yearList()]
+    def resume() {
+        [results: ticketService.resume(), yearListWidget: createYearListWidget('resume', 'resumeInYear')]
     }
 
-    def summaryInYear(final Integer year) {
-        [results: ticketService.monthList(year)]
+    def resumeInYear(final Integer year) {
+        render view: 'resume', model: [results: ticketService.resumeInYear(year), yearListWidget: createYearListWidget('resume', 'resumeInYear')]
     }
 
-    def ticketStatusInYear(final Integer year) {
-        render model: [results: ticketService.statusInYear(year)], view: 'ticketStatus'
+    def resumeInMonth(final String monthName) {
+        render view: 'summary', model: [results: ticketService.resumeInMonth(monthName)]
     }
 
-    def ticketStatusInYearAndMonth(final Integer year, final Integer month) {
-        render model: [results: ticketService.statusInYearAndMonth(year, month)], view: 'ticketStatus'
+    def resumeInYearAndMonth(final Integer year, final String monthName) {
+        render view: 'summary', model: [results: ticketService.resumeInYearAndMonth(year, monthName)]
     }
 
-    def ticketDevicesInYear(final Integer year) {
-        render model: [results: ticketService.devicesInYear(year)], view: 'ticketDevices'
+    def devices() {
+        [results: ticketService.devices(), yearListWidget: createYearListWidget('devices', 'devicesInYear')]
     }
 
-    def ticketDevicesInYearAndMonth(final Integer year, final Integer month) {
-        render model: [results: ticketService.devicesInYearAndMonth(year, month)], view: 'ticketDevices'
+    def devicesInYear(final Integer year) {
+        render view: 'devices', model: [results: ticketService.devicesInYear(year), yearListWidget: createYearListWidget('devices', 'devicesInYear')]
+    }
+
+    def state() {
+        [results: ticketService.state(), yearListWidget: createYearListWidget('state', 'stateInYear')]
+    }
+
+    def stateInYear(final Integer year) {
+        render view: 'state', model: [results: ticketService.stateInYear(year), yearListWidget: createYearListWidget('state', 'stateInYear')]
+    }
+
+    private YearListWidget createYearListWidget(final String globalActionName, final String inYearActionName) {
+        new YearListWidget(
+            yearList: ticketService.years(),
+            globalActionName: globalActionName,
+            inYearActionName: inYearActionName
+        )
     }
 
     private List<String> MONTHS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+}
+
+class YearListWidget {
+    List<Integer> yearList
+    String globalActionName
+    String inYearActionName
 }

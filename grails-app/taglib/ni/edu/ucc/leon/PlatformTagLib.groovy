@@ -20,11 +20,23 @@ class PlatformTagLib {
             case 'open':
                 out << 'ABIERTO'
             break
+            case 'In progress':
             case 'pending':
                 out << 'EN PROGRESO'
             break
             case 'closed':
                 out << 'CERRADO'
+            break
+        }
+    }
+
+    def ticketScheduled = { attrs ->
+        switch(attrs.scheduled) {
+            case 'non-scheduled':
+                out << 'No programado'
+            break
+            case 'scheduled':
+                out << 'Programado'
             break
         }
     }

@@ -108,13 +108,13 @@ grails {
                 [pattern: '/reports/**',                        access: ['ROLE_ADMIN']],
 
                 // ROLES
-                [pattern: '/roles/**',                      access: ['ROLE_ADMIN']],
+                [pattern: '/roles/**',                          access: ['ROLE_ADMIN']],
 
                 // USERS
-                [pattern: '/users/**',                      access: ['ROLE_ADMIN', 'ROLE_USER']],
+                [pattern: '/users/**',                          access: ['ROLE_ADMIN', 'ROLE_USER']],
 
                 // CAREERS
-                [pattern: '/careers/**',                    access: ['ROLE_ADMIN']],
+                [pattern: '/careers/**',                        access: ['ROLE_ADMIN']],
             ]
         }
     }

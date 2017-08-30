@@ -1,46 +1,60 @@
-<g:applyLayout name="oneColumnSmall">
+<g:applyLayout name="twoColumns">
     <head>
-        <title>Reporte de tickets</title>
+        <title>Resumen</title>
     </head>
 
     <content tag="main">
+        <g:render template="nav"/>
+
         <g:if test="${results}">
             <table class="table table-hover">
+                <caption>${results.size()} resultados</caption>
                 <colgroup>
-                    <col span="1" style="width: 10%;">
-                    <col span="1" style="width: 10%;">
+                    <col span="1" style="width: 20%;">
                     <col span="1" style="width: 40%;">
-                    <col span="1" style="width: 40%;">
+                    <col span="1" style="width: 5%;">
+                    <col span="1" style="width: 5%;">
+                    <col span="1" style="width: 15%;">
+                    <col span="1" style="width: 5%;">
+                    <col span="1" style="width: 5%;">
+                    <col span="1" style="width: 5%;">
                 </colgroup>
 
                 <thead>
                     <tr>
-                        <th>Año</th>
-                        <th>Cantidad</th>
-                        <th></th>
-                        <th></th>
+                        <th>Solicitante</th>
+                        <th>Asunto</th>
+                        <th>Estado</th>
+                        <th>Tipo</th>
+                        <th>Recurso</th>
+                        <th>Creado</th>
+                        <th>Modificado</th>
+                        <th>Tareas</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     <g:each in="${results}" var="result">
                         <tr>
-                            <td>
-                                <g:link controller="report" action="summaryInYear" params="[year: result.year]">${result.year}</g:link>
+                            <td style="vertical-align: middle;">${result.fullName}</td>
+                            <td style="vertical-align: middle;">${result.issue}</td>
+                            <td style="vertical-align: middle;">
+                                <platform:ticketStatus status="${result.status}"/>
                             </td>
-                            <td>${result.count}</td>
-                            <td>
-                                <g:link controller="report" action="ticketStatusInYear" params="[year: result.year]">Reporte de estado</g:link>
+                            <td style="vertical-align: middle;">
+                                <platform:ticketScheduled scheduled="${result.scheduled}"/>
                             </td>
-                            <td>
-                                <g:link controller="report" action="ticketDevicesInYear" params="[year: result.year]">Reporte de recurso</g:link>
-                            </td>
+                            <td style="vertical-align: middle;">${result.device}</td>
+                            <td style="vertical-align: middle;">${result.dateCreated}</td>
+                            <td style="vertical-align: middle;">${result.lastUpdated}</td>
+                            <td class="text-center" style="vertical-align: middle;">${result.tasks}</td>
                         </tr>
                     </g:each>
                 </tbody>
             </table>
         </g:if>
         <g:else>
-            <p>Sin datos que mostrar</p>
+            <p>Sin resultados que mostrar</p>
         </g:else>
     </content>
 </g:applyLayout>

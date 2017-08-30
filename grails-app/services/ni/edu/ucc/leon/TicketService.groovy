@@ -1,6 +1,7 @@
 package ni.edu.ucc.leon
 
 import org.hibernate.transform.AliasToEntityMapResultTransformer
+import org.hibernate.SessionFactory
 import grails.gorm.services.Service
 import grails.gorm.services.Where
 import grails.gorm.services.Query
@@ -35,60 +36,151 @@ interface ITicketService {
 
     Number countByStatusInList(List<String> statusList)
 
+    @Query("SELECT DISTINCT new map (YEAR($t.dateCreated) AS year) FROM ${Ticket t}")
+    List<Number> years()
+
     @Query("""
-        SELECT 
+        SELECT
+            new map (MONTHNAME(t.dateCreated) AS monthName, COUNT(*) AS count)
+        FROM
+            ${Ticket t}
+        GROUP BY 1
+        ORDER BY FIELD(1,
+                'January',
+                'February',
+                'March',
+                'April',
+                'May',
+                'June',
+                'July',
+                'August',
+                'September',
+                'October',
+                'November',
+                'December')
+    """)
+    List<Map<String, Object>> resume()
+
+    @Query("""
+        SELECT
+            new map (MONTHNAME(t.dateCreated) AS monthName, COUNT(*) AS count)
+        FROM
+            ${Ticket t}
+        WHERE
+            YEAR(t.dateCreated) = $year
+        GROUP BY 1
+        ORDER BY FIELD(1,
+                'January',
+                'February',
+                'March',
+                'April',
+                'May',
+                'June',
+                'July',
+                'August',
+                'September',
+                'October',
+                'November',
+                'December')
+    """)
+    List<Map<String, Object>> resumeInYear(final Integer year)
+
+    List<Map<String, Object>> resumeInMonth(final String monthName)
+
+    List<Map<String, Object>> resumeInYearAndMonth(final Integer year, final String monthName)
+
+    @Query("""
+        SELECT
+            new map ($d.name AS name, COUNT(*) AS count)
+        FROM
+            ${Ticket t}
+                INNER JOIN
+            ${Device d} ON t.device.id = d.id
+        GROUP BY 1
+        ORDER BY 2 DESC
+    """)
+    List<Map<String, String>> devices()
+
+    @Query("""
+        SELECT
+            new map ($d.name AS name, COUNT(*) AS count)
+        FROM
+            ${Ticket t}
+                INNER JOIN
+            ${Device d} ON t.device.id = d.id
+        WHERE
+            YEAR(t.dateCreated) = $year
+        GROUP BY 1
+        ORDER BY 2 DESC
+    """)
+    List<Map<String, String>> devicesInYear(final Integer year)
+
+    @Query("""
+        SELECT
+            new map (
+                MONTHNAME(t.dateCreated) AS monthName,
+                SUM(CASE WHEN t.status = 'open' THEN 1 ELSE 0 END) AS open,
+                SUM(CASE WHEN t.status = 'pending' THEN 1 ELSE 0 END) AS pending,
+                SUM(CASE WHEN t.status = 'closed' THEN 1 ELSE 0 END) AS closed,
+                count(*) AS total
+            )
+        FROM
+            ${Ticket t}
+        GROUP BY 1
+        ORDER BY FIELD(1,
+                'January',
+                'February',
+                'March',
+                'April',
+                'May',
+                'June',
+                'July',
+                'August',
+                'September',
+                'October',
+                'November',
+                'December')
+    """)
+    List<Map<String, Object>> state()
+
+    @Query("""
+        SELECT
+            new map (
+                MONTHNAME(t.dateCreated) AS monthName,
+                SUM(CASE WHEN t.status = 'open' THEN 1 ELSE 0 END) AS open,
+                SUM(CASE WHEN t.status = 'pending' THEN 1 ELSE 0 END) AS pending,
+                SUM(CASE WHEN t.status = 'closed' THEN 1 ELSE 0 END) AS closed,
+                count(*) AS total
+            )
+        FROM
+            ${Ticket t}
+        WHERE
+            YEAR(t.dateCreated) = $year
+        GROUP BY 1
+        ORDER BY FIELD(1,
+                'January',
+                'February',
+                'March',
+                'April',
+                'May',
+                'June',
+                'July',
+                'August',
+                'September',
+                'October',
+                'November',
+                'December')
+    """)
+    List<Map<String, Object>> stateInYear(final Integer year)
+
+    @Query("""
+        SELECT
             new map (YEAR($t.dateCreated) AS year, COUNT(t.dateCreated) AS count)
         FROM
             ${Ticket t}
         GROUP BY 1
     """)
-    List<Number> yearList()
-
-    @Query("""
-        SELECT new map (
-            MONTHNAME(t.dateCreated) AS monthName,
-            MONTH(t.dateCreated) AS month,
-            COUNT(t.dateCreated) AS count
-        )
-        FROM
-            ${Ticket t}
-        WHERE
-            YEAR($t.dateCreated) = $year
-        GROUP BY 1 , 2
-        ORDER BY 2 DESC
-    """)
-    List<Map<String, Object>> monthList(final Integer year)
-
-    List<Map<String, Object>> statusInYear(final Integer year)
-
-    List<Map<String, Object>> statusInYearAndMonth(final Integer year, final Integer month)
-
-    @Query("""
-        SELECT 
-            new map (d.name AS name, COUNT(*) AS count)
-        FROM
-            ${Ticket t}
-                INNER JOIN
-            ${Device d} ON t.device.id = d.id
-        WHERE
-            YEAR($t.dateCreated) = $year
-        GROUP BY 1 order by 2 desc
-    """)
-    List<Map<String, Object>> devicesInYear(final Integer year)
-
-    @Query("""
-        SELECT 
-            new map (d.name AS name, COUNT(*) AS count)
-        FROM
-            ${Ticket t}
-                INNER JOIN
-            ${Device d} ON t.device.id = d.id
-        WHERE
-            YEAR($t.dateCreated) = $year
-                AND MONTH($t.dateCreated) = $month
-        GROUP BY 1 order by 2 desc
-    """)
-    List<Map<String, Object>> devicesInYearAndMonth(final Integer year, final Integer month)
+    List<Map<String, String>> yearList()
 
     List<Number> yearListByEmployee(Serializable employeeId)
 
@@ -101,6 +193,7 @@ interface ITicketService {
 abstract class TicketService implements ITicketService {
 
     @Autowired EmployeeService employeeService
+    @Autowired SessionFactory sessionFactory
     @Autowired DeviceService deviceService
 
     @Override
@@ -156,45 +249,6 @@ abstract class TicketService implements ITicketService {
         }
 
         ticket
-    }
-
-    @Override
-    List<Map<String, Object>> statusInYear(Integer year) {
-        Ticket.executeQuery('''
-            SELECT new map (
-                c.name as coordination,
-                SUM((CASE WHEN t.status = 'open' THEN 1 ELSE 0 END)) as open,
-                SUM((CASE WHEN t.status = 'pending' THEN 1 ELSE 0 END)) as pending,
-                SUM((CASE WHEN t.status = 'closed' THEN 1 ELSE 0 END)) as closed
-            )
-            FROM
-                Ticket t, EmployeeCoordination ec
-                    JOIN t.employee e JOIN ec.coordination c
-            WHERE
-                YEAR(t.dateCreated) = :year
-                    AND ec.employee.id = e.id AND ec.coordination.id = c.id
-            GROUP BY 1
-        ''', [year: year])
-    }
-
-    @Override
-    List<Map<String, Object>> statusInYearAndMonth(Integer year, Integer month) {
-        Ticket.executeQuery('''
-            SELECT new map (
-                c.name as coordination,
-                SUM((CASE WHEN t.status = 'open' THEN 1 ELSE 0 END)) as open,
-                SUM((CASE WHEN t.status = 'pending' THEN 1 ELSE 0 END)) as pending,
-                SUM((CASE WHEN t.status = 'closed' THEN 1 ELSE 0 END)) as closed
-            )
-            FROM
-                Ticket t, EmployeeCoordination ec
-                    JOIN t.employee e JOIN ec.coordination c
-            WHERE
-                YEAR(t.dateCreated) = :year
-                    AND MONTH(t.dateCreated) = :month
-                        AND ec.employee.id = e.id AND ec.coordination.id = c.id
-            GROUP BY 1
-        ''', [year: year, month: month])
     }
 
     @Override
@@ -285,5 +339,103 @@ abstract class TicketService implements ITicketService {
         Ticket.where {
             device.name == name
         }.list()
+    }
+
+    @Override
+    List<Map<String, Object>> resumeInMonth(final String monthName) {
+        final session = sessionFactory.currentSession
+        final String query = """
+            SELECT
+                e.full_name AS fullName,
+                t.subject AS issue,
+                CASE t.status
+                    WHEN 'open' THEN 'open'
+                    WHEN 'pending' THEN 'In progress'
+                    WHEN 'closed' THEN 'closed'
+                END AS status,
+                CASE t.scheduled
+                    WHEN TRUE THEN 'scheduled'
+                    WHEN FALSE THEN 'non-scheduled'
+                END AS scheduled,
+                ifnull(d.name, '') AS device,
+                DATE(t.date_created) AS dateCreated,
+                DATE(t.last_updated) AS lastUpdated,
+                IFNULL(total_tasks, 0) AS tasks
+            FROM
+                tickets t
+                    INNER JOIN
+                employees e ON t.employee_id = e.id
+                    LEFT JOIN
+                devices d ON d.id = t.device_id
+                    LEFT JOIN
+                (SELECT
+                    ticket_id, COUNT(1) AS total_tasks
+                FROM
+                    tasks
+                GROUP BY ticket_id) ta ON t.id = ta.ticket_id
+            WHERE
+                MONTHNAME(t.date_created) = :monthName
+            ORDER BY dateCreated DESC
+        """
+        final sqlQuery = session.createSQLQuery(query)
+        final results = sqlQuery.with {
+            resultTransformer = AliasToEntityMapResultTransformer.INSTANCE
+
+            setString('monthName', monthName)
+
+            list()
+        }
+
+        results
+    }
+
+    @Override
+    List<Map<String, Object>> resumeInYearAndMonth(final Integer year, final String monthName) {
+        final session = sessionFactory.currentSession
+        final String query = """
+            SELECT
+                e.full_name AS fullName,
+                t.subject AS issue,
+                CASE t.status
+                    WHEN 'open' THEN 'open'
+                    WHEN 'pending' THEN 'In progress'
+                    WHEN 'closed' THEN 'closed'
+                END AS status,
+                CASE t.scheduled
+                    WHEN TRUE THEN 'scheduled'
+                    WHEN FALSE THEN 'non-scheduled'
+                END AS scheduled,
+                ifnull(d.name, '') AS device,
+                DATE(t.date_created) AS dateCreated,
+                DATE(t.last_updated) AS lastUpdated,
+                IFNULL(total_tasks, 0) AS tasks
+            FROM
+                tickets t
+                    INNER JOIN
+                employees e ON t.employee_id = e.id
+                    LEFT JOIN
+                devices d ON d.id = t.device_id
+                    LEFT JOIN
+                (SELECT
+                    ticket_id, COUNT(1) AS total_tasks
+                FROM
+                    tasks
+                GROUP BY ticket_id) ta ON t.id = ta.ticket_id
+            WHERE
+                MONTHNAME(t.date_created) = :monthName
+                    AND YEAR(t.date_created) = :year
+            ORDER BY dateCreated DESC
+        """
+        final sqlQuery = session.createSQLQuery(query)
+        final results = sqlQuery.with {
+            resultTransformer = AliasToEntityMapResultTransformer.INSTANCE
+
+            setString('monthName', monthName)
+            setInteger('year', year)
+
+            list()
+        }
+
+        results
     }
 }

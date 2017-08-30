@@ -67,12 +67,14 @@ class UrlMappings {
 
         // REPORTS
         group '/reports', {
-            get '/summary'(controller: 'report', action: 'summary')
-            get "/summary/$year"(controller: 'report', action: 'summaryInYear')
-            get "/tickets/status/$year"(controller: 'report', action: 'ticketStatusInYear')
-            get "/tickets/status/$year/month/$month"(controller: 'report', action: 'ticketStatusInYearAndMonth')
-            get "/tickets/devices/$year"(controller: 'report', action: 'ticketDevicesInYear')
-            get "/tickets/devices/$year/month/$month"(controller: 'report', action: 'ticketDevicesInYearAndMonth')
+            get '/' (controller: 'report', action: 'resume')
+            get "/$year" (controller: 'report', action: 'resumeInYear')
+            get "/month/$monthName" (controller: 'report', action: 'resumeInMonth')
+            get "/$monthName/$year" (controller: 'report', action: 'resumeInYearAndMonth')
+            get '/devices' (controller: 'report', action: 'devices')
+            get "/devices/$year" (controller: 'report', action: 'devicesInYear')
+            get '/state' (controller: 'report', action: 'state')
+            get "/state/$year" (controller: 'report', action: 'stateInYear')
         }
 
         '/birthday'(controller: 'birthday', action: 'index')

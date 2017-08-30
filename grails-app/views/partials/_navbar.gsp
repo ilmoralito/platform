@@ -30,7 +30,7 @@
 
                                 <ul class="dropdown-menu">
                                     <li class="${controllerName == 'report' ? 'active' : ''}">
-                                        <g:link controller="report" action="summary" method="GET">
+                                        <g:link controller="report" method="GET">
                                             Tickets
                                         </g:link>
                                     </li>
