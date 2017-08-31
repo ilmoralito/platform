@@ -25,3 +25,31 @@ $('.deleteBookmarkTrigger').on('click', function() {
         form.submit();
     }
 });
+
+(function() {
+    const copyText = document.querySelector('#email');
+    const copyButton = document.querySelector('#copy');
+    const messageBox = document.querySelector('#message');
+
+    function copy() {
+        copyText.select();
+        document.execCommand('Copy');
+
+        displayMessage();
+    }
+
+    function displayMessage() {
+       messageBox.innerHTML = 'Email copiado';
+
+        clearMessage();
+    }
+
+    function clearMessage() {
+        const timeoutID = window.setTimeout(() => {
+           messageBox.innerHTML = '';
+           window.clearTimeout(timeoutID);
+        }, 2000);
+    }
+
+    copyButton.addEventListener('click', copy);
+})();

@@ -47,7 +47,12 @@
 
                     <tr>
                         <td>Correo institucional</td>
-                        <td>${employee.user.email}</td>
+                        <td>
+                            ${employee.user.email}
+                            <button id="copy" class="btn btn-default btn-sm">Copiar</button>
+                            <small id="message"></small>
+                            <input id="email" value="${employee.user.email}" style="opacity: 0;">
+                        </td>
                     </tr>
 
                     <tr>
