@@ -48,7 +48,20 @@ class ReportController {
 
         withFormat {
             csv {
-                for(final result in results) {
+                results.eachWithIndex { result, index ->
+                    if (index == 0) {
+                        list << [
+                            'Solicitante',
+                            'Asunto',
+                            'Estado',
+                            'Tipo',
+                            'Recurso',
+                            'Fecha de solicitud',
+                            'Actualizacion mas reciente',
+                            'Numero de tareas'
+                        ]
+                    }
+
                     list << [
                         result.fullName,
                         result.issue,
@@ -68,7 +81,7 @@ class ReportController {
                 printer.close()
                 final String result = stringWriter.toString()
 
-                response.setHeader('Content-disposition', 'attachment; filename=sumario_actividades.csv')
+                response.setHeader('Content-disposition', 'attachment; filename=sumario_de_actividades.csv')
                 render(contentType: 'text/csv', text: result)
             }
         }
