@@ -52,6 +52,10 @@
                     </g:each>
                 </tbody>
             </table>
+
+            <g:link action="export" params="${params}" class="btn btn-default">
+                <span class="glyphicon glyphicon-save" aria-hidden="true"></span> CSV
+            </g:link>
         </g:if>
         <g:else>
             <p>Sin resultados que mostrar</p>
