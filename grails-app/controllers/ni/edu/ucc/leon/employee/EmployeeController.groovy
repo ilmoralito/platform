@@ -8,7 +8,7 @@ class EmployeeController {
 
     @Autowired EmployeeService employeeService
 
-    static allowedMethods = [ save: 'POST', update: 'PUT' ]
+    static allowedMethods = [save: 'POST', update: 'PUT', updateFullName: 'PUT']
 
     def index() {
         respond employeeService.list()
@@ -50,5 +50,24 @@ class EmployeeController {
         } catch(ValidationException e) {
             respond e.errors, view: 'edit'
         }
+    }
+
+    def updateFullName() {
+        Employee employee = employeeService.find(params.employeeId)
+
+        if (employee) {
+            try {
+                employee.fullName = params.fullName
+                employee.save(flush: true)
+
+                respond employee, formats: ['json'], status: 200
+            } catch(Exception e) {
+                respond e.errors, formats: ['json']
+            }
+
+            return
+        }
+
+        respond formats: ['json'], status: 404
     }
 }

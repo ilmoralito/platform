@@ -2,18 +2,19 @@ package ni.edu.ucc.leon.user
 
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.validation.ValidationException
-import groovy.transform.TypeCheckingMode
-
-import ni.edu.ucc.leon.User
-
 import ni.edu.ucc.leon.CoordinationService
 import ni.edu.ucc.leon.UserService
 import ni.edu.ucc.leon.RoleService
+import ni.edu.ucc.leon.User
 
 class UserController {
-    CoordinationService coordinationService
-    UserService userService
-    RoleService roleService
+
+    @Autowired SpringSecurityService springSecurityService
+    @Autowired CoordinationService coordinationService
+    @Autowired UserService userService
+    @Autowired RoleService roleService
+
+    static allowedMethods = [changePassword: 'POST']
 
     def create() {
         respond new User(params), model: [roleList: roleService.list()]
@@ -56,4 +57,15 @@ class UserController {
             respond e.errors, view: 'edit', model: [roleList: roleService.list()]
         }
     }
+
+    def profile() {
+        [user: springSecurityService.currentUser]
+    }
+
+    def password() {}
+
+    def changePassword() {
+        render params
+    }
+
 }

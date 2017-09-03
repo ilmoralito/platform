@@ -51,6 +51,7 @@ grails {
 
                 // EMPLOYEE
                 [pattern: '/employees/*/tickets/**',            access: ['ROLE_ADMIN', 'ROLE_USER']],
+                [pattern: '/employees/*/updateFullName',        access: ['ROLE_ADMIN', 'ROLE_USER']],
                 [pattern: '/employees/**',                      access: ['ROLE_ADMIN']],
 
                 // PHONEBOOK
@@ -112,6 +113,9 @@ grails {
 
                 // USERS
                 [pattern: '/users/**',                          access: ['ROLE_ADMIN', 'ROLE_USER']],
+                [pattern: '/user/profile',                      access: ['ROLE_ADMIN', 'ROLE_USER']],
+                [pattern: '/user/password',                     access: ['ROLE_ADMIN', 'ROLE_USER']],
+                [pattern: '/user/changePassword',               access: ['ROLE_ADMIN', 'ROLE_USER']],
 
                 // CAREERS
                 [pattern: '/careers/**',                        access: ['ROLE_ADMIN']],

@@ -22,6 +22,8 @@ class UrlMappings {
         '/roles'(resources: 'role', excludes: ['create'])
 
         '/employees'(resources: 'employee', excludes: ['delete']) {
+            '/updateFullName'(controller: 'employee', action: 'updateFullName', method: 'PUT')
+
             '/bookmarks'(resources: 'bookmark', includes: ['index', 'save', 'delete'])
 
             '/employeeCoordinations'(resources: 'employeeCoordination', excludes: ['create', 'show'])
@@ -77,6 +79,13 @@ class UrlMappings {
             get "/state/$year" (controller: 'report', action: 'stateInYear')
             get "/export/$monthName"(controller: 'report', action: 'export')
             get "/export/$year/$monthName"(controller: 'report', action: 'export')
+        }
+
+        // USER
+        group '/user', {
+            get '/profile' (controller: 'user', action: 'profile')
+            get '/password' (controller: 'user', action: 'password')
+            post '/changePassword' (controller: 'user', action: 'changePassword')
         }
 
         '/birthday'(controller: 'birthday', action: 'index')

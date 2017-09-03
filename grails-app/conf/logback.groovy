@@ -35,6 +35,6 @@ if (Environment.isDevelopmentMode() && targetDir != null) {
 }
 root(ERROR, ['STDOUT'])
 
-logger 'org.hibernate.type.descriptor.sql.BasicBinder', TRACE, ['STDOUT']
-logger 'org.hibernate.SQL', TRACE, ['STDOUT']
-logger 'ni.edu.ucc.leon', DEBUG, ['STDOUT']
+// logger 'org.hibernate.type.descriptor.sql.BasicBinder', TRACE, ['STDOUT']
+// logger 'org.hibernate.SQL', TRACE, ['STDOUT']
+// logger 'ni.edu.ucc.leon', DEBUG, ['STDOUT']

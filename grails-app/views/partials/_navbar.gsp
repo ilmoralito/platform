@@ -58,8 +58,8 @@
                             </a>
 
                             <ul class="dropdown-menu">
-                                <li>
-                                    <a href="#">Perfil</a>
+                                <li class="${actionName == 'profile' ? 'active' : ''}">
+                                    <g:link controller="user" action="profile">Perfil</g:link>
                                 </li>
                                 <li role="separator" class="divider"></li>
                                 <li>

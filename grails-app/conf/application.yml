@@ -106,7 +106,7 @@ endpoints:
 
 ---
 hibernate:
-    format_sql: true
+    # format_sql: true
     cache:
         queries: false
         use_second_level_cache: false
@@ -128,7 +128,7 @@ environments:
             password: $ gradle -Dmailtrap.password=
 
         dataSource:
-            logSql: true
+            # logSql: true
             dbCreate: create-drop
             url: jdbc:mysql://127.0.0.1:3306/platform?autoReconnect=true&useSSL=false
     test:

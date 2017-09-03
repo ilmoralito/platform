@@ -36,3 +36,7 @@ textarea.vertical-only { resize: vertical; }
 .nav-tabs {
     margin-bottom: 15px;
 }
+
+.border-less > tbody > tr:first-child > td {
+    border: none;
+}

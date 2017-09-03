@@ -42,7 +42,7 @@
             Coordinaciones
         </g:link>
 
-        <g:link resource="employee" action="index" method="GET" class="list-group-item ${controllerName in ['employee', 'employeeCoordination', 'user'] ? 'active' : ''}">
+        <g:link resource="employee" action="index" method="GET" class="list-group-item ${controllerName in ['employee', 'employeeCoordination', 'user'] && !(actionName in ['profile', 'password']) ? 'active' : ''}">
             Empleados
         </g:link>
 
