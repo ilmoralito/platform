@@ -64,8 +64,18 @@ class UserController {
 
     def password() {}
 
-    def changePassword() {
-        render params
-    }
+    def changePassword(ChangePasswordCommand command) {
+        if (command.hasErrors()) {
+            respond command.errors, view: 'password'
+            return
+        }
 
+        User currentUser = springSecurityService.currentUser
+
+        currentUser.password = command.newPassword
+        currentUser.save(flush: true)
+
+        flash.message = 'Clave actualizada'
+        redirect action: 'password'
+    }
 }
