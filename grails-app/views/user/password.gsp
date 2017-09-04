@@ -27,8 +27,8 @@
             </div>
         </g:form>
 
-        <g:hasErrors bean="${command}">
-            <g:renderErrors bean="${command}"/>
+        <g:hasErrors bean="${errors}">
+            <g:renderErrors bean="${errors}"/>
         </g:hasErrors>
     </content>
 </g:applyLayout>

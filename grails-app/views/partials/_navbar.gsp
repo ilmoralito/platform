@@ -58,7 +58,7 @@
                             </a>
 
                             <ul class="dropdown-menu">
-                                <li class="${actionName == 'profile' ? 'active' : ''}">
+                                <li class="${actionName in ['profile', 'password', 'changePassword'] ? 'active' : ''}">
                                     <g:link controller="user" action="profile">Perfil</g:link>
                                 </li>
                                 <li role="separator" class="divider"></li>

@@ -25,49 +25,49 @@
 
                 <tr>
                     <td>Cedula de identidad</td>
-                    <td colspan="4">${user.employee.identityCard}</td>
+                    <td>${user.employee.identityCard}</td>
                 </tr>
 
                 <tr>
                     <td>Tipo de contrato</td>
-                    <td colspan="4">
+                    <td>
                         <platform:typeOfContract type="${user.employee.contract}"/>
                     </td>
                 </tr>
 
                 <tr>
                     <td>Hablitado</td>
-                    <td colspan="4">
+                    <td>
                         <platform:yesNo condition="${user.employee.enabled}"/>
                     </td>
                 </tr>
 
                 <tr>
                     <td>Coordinaciones</td>
-                    <td colspan="4">
+                    <td>
                         <g:join in="${user.employee.coordinations.name}"/>
                     </td>
                 </tr>
 
                 <tr>
-                    <td colspan="4">DATOS DE USUARIO</td>
+                    <td>DATOS DE USUARIO</td>
                 </tr>
 
                 <tr>
                     <td>Correo institucional</td>
-                    <td colspan="4">${user.email}</td>
+                    <td>${user.email}</td>
                 </tr>
 
                 <tr>
                     <td>Cuenta habilitada</td>
-                    <td colspan="4">
+                    <td>
                         <platform:yesNo condition="${user.enabled}"/>
                     </td>
                 </tr>
 
                 <tr>
                     <td>Roles</td>
-                    <td colspan="4">
+                    <td>
                         <g:join in="${user.authorities.authority}"/>
                     </td>
                 </tr>

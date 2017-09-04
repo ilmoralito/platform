@@ -66,7 +66,7 @@ class UserController {
 
     def changePassword(ChangePasswordCommand command) {
         if (command.hasErrors()) {
-            respond command.errors, view: 'password'
+            render view: 'password', model: [errors: command.errors]
             return
         }
 
