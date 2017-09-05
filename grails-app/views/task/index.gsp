@@ -4,6 +4,10 @@
     </head>
 
     <content tag="main">
+        <h4>
+            <g:link resource="ticket" action="resume" id="${ticket.id}" method="GET">${ticket.subject}</g:link>
+        </h4>
+
         <g:if test="${ticket.status != 'closed'}">
             <g:form resource="ticket/task" action="save" params="[ticketId: params.ticketId]" method="POST" autocomplete="off">
                 <g:render template="/task/form"/>
@@ -101,10 +105,6 @@
                     <button type="submit" class="btn btn-primary btn-block">Asignar</button>
                 </div>
             </g:form>
-        </g:if>
-
-        <g:if test="${ticket.status == 'closed'}">
-            <g:link resource="ticket" action="resume" id="${ticket.id}" method="GET">Mostrar resumen</g:link>
         </g:if>
 
         <platform:attendedByEmployeeList ticket="${ticket}"/>

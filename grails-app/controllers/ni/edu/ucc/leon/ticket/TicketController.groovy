@@ -121,7 +121,7 @@ class TicketController {
     }
 
     def resume(final Long id) {
-        respond ticketService.find(id), view: 'show'
+        respond ticketService.find(id)
     }
 
     protected void notFound(Long employeeId) {
