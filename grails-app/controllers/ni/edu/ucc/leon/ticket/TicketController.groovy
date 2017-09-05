@@ -105,11 +105,10 @@ class TicketController {
         respond ticketService.listByDevice(name), model: [summaryStatus: ticketService.summaryStatus()], view: 'tickets'
     }
 
-    def assignment(final Long id, final Long employeeId, final Long deviceId) {
-        Ticket ticket = ticketService.assignment(id, employeeId, deviceId)
+    def assignment(final Long id, final Long deviceId) {
+        Ticket ticket = ticketService.assignment(id, springSecurityService.currentUser.employee.id, deviceId)
 
         flash.message = !ticket ? 'Ticket no encontrada' : 'Ticket asignada'
-
         redirect uri: "/tickets/$id/tasks", method: 'GET'
     }
 
