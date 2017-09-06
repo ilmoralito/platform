@@ -40,6 +40,28 @@ interface ITicketService {
     List<Number> years()
 
     @Query("""
+        SELECT 
+            new map (DAYNAME(t.dateCreated) AS dayofweek, COUNT(*) AS count)
+        FROM
+            ${Ticket t}
+        GROUP BY 1
+        ORDER BY 2 DESC
+    """)
+    List<Map> summaryPerDay()
+
+    @Query("""
+        SELECT 
+            new map (DAYNAME(t.dateCreated) AS dayofweek, COUNT(*) AS count)
+        FROM
+            ${Ticket t}
+        WHERE
+            YEAR(t.dateCreated) = $year
+        GROUP BY 1
+        ORDER BY 2 DESC
+    """)
+    List<Map> summaryPerDayInYear(final Integer year)
+
+    @Query("""
         SELECT
             new map (MONTHNAME(t.dateCreated) AS monthName, COUNT(*) AS count)
         FROM

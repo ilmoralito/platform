@@ -77,6 +77,8 @@ class UrlMappings {
             get "/devices/$year" (controller: 'report', action: 'devicesInYear')
             get '/state' (controller: 'report', action: 'state')
             get "/state/$year" (controller: 'report', action: 'stateInYear')
+            get '/day' (controller: 'report', action: 'day')
+            get "/dayInYear" (controller: 'report', action: 'dayInYear')
             get "/export/$monthName"(controller: 'report', action: 'export')
             get "/export/$year/$monthName"(controller: 'report', action: 'export')
         }

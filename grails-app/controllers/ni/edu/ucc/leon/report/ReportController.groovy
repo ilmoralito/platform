@@ -42,6 +42,14 @@ class ReportController {
         render view: 'state', model: [results: ticketService.stateInYear(year), yearListWidget: createYearListWidget('state', 'stateInYear')]
     }
 
+    def day() {
+        [results: ticketService.summaryPerDay(), yearListWidget: createYearListWidget('day', 'dayInYear')]
+    }
+
+    def dayInYear(final Integer year) {
+        render view: 'day', model: [results: ticketService.summaryPerDayInYear(year), yearListWidget: createYearListWidget('day', 'dayInYear')]
+    }
+
     def export(final String monthName, final Integer year) {
         final List<Map> results = year ? ticketService.resumeInYearAndMonth(year, monthName) : ticketService.resumeInMonth(monthName)
         List<Map> list = []
