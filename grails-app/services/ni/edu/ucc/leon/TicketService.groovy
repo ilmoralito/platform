@@ -46,18 +46,18 @@ interface ITicketService {
             ${Ticket t}
         GROUP BY 1
         ORDER BY FIELD(1,
-                'January',
-                'February',
-                'March',
-                'April',
-                'May',
-                'June',
-                'July',
-                'August',
-                'September',
-                'October',
+                'December',
                 'November',
-                'December')
+                'October',
+                'September',
+                'August',
+                'July',
+                'June',
+                'May',
+                'April',
+                'March',
+                'February',
+                'January')
     """)
     List<Map<String, Object>> resume()
 
@@ -70,18 +70,18 @@ interface ITicketService {
             YEAR(t.dateCreated) = $year
         GROUP BY 1
         ORDER BY FIELD(1,
-                'January',
-                'February',
-                'March',
-                'April',
-                'May',
-                'June',
-                'July',
-                'August',
-                'September',
-                'October',
+                'December',
                 'November',
-                'December')
+                'October',
+                'September',
+                'August',
+                'July',
+                'June',
+                'May',
+                'April',
+                'March',
+                'February',
+                'January')
     """)
     List<Map<String, Object>> resumeInYear(final Integer year)
 
