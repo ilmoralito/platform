@@ -12,11 +12,8 @@
                 <colgroup>
                     <col span="1" style="width: 20%;">
                     <col span="1" style="width: 40%;">
-                    <col span="1" style="width: 5%;">
-                    <col span="1" style="width: 5%;">
                     <col span="1" style="width: 15%;">
-                    <col span="1" style="width: 5%;">
-                    <col span="1" style="width: 5%;">
+                    <col span="1" style="width: 20%;">
                     <col span="1" style="width: 5%;">
                 </colgroup>
 
@@ -25,10 +22,7 @@
                         <th>Solicitante</th>
                         <th>Asunto</th>
                         <th>Estado</th>
-                        <th>Tipo</th>
                         <th>Recurso</th>
-                        <th>Creado</th>
-                        <th>Modificado</th>
                         <th>Tareas</th>
                     </tr>
                 </thead>
@@ -37,16 +31,13 @@
                     <g:each in="${results}" var="result">
                         <tr>
                             <td style="vertical-align: middle;">${result.fullName}</td>
-                            <td style="vertical-align: middle;">${result.issue}</td>
+                            <td style="vertical-align: middle;">
+                                <g:link controller="ticket" action="resume" id="${result.id}">${result.issue}</g:link>
+                            </td>
                             <td style="vertical-align: middle;">
                                 <platform:ticketStatus status="${result.status}"/>
                             </td>
-                            <td style="vertical-align: middle;">
-                                <platform:ticketScheduled scheduled="${result.scheduled}"/>
-                            </td>
                             <td style="vertical-align: middle;">${result.device}</td>
-                            <td style="vertical-align: middle;">${result.dateCreated}</td>
-                            <td style="vertical-align: middle;">${result.lastUpdated}</td>
                             <td class="text-center" style="vertical-align: middle;">${result.tasks}</td>
                         </tr>
                     </g:each>

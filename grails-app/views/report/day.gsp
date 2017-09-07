@@ -22,6 +22,10 @@
                             <td>${result.count}</td>
                         </tr>
                     </g:each>
+                    <tr>
+                        <td>TOTAL</td>
+                        <td>${results.count.sum()}</td>
+                    </tr>
                 </tbody>
             </table>
         </g:if>

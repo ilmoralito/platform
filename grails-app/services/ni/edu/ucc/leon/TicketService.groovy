@@ -368,6 +368,7 @@ abstract class TicketService implements ITicketService {
         final session = sessionFactory.currentSession
         final String query = """
             SELECT
+                t.id AS id,
                 e.full_name AS fullName,
                 t.subject AS issue,
                 CASE t.status
@@ -416,6 +417,7 @@ abstract class TicketService implements ITicketService {
         final session = sessionFactory.currentSession
         final String query = """
             SELECT
+                t.id AS id,
                 e.full_name AS fullName,
                 t.subject AS issue,
                 CASE t.status

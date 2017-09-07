@@ -36,6 +36,13 @@
                             <td>${result.total}</td>
                         </tr>
                     </g:each>
+                    <tr>
+                        <td>TOTAL</td>
+                        <td>${results.open.sum()}</td>
+                        <td>${results.pending.sum()}</td>
+                        <td>${results.closed.sum()}</td>
+                        <td>${results.total.sum()}</td>
+                    </tr>
                 </tbody>
             </table>
         </g:if>
