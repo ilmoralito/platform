@@ -51,7 +51,8 @@ class UrlMappings {
         // List all open or in progress tickets
         get '/tickets'(controller: 'ticket', action: 'tickets')
         get "/tickets/filter/$status"(controller: 'ticket', action: 'filter')
-        get "/tickets/filterByEmployee/$employeeId"(controller: 'ticket', action: 'filterByEmployee')
+        get "/tickets/filter/employee/$employeeId"(controller: 'ticket', action: 'filterByEmployee')
+        get "/tickets/filter/device/$name"(controller: 'ticket', action: 'filterByDevice')
         post "/tickets/$id/assignment"(controller: 'ticket', action: 'assignment')
         post "/tickets/$id/swap/$status"(controller: 'ticket', action: 'swap')
         get "/tickets/$id/resume/"(controller: 'ticket', action: 'resume')

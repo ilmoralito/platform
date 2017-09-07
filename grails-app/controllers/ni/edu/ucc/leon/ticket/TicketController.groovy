@@ -18,7 +18,7 @@ class TicketController {
         swap: 'POST'
     ]
 
-    def index(Long employeeId) {
+    def index(final Long employeeId) {
         respond ticketService.listByStatusAndEmployee('open', employeeId)
     }
 
@@ -81,11 +81,11 @@ class TicketController {
         [yearList: ticketService.yearListByEmployee(employeeId)]
     }
 
-    def summaryInYear(Long employeeId, Integer year) {
+    def summaryInYear(final Long employeeId, final Integer year) {
         [summaryList: ticketService.employeeSummaryInYear(employeeId, year)]
     }
 
-    def summaryInYearAndMonth(Long employeeId, Integer year, Integer month) {
+    def summaryInYearAndMonth(final Long employeeId, final Integer year, final Integer month) {
         [ticketList: ticketService.employeeSummaryInYearAndMonth(employeeId, year, month)]
     }
 
@@ -93,15 +93,15 @@ class TicketController {
         respond ticketService.findAllByStatusInList(['open', 'pending']), model: [summaryStatus: ticketService.summaryStatus()]
     }
 
-    def filter(String status) {
+    def filter(final String status) {
         respond ticketService.listByStatus(status), model: [summaryStatus: ticketService.summaryStatus()], view: 'tickets'
     }
 
-    def filterByEmployee(Long employeeId) {
+    def filterByEmployee(final Long employeeId) {
         respond ticketService.listByEmployee(employeeId), model: [summaryStatus: ticketService.summaryStatus()], view: 'tickets'
     }
 
-    def filterByDevice(String name) {
+    def filterByDevice(final String name) {
         respond ticketService.listByDevice(name), model: [summaryStatus: ticketService.summaryStatus()], view: 'tickets'
     }
 
@@ -124,7 +124,7 @@ class TicketController {
         respond ticketService.find(id)
     }
 
-    protected void notFound(Long employeeId) {
+    protected void notFound(final Long employeeId) {
         flash.message = 'Ticket not found'
         redirect uri: "/employees/$employeeId/tickets", method: 'GET', status: NOT_FOUND
     }
