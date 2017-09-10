@@ -80,28 +80,6 @@ class PlatformTagLib {
         }
     }
 
-    def bookmarkListCount = { attrs, body ->
-        Long employeeId = springSecurityService.currentUser.employee.id
-        Number count = ticketBookmarkService.countByEmployee(employeeId)
-
-        if (count) {
-            out << body()
-        }
-    }
-
-    def bookmarkList = {
-        Long employeeId = springSecurityService.currentUser.employee.id
-        List<Bookmark> bookmarkList = ticketBookmarkService.listByEmployee(employeeId, [max: 5])
-
-        for(Bookmark bookmark in bookmarkList) {
-            out << """
-                <li>
-                    <a href='/tickets/$bookmark.ticket.id/tasks'>${bookmark.ticket.subject}</a>
-                </li>
-            """
-        }
-    }
-
     def areThereAnyBirthdayPartiesToday = { attrs, body ->
         if (birthdayService.listBirthdayOfTheDay()) {
             out << body()

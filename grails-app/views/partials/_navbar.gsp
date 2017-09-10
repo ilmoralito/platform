@@ -36,20 +36,6 @@
                                     </li>
                                 </ul>
                             </li>
-
-                            <platform:bookmarkListCount>
-                                <li class="dropdown ${controllerName == 'bookmark' ? 'active' : ''}">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Marcadores</a>
-
-                                    <ul class="dropdown-menu">
-                                        <platform:bookmarkList/>
-                                        <li role="separator" class="divider"></li>
-                                        <li class="${controllerName == 'bookmark' ? 'active' : ''}">
-                                            <a href="/employees/${springSecurityService.currentUser.employee.id}/bookmarks">Lista de marcadores</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </platform:bookmarkListCount>
                         </sec:ifAllGranted>
 
                         <li class="dropdown">

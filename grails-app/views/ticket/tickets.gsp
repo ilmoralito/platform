@@ -1,18 +1,41 @@
+<g:set var="springSecurityService" bean="springSecurityService" scope="page"/>
+
 <g:applyLayout name="twoColumns">
     <head>
         <title>Tickets</title>
     </head>
 
     <content tag="main">
-        <div class="btn-group" role="group" style="margin-bottom: 15px;">
-            <g:link resource="ticket" action="filter" params="[status: 'open']" method="GET" class="btn btn-default ${params.status == 'open' ? 'active' : ''}">
-                Abiertos ${summaryStatus.open}
-            </g:link>
-            <g:link resource="ticket" action="filter" params="[status: 'pending']" method="GET" class="btn btn-default ${params.status == 'pending' ? 'active' : ''}">
-                En proceso ${summaryStatus.pending}
-            </g:link>
-            <g:link resource="ticket" action="filter" params="[status: 'closed']" method="GET" class="btn btn-default ${params.status == 'closed' ? 'active' : ''}">
-                Cerradas ${summaryStatus.closed}
+        <div style="margin-bottom: 15px;">
+            <div class="btn-group" role="group">
+                <g:link
+                    resource="ticket"
+                    action="filter"
+                    params="[status: 'open']"
+                    method="GET"
+                    class="btn btn-default ${params.status == 'open' || (!params.status && controllerName != 'ticketBookmark') ? 'active' : ''}">
+                    Abiertos ${summaryStatus.open}
+                </g:link>
+                <g:link
+                    resource="ticket"
+                    action="filter"
+                    params="[status: 'pending']"
+                    method="GET"
+                    class="btn btn-default ${params.status == 'pending' || (!params.status && controllerName != 'ticketBookmark') ? 'active' : ''}">
+                    En proceso ${summaryStatus.pending}
+                </g:link>
+                <g:link
+                    resource="ticket"
+                    action="filter"
+                    params="[status: 'closed']"
+                    method="GET"
+                    class="btn btn-default ${params.status == 'closed' ? 'active' : ''}">
+                    Cerradas ${summaryStatus.closed}
+                </g:link>
+            </div>
+
+            <g:link controller="ticketBookmark" action="index" class="btn btn-default ${controllerName == 'ticketBookmark' ? 'active' : ''}">
+                <span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span> Marcadores
             </g:link>
         </div>
 
@@ -41,7 +64,7 @@
                 </thead>
                 <tbody>
                     <g:each in="${ticketList}" var="ticket">
-                        <tr>
+                        <tr id="ticket_${ticket.id}">
                             <td style="vertical-align: middle;">
                                 <platform:ticketStatus status="${ticket.status}"/>
                             </td>
@@ -79,14 +102,10 @@
                                 </g:link>
                             </td>
                             <td style="vertical-align: middle;" class="text-center">
-                                <a href="#" class="addBookmarkTrigger">
-                                    <span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
-                                </a>
-
-                                <g:set var="springSecurityService" bean="springSecurityService"/>
-                                <g:form resource="employee/bookmark" action="save" params="[employeeId: springSecurityService.currentUser.employee.id]" method="POST" class="hide">
-                                    <g:hiddenField name="ticketId" value="${ticket.id}"/>
-                                </g:form>
+                                <ticketBookmark:bookmark
+                                    ticketId="${ticket.id}"
+                                    employeeId="${springSecurityService.currentUser.employee.id}"
+                                    controllerName="${controllerName}"/>
                             </td>
                         </tr>
                     </g:each>

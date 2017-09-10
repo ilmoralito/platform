@@ -1,13 +1,13 @@
-package ni.edu.ucc.leon.bookmark
+package ni.edu.ucc.leon
 
 import grails.test.mixin.TestFor
 import spock.lang.Specification
 
 /**
- * See the API for {@link grails.test.mixin.web.ControllerUnitTestMixin} for usage instructions
+ * See the API for {@link grails.test.mixin.web.GroovyPageUnitTestMixin} for usage instructions
  */
-@TestFor(BookmarkController)
-class BookmarkControllerSpec extends Specification {
+@TestFor(TicketBookmarkTagLib)
+class TicketBookmarkTagLibSpec extends Specification {
 
     def setup() {
     }

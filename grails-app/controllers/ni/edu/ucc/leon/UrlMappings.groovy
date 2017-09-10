@@ -24,8 +24,6 @@ class UrlMappings {
         '/employees'(resources: 'employee', excludes: ['delete']) {
             '/updateFullName'(controller: 'employee', action: 'updateFullName', method: 'PUT')
 
-            '/bookmarks'(resources: 'bookmark', includes: ['index', 'save', 'delete'])
-
             '/employeeCoordinations'(resources: 'employeeCoordination', excludes: ['create', 'show'])
 
             '/tickets'(resources: 'ticket') {
@@ -33,6 +31,11 @@ class UrlMappings {
                     '/summary'(controller: 'ticket', action: 'summary', method: 'GET')
                 }
             }
+        }
+
+        group '/bookmarks', {
+            '/' (controller: 'ticketBookmark', action: 'index', method: 'GET')
+            '/toggle' (controller: 'ticketBookmark', action: 'toggle', method: 'POST')
         }
 
         group '/employees', {

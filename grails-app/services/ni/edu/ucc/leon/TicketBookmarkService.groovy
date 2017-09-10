@@ -1,18 +1,16 @@
 package ni.edu.ucc.leon
 
 import grails.gorm.services.Service
+import ni.edu.ucc.leon.Employee
+import ni.edu.ucc.leon.Ticket
 
 interface ITicketBookmarkService {
 
-    List<TicketBookmark> listByEmployee(Serializable employeeId, Map args)
+    TicketBookmark findByTicketAndEmployee(final Serializable ticketId, final Serializable employeeId)
 
-    TicketBookmark save(Serializable employeeId, Serializable ticketId)
+    TicketBookmark toggle(final Serializable ticketId, final Serializable employeeId)
 
-    TicketBookmark delete(Serializable id)
-
-    Number countByEmployeeAndTicket(Serializable employeeId, Serializable ticketId)
-
-    Number countByEmployee(Serializable employeeId)
+    TicketBookmark delete(final Serializable id)
 }
 
 @Service(TicketBookmark)
@@ -21,42 +19,20 @@ abstract class TicketBookmarkService implements ITicketBookmarkService {
     TicketService ticketService
 
     @Override
-    List<TicketBookmark> listByEmployee(Serializable employeeId, Map args) {
-        Employee employee = employeeService.find(employeeId)
-
-        TicketBookmark.where { employee == employee }.list(args)
-    }
-
-    @Override
-    TicketBookmark save(Serializable employeeId, Serializable ticketId) {
-        Employee employee = employeeService.find(employeeId)
-        Ticket ticket = ticketService.find(ticketId)
-
-        if (!employee || !ticket) {
-            throw new Exception('Not needed parameters')
-        }
-
-        if (!countByEmployeeAndTicket(employeeId, ticketId)) {
-            TicketBookmark.create(employee, ticket)
-        }
-    }
-
-    @Override
-    Number countByEmployeeAndTicket(Serializable employeeId, Serializable ticketId) {
-        Employee employee = employeeService.find(employeeId)
-        Ticket ticket = ticketService.find(ticketId)
-
+    TicketBookmark findByTicketAndEmployee(final Serializable ticketId, final Serializable employeeId) {
         TicketBookmark.where {
-            employee == employee && ticket == ticket
-        }.count()
+            ticket == Ticket.load(ticketId) && employee == Employee.load(employeeId)
+        }.get()
     }
 
     @Override
-    Number countByEmployee(Serializable employeeId) {
-        Employee employee = employeeService.find(employeeId)
+    TicketBookmark toggle(final Serializable ticketId, final Serializable employeeId) {
+        TicketBookmark ticketBookmark = findByTicketAndEmployee(ticketId, employeeId)
 
-        TicketBookmark.where {
-            employee == employee
-        }.count()
+        if (!ticketBookmark) {
+            TicketBookmark.create(employeeService.find(employeeId), ticketService.find(ticketId))
+        } else {
+           delete(ticketBookmark.id)
+        }
     }
 }

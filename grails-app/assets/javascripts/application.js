@@ -13,18 +13,42 @@ $('textarea#description').each(function () {
     h(this);
 });
 
-$('.addBookmarkTrigger').on('click', function() {
-    let form = $(this).next();
-
-    form.submit();
-});
-
 $('.deleteBookmarkTrigger').on('click', function() {
     let form = $(this).next();
 
     if (confirm('¿Seguro?')) {
         form.submit();
     }
+});
+
+// Toggle bookmarks
+document.querySelectorAll('a.toggleTicketBookmark').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        const url = '/bookmarks/toggle'
+        const params = new URLSearchParams();
+
+        params.append('ticketId', this.dataset.ticketId);
+        params.append('employeeId', this.dataset.employeeId);
+
+        axios({
+            url: url,
+            method: 'post',
+            responseType: 'json',
+            data: params
+        }).then(response => {
+            const target = document.querySelector(`#glyphicon-bookmark-${this.dataset.ticketId}`);
+
+            if (this.dataset.controllerName == 'ticket') {
+                target.style.color = target.style.color ? '#337AB7' : '#DDDDDD';
+            } else {
+                document.querySelector(`#ticket_${this.dataset.ticketId}`).outerHTML = '';
+            }
+        }).catch(error => {
+            console.error(error);
+        })
+    });
 });
 
 // Change employee fullName property from profile view
@@ -137,7 +161,7 @@ $('.deleteBookmarkTrigger').on('click', function() {
 })();
 
 // TODO: find the right to display the next logic only in employee view
-(function() {
+(() => {
     const copyText = document.querySelector('#email');
     const copyButton = document.querySelector('#copy');
     const messageBox = document.querySelector('#message');
