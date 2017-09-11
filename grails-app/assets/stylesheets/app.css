@@ -40,3 +40,24 @@ textarea.vertical-only { resize: vertical; }
 .border-less > tbody > tr:first-child > td {
     border: none;
 }
+
+details {
+    margin-bottom: 10px;
+}
+
+summary {
+    display: block;
+}
+
+summary::-webkit-details-marker {
+    display: none;
+}
+
+summary::before {
+    content: '\25B6';
+    padding-right: 0.5em;
+}
+
+details[open] > summary::before {
+    content: '\25BC';
+}

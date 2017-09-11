@@ -3,20 +3,19 @@ package ni.edu.ucc.leon.ticket
 import static org.springframework.http.HttpStatus.NOT_FOUND
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.validation.ValidationException
+import ni.edu.ucc.leon.EmployeeService
 import ni.edu.ucc.leon.TicketService
+import ni.edu.ucc.leon.DeviceService
 import ni.edu.ucc.leon.Ticket
+import ni.edu.ucc.leon.Helper
 
 class TicketController {
-    SpringSecurityService springSecurityService
-    TicketService ticketService
+    @Autowired SpringSecurityService springSecurityService
+    @Autowired EmployeeService employeeService
+    @Autowired TicketService ticketService
+    @Autowired DeviceService deviceService
 
-    static allowedMethods = [
-        save: 'POST',
-        update: 'PUT',
-        delete: 'DELETE',
-        assignment: 'POST',
-        swap: 'POST'
-    ]
+    static allowedMethods = [ save: 'POST', update: 'PUT', delete: 'DELETE', assignment: 'POST', swap: 'POST' ]
 
     def index(final Long employeeId) {
         respond ticketService.listByStatusAndEmployee('open', employeeId)
@@ -47,7 +46,7 @@ class TicketController {
             notFound(employeeId)
             return
         }
-        
+
         respond ticketService.find(id), model: [ticketIssuesList: ticketService.issuesPerEmployee(employeeId)]
     }
 
@@ -93,7 +92,41 @@ class TicketController {
         respond ticketService.findAllByStatusInList(['open', 'pending']), model: [summaryStatus: ticketService.summaryStatus()]
     }
 
-    def filter(final String status) {
+    def filter() {
+        [
+            employeeList: employeeService.list(),
+            deviceList: deviceService.list(),
+            statesList: Helper.statesList,
+        ]
+    }
+
+    def applyFilter() {
+        final List<String> statesList = params.list('states')
+        final List<String> deviceList = params.list('devices')
+        final List<Long> employeeList = params.list('employees')
+
+        List<Ticket> ticketList = Ticket.createCriteria().list {
+            if (statesList) {
+                'in' 'status', statesList
+            }
+
+            if (deviceList) {
+                device {
+                    'in' 'name', deviceList
+                }
+            }
+
+            if (employeeList) {
+                employee {
+                    'in' 'id', employeeList*.toLong()
+                }
+            }
+        }
+
+        render model: [ticketList: ticketList, summaryStatus: ticketService.summaryStatus()], view: 'tickets'
+    }
+
+    def filterByStatus(final String status) {
         respond ticketService.listByStatus(status), model: [summaryStatus: ticketService.summaryStatus()], view: 'tickets'
     }
 

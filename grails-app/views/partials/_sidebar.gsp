@@ -5,7 +5,7 @@
         Tablero
     </g:link>
 
-    <g:link resource="employee/ticket" employeeId="${springSecurityService.currentUser.employee.id}" action="index" method="GET" class="list-group-item ${controllerName == 'ticket' && !(actionName in ['tickets', 'filter', 'filterByEmployee', 'filterByDevice']) ? 'active' : ''}">
+    <g:link resource="employee/ticket" employeeId="${springSecurityService.currentUser.employee.id}" action="index" method="GET" class="list-group-item ${controllerName == 'ticket' && !(actionName in ['tickets', 'filterByStatus', 'filterByEmployee', 'filterByDevice', 'filter', 'applyFilter']) ? 'active' : ''}">
         Soporte
     </g:link>
 </div>
@@ -15,7 +15,7 @@
         <g:link
             resource="ticket"
             action="tickets"
-            class="list-group-item ${controllerName == 'ticket' && actionName in ['tickets', 'filter', 'filterByEmployee', 'filterByDevice'] || controllerName == 'task' ? 'active' : ''}">
+            class="list-group-item ${controllerName == 'ticket' && actionName in ['tickets', 'filterByStatus', 'filterByEmployee', 'filterByDevice', 'filter', 'applyFilter'] || controllerName == 'task' ? 'active' : ''}">
             <span class="badge">
                 <platform:ticketsToAttend/>
             </span>

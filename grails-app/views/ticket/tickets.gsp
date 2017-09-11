@@ -10,23 +10,23 @@
             <div class="btn-group" role="group">
                 <g:link
                     resource="ticket"
-                    action="filter"
+                    action="filterByStatus"
                     params="[status: 'open']"
                     method="GET"
-                    class="btn btn-default ${params.status == 'open' || (!params.status && controllerName != 'ticketBookmark') ? 'active' : ''}">
+                    class="btn btn-default ${params.status == 'open' || (!params.status && controllerName != 'ticketBookmark' && !(actionName in ['filterByEmployee', 'filterByDevice', 'applyFilter'])) ? 'active' : ''}">
                     Abiertos ${summaryStatus.open}
                 </g:link>
                 <g:link
                     resource="ticket"
-                    action="filter"
+                    action="filterByStatus"
                     params="[status: 'pending']"
                     method="GET"
-                    class="btn btn-default ${params.status == 'pending' || (!params.status && controllerName != 'ticketBookmark') ? 'active' : ''}">
+                    class="btn btn-default ${params.status == 'pending' || (!params.status && controllerName != 'ticketBookmark' && !(actionName in ['filterByEmployee', 'filterByDevice', 'applyFilter'])) ? 'active' : ''}">
                     En proceso ${summaryStatus.pending}
                 </g:link>
                 <g:link
                     resource="ticket"
-                    action="filter"
+                    action="filterByStatus"
                     params="[status: 'closed']"
                     method="GET"
                     class="btn btn-default ${params.status == 'closed' ? 'active' : ''}">
@@ -36,6 +36,10 @@
 
             <g:link controller="ticketBookmark" action="index" class="btn btn-default ${controllerName == 'ticketBookmark' ? 'active' : ''}">
                 <span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span> Marcadores
+            </g:link>
+
+            <g:link controller="tickets" action="filter" class="btn btn-default pull-right ${actionName in ['filter', 'applyFilter'] ? 'active' : ''}">
+                <span class="glyphicon glyphicon-filter" aria-hidden="true"></span> Filtrar
             </g:link>
         </div>
 

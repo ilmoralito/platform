@@ -51,25 +51,31 @@ class UrlMappings {
         }
 
         // TICKETS
-        // List all open or in progress tickets
-        get '/tickets'(controller: 'ticket', action: 'tickets')
-        get "/tickets/filter/$status"(controller: 'ticket', action: 'filter')
-        get "/tickets/filter/employee/$employeeId"(controller: 'ticket', action: 'filterByEmployee')
-        get "/tickets/filter/device/$name"(controller: 'ticket', action: 'filterByDevice')
-        post "/tickets/$id/assignment"(controller: 'ticket', action: 'assignment')
-        post "/tickets/$id/swap/$status"(controller: 'ticket', action: 'swap')
-        get "/tickets/$id/resume/"(controller: 'ticket', action: 'resume')
+        group '/tickets', {
+            get '/'(controller: 'ticket', action: 'tickets')
 
-        // TASK
-        get "/tickets/$ticketId/tasks"(controller: 'task', action: 'index')
-        get "/tickets/$ticketId/tasks/create"(controller: 'task', action: 'create')
-        post "/tickets/$ticketId/tasks"(controller: 'task', action: 'save')
-        get "/tickets/$ticketId/tasks/$id"(controller: 'task', action: 'show')
-        get "/tickets/$ticketId/tasks/$id/edit"(controller: 'task', action: 'edit')
-        put "/tickets/$ticketId/tasks/$id"(controller: 'task', action: 'update')
-        delete "/tickets/$ticketId/tasks/$id"(controller: 'task', action: 'delete')
-        get "/tickets/$ticketId/tasks/$id/clone"(controller: 'task', action: 'clone')
-        get "/tickets/$ticketId/tasks/$id/changeState/$state"(controller: 'task', action: 'changeState')
+            get '/filter'(controller: 'ticket', action: 'filter')
+            post '/filter'(controller: 'ticket', action: 'applyFilter')
+
+            get "/status/$status"(controller: 'ticket', action: 'filterByStatus')
+            get "/employee/$employeeId"(controller: 'ticket', action: 'filterByEmployee')
+            get "/device/$name"(controller: 'ticket', action: 'filterByDevice')
+
+            post "/$id/assignment"(controller: 'ticket', action: 'assignment')
+            post "/$id/swap/$status"(controller: 'ticket', action: 'swap')
+            get "/$id/resume/"(controller: 'ticket', action: 'resume')
+
+            // TASK
+            get "/$ticketId/tasks"(controller: 'task', action: 'index')
+            get "/$ticketId/tasks/create"(controller: 'task', action: 'create')
+            post "/$ticketId/tasks"(controller: 'task', action: 'save')
+            get "/$ticketId/tasks/$id"(controller: 'task', action: 'show')
+            get "/$ticketId/tasks/$id/edit"(controller: 'task', action: 'edit')
+            put "/$ticketId/tasks/$id"(controller: 'task', action: 'update')
+            delete "/$ticketId/tasks/$id"(controller: 'task', action: 'delete')
+            get "/$ticketId/tasks/$id/clone"(controller: 'task', action: 'clone')
+            get "/$ticketId/tasks/$id/changeState/$state"(controller: 'task', action: 'changeState')
+        }
 
         // REPORTS
         group '/reports', {
