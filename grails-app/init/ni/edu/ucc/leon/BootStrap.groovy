@@ -19,45 +19,67 @@ class BootStrap {
     }
 
     private void development() {
-        Role adminRole = new Role(authority: 'ROLE_ADMIN').save(failOnError: true)
         Role userRole = new Role(authority: 'ROLE_USER').save(failOnError: true)
+        Role adminRole = new Role(authority: 'ROLE_ADMIN').save(failOnError: true)
+        Role protocolRole = new Role(authority: 'ROLE_PROTOCOL').save(failOnError: true)
+        Role assistantRole = new Role(authority: 'ROLE_ASSISTANT').save(failOnError: true)
+        Role coordinatorRole = new Role(authority: 'ROLE_COORDINATOR').save(failOnError: true)
+        Role headOfficeDelegateRole = new Role(authority: 'ROLE_HEAD_OFFICE_DELEGATE').save(failOnError: true)
+        Role academicCoordinatorRole = new Role(authority: 'ROLE_ACADEMIC_COORDINATOR').save(failOnError: true)
+        Role administrativeCoordinatorRole = new Role(authority: 'ROLE_ADMINISTRATIVE_COORDINATOR').save(failOnError: true)
 
-        User adminUser = new User(
-            email: 'admin.user@ucc.edu.ni',
-            password: 'password'
-        ).save(failOnError: true)
+        User userUser = new User(email: 'user.user@ucc.edu.ni').save(failOnError: true)
+        User adminUser = new User(email: 'admin.user@ucc.edu.ni').save(failOnError: true)
+        User anotherAdminUser = new User(email: 'anotheradmin.user@ucc.edu.ni').save(failOnError: true)
 
-        User anotherAdminUser = new User(
-            email: 'anotheradmin.user@ucc.edu.ni',
-            password: 'password'
-        ).save(failOnError: true)
-
-        User userUser = new User(
-            email: 'user.user@ucc.edu.ni',
-            password: 'password'
-        ).save(failOnError: true)
+        User protocolUser = new User(email: 'protocol.user@ucc.edu.ni').save(failOnError: true)
+        User coordinatorUser = new User(email: 'coordinator.user@ucc.edu.ni').save(failOnError: true)
+        User assistant1User = new User(email: 'assistant1.user@ucc.edu.ni').save(failOnError: true)
+        User assistant2User = new User(email: 'assistant2.user@ucc.edu.ni').save(failOnError: true)
+        User headOfficeDelegateUser = new User(email: 'headOfficeDelegate.user@ucc.edu.ni').save(failOnError: true)
+        User academicCoordinatorUser = new User(email: 'academicCoordinator.user@ucc.edu.ni').save(failOnError: true)
+        User administrativeCoordinatorUser = new User(email: 'administrativeCoordinator.user@ucc.edu.ni').save(failOnError: true)
 
         User employee5UserAccount = new User(email: 'employee.5@ucc.edu.ni').save failOnError: true
-
         User employee6UserAccount = new User(email: 'employee.6@ucc.edu.ni').save failOnError: true
-
         User employee7UserAccount = new User(email: 'employee.7@ucc.edu.ni').save failOnError: true
 
+        UserRole.create userUser, userRole
         UserRole.create adminUser, adminRole
         UserRole.create anotherAdminUser, adminRole
-        UserRole.create userUser, userRole
         UserRole.create employee5UserAccount, userRole
         UserRole.create employee6UserAccount, userRole
         UserRole.create employee7UserAccount, userRole
+
+        UserRole.create protocolUser, userRole
+        UserRole.create protocolUser, protocolRole
+
+        UserRole.create assistant1User, userRole
+        UserRole.create assistant1User, assistantRole
+
+        UserRole.create assistant2User, userRole
+        UserRole.create assistant2User, assistantRole
+
+        UserRole.create coordinatorUser, userRole
+        UserRole.create coordinatorUser, coordinatorRole
+
+        UserRole.create headOfficeDelegateUser, userRole
+        UserRole.create headOfficeDelegateUser, headOfficeDelegateRole
+
+        UserRole.create academicCoordinatorUser, userRole
+        UserRole.create academicCoordinatorUser, academicCoordinatorRole
+
+        UserRole.create administrativeCoordinatorUser, userRole
+        UserRole.create administrativeCoordinatorUser, administrativeCoordinatorRole
 
         UserRole.withSession {
             it.flush()
             it.clear()
         }
 
-        assert User.count() == 6
-        assert Role.count() == 2
-        assert UserRole.count() == 6
+        assert User.count() == 13
+        assert Role.count() == 8
+        assert UserRole.count() == 20
 
         // EMPLOYEES
         Employee employee1 = new Employee(
@@ -102,7 +124,49 @@ class BootStrap {
             user: employee7UserAccount
         ).save(failOnError: true)
 
-        assert Employee.count() == 7
+        Employee employee8 = new Employee(
+            fullName: 'Employee Eight',
+            identityCard: '281-290289-0001W',
+            user: protocolUser
+        ).save(failOnError: true)
+
+        Employee employee9 = new Employee(
+            fullName: 'Employee Nine',
+            identityCard: '281-290285-0001W',
+            user: coordinatorUser
+        ).save(failOnError: true)
+
+        Employee employee10 = new Employee(
+            fullName: 'Employee Ten',
+            identityCard: '281-290252-0001W',
+            user: assistant1User
+        ).save(failOnError: true)
+
+        Employee employee11 = new Employee(
+            fullName: 'Employee Eleven',
+            identityCard: '281-290251-0001W',
+            user: assistant2User
+        ).save(failOnError: true)
+
+        Employee employee12 = new Employee(
+            fullName: 'Employee Twelve',
+            identityCard: '281-290299-0001W',
+            user: headOfficeDelegateUser
+        ).save(failOnError: true)
+
+        Employee employee13 = new Employee(
+            fullName: 'Employee Thirteen',
+            identityCard: '281-290552-0001W',
+            user: academicCoordinatorUser
+        ).save(failOnError: true)
+
+        Employee employee14 = new Employee(
+            fullName: 'Employee Fourteen',
+            identityCard: '281-291252-0001W',
+            user: administrativeCoordinatorUser
+        ).save(failOnError: true)
+
+        assert Employee.count() == 14
 
         // COORDINATIONS
         Coordination warehouse = new Coordination(
@@ -110,21 +174,21 @@ class BootStrap {
             extensionNumber: '113',
             copyFee: 100,
             area: 'administrative'
-        ).save failOnError: true
+        ).save(failOnError: true)
 
         Coordination protocol = new Coordination(
             name: 'Protocolo',
-            extensionNumber: '106',
+            extensionNumber: '216',
             copyFee: 200,
             area: 'administrative'
-        ).save failOnError: true
+        ).save(failOnError: true)
 
         Coordination technicalSupport = new Coordination(
             name: 'Soporte tecnico',
             extensionNumber: '129',
             copyFee: 50,
             area: 'administrative'
-        ).save failOnError: true
+        ).save(failOnError: true)
 
         Coordination economicSciences = new Coordination(
             name: 'Ciencias Economicas',
@@ -132,30 +196,51 @@ class BootStrap {
             extensionNumber: '130',
             copyFee: 650,
             area: 'school'
-        ).save failOnError: true
+        ).save(failOnError: true)
 
         Coordination continuingEducation = new Coordination(
             name: 'Educacion continua',
             extensionNumber: '112',
             copyFee: 220,
             area: 'academic'
-        ).save failOnError: true
+        ).save(failOnError: true)
 
         Coordination studiesByMeeting = new Coordination(
             name: 'Estudios por encuentro',
             extensionNumber: '112',
             copyFee: 200,
             area: 'academic'
-        ).save failOnError: true
+        ).save(failOnError: true)
 
         Coordination projects = new Coordination(
             name: 'Proyectos',
             extensionNumber: '112',
             copyFee: 100,
             area: 'academic'
-        ).save failOnError: true
+        ).save(failOnError: true)
 
-        assert Coordination.count() == 7
+        Coordination headquartersDelegation = new Coordination(
+            name: 'Delegacion de la sede',
+            extensionNumber: '127',
+            copyFee: 500,
+            area: 'administrative'
+        ).save(failOnError: true)
+
+        Coordination academicDirection = new Coordination(
+            name: 'Direccion academica',
+            extensionNumber: '120',
+            copyFee: 500,
+            area: 'academic'
+        ).save(failOnError: true)
+
+        Coordination administrativeDirection = new Coordination(
+            name: 'Direccion administrativa',
+            extensionNumber: '111',
+            copyFee: 400,
+            area: 'administrative'
+        ).save(failOnError: true)
+
+        assert Coordination.count() == 10
 
         // CLASSROOMS
         Classroom C109A = new Classroom(
@@ -267,7 +352,56 @@ class BootStrap {
             jobTitle: 'Colaborador'
         ).save failOnError: true
 
-        assert EmployeeCoordination.count() == 10
+        new EmployeeCoordination(
+            employee: employee8,
+            coordination: protocol,
+            position: 'manager',
+            jobTitle: 'Coordinador de protocolo'
+        ).save(failOnError: true)
+
+        new EmployeeCoordination(
+            employee: employee9,
+            coordination: economicSciences,
+            position: 'manager',
+            jobTitle: 'Coordinador de ciencias economicas'
+        ).save(failOnError: true)
+
+        new EmployeeCoordination(
+            employee: employee10,
+            coordination: economicSciences,
+            position: 'assistant',
+            jobTitle: 'Asistente de ciencias economicas'
+        ).save(failOnError: true)
+
+        new EmployeeCoordination(
+            employee: employee11,
+            coordination: economicSciences,
+            position: 'assistant',
+            jobTitle: 'Asistente de ciencias economicas'
+        ).save(failOnError: true)
+
+        new EmployeeCoordination(
+            employee: employee12,
+            coordination: headquartersDelegation,
+            position: 'manager',
+            jobTitle: 'Delegada de la sede'
+        ).save(failOnError: true)
+
+        new EmployeeCoordination(
+            employee: employee13,
+            coordination: academicDirection,
+            position: 'manager',
+            jobTitle: 'Director academico'
+        ).save(failOnError: true)
+
+        new EmployeeCoordination(
+            employee: employee14,
+            coordination: administrativeDirection,
+            position: 'manager',
+            jobTitle: 'Director administrativo'
+        ).save(failOnError: true)
+
+        assert EmployeeCoordination.count() == 17
 
         // DEVICES
         List<String> deviceList = ['Network', 'Display', 'Keyboard', 'Mouse', 'UPS', 'Printer', 'Scanner']
