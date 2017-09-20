@@ -129,7 +129,7 @@ environments:
 
         dataSource:
             # logSql: true
-            dbCreate: create-drop
+            dbCreate: none
             url: jdbc:mysql://127.0.0.1:3306/platform?autoReconnect=true&useSSL=false
     test:
         dataSource:
