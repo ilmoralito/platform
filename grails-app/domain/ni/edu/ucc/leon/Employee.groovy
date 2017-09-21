@@ -29,7 +29,7 @@ class Employee {
         version false
         table 'employees'
         sort dateCreated: 'desc'
-        enabled defaultValue: "1"
+        enabled defaultValue: true
         contract defaultValue: "'permanent'"
     }
 }

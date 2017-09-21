@@ -24,7 +24,7 @@ class Classroom {
         table 'classrooms'
         version false
         sort 'code'
-        wifi defaultValue: "0"
-        airConditioned defaultValue: "false"
+        wifi defaultValue: false
+        airConditioned defaultValue: false
     }
 }

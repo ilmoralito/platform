@@ -30,7 +30,7 @@ class Ticket {
         sort dateCreated: 'desc'
         observation type: 'text'
         status defaultValue: "'open'"
-        scheduled defaultValue: "0"
+        scheduled defaultValue: false
         tasks sort: 'dateCreated', order: 'desc'
         ticketAttendedBy cascade: 'all-delete-orphan'
         applicantCoordinations cascade: 'all-delete-orphan'

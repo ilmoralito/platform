@@ -24,9 +24,9 @@ class Datashow {
         version false
         table 'datashows'
         sort code: 'asc'
-        hdmi defaultValue: "0"
-        wifi defaultValue: "0"
-        ethernet defaultValue: "0"
-        enabled defaultValue: "1"
+        hdmi defaultValue: false
+        wifi defaultValue: false
+        ethernet defaultValue: false
+        enabled defaultValue: true
     }
 }
