@@ -50,7 +50,7 @@
                 </tr>
 
                 <tr>
-                    <td>DATOS DE USUARIO</td>
+                    <td colspan="2">DATOS DE USUARIO</td>
                 </tr>
 
                 <tr>
