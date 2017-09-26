@@ -6,7 +6,7 @@
     </g:link>
 
     <sec:ifAnyGranted roles='ROLE_PROTOCOL, ROLE_ASSISTANT, ROLE_COORDINATOR, ROLE_HEAD_OFFICE_DELEGATE, ROLE_ACADEMIC_COORDINATOR, ROLE_ADMINISTRATIVE_COORDINATOR'>
-        <g:link method="GET" class="list-group-item ${controllerName == 'activity' ? 'active' : ''}">
+        <g:link resource="employee/activity" employeeId="${springSecurityService.currentUser.employee.id}" action="index" method="GET" class="list-group-item ${controllerName == 'activity' ? 'active' : ''}">
             Actividades
         </g:link>
     </sec:ifAnyGranted>
