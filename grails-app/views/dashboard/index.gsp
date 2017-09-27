@@ -24,12 +24,16 @@
                             <tbody>
                                 <tr>
                                     <td>Abiertos</td>
-                                    <td class="text-center">${summaryStatus.open ?: 0}</td>
+                                    <td class="text-center">
+                                        <ticket:filterLink status="open" quantity="${summaryStatus.open}"/>
+                                    </td>
                                 </tr>
 
                                 <tr>
                                     <td>En progreso</td>
-                                    <td class="text-center">${summaryStatus.pending ?: 0}</td>
+                                    <td class="text-center">
+                                        <ticket:filterLink status="pending" quantity="${summaryStatus.pending}"/>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
