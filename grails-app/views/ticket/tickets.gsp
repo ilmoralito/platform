@@ -8,30 +8,9 @@
     <content tag="main">
         <div style="margin-bottom: 15px;">
             <div class="btn-group" role="group">
-                <g:link
-                    resource="ticket"
-                    action="filterByStatus"
-                    params="[status: 'open']"
-                    method="GET"
-                    class="btn btn-default ${params.status == 'open' || (!params.status && controllerName != 'ticketBookmark' && !(actionName in ['filterByEmployee', 'filterByDevice', 'applyFilter'])) ? 'active' : ''}">
-                    Abiertos ${summaryStatus.open}
-                </g:link>
-                <g:link
-                    resource="ticket"
-                    action="filterByStatus"
-                    params="[status: 'pending']"
-                    method="GET"
-                    class="btn btn-default ${params.status == 'pending' || (!params.status && controllerName != 'ticketBookmark' && !(actionName in ['filterByEmployee', 'filterByDevice', 'applyFilter'])) ? 'active' : ''}">
-                    En proceso ${summaryStatus.pending}
-                </g:link>
-                <g:link
-                    resource="ticket"
-                    action="filterByStatus"
-                    params="[status: 'closed']"
-                    method="GET"
-                    class="btn btn-default ${params.status == 'closed' ? 'active' : ''}">
-                    Cerradas ${summaryStatus.closed}
-                </g:link>
+                <ticket:filterButton status="open" quantity="${summaryStatus.open}"/>
+                <ticket:filterButton status="pending" quantity="${summaryStatus.pending}"/>
+                <ticket:filterButton status="closed" quantity="${summaryStatus.closed}"/>
             </div>
 
             <g:link controller="ticketBookmark" action="index" class="btn btn-default ${controllerName == 'ticketBookmark' ? 'active' : ''}">
