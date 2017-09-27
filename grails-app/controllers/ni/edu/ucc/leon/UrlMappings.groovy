@@ -31,6 +31,10 @@ class UrlMappings {
                     '/summary'(controller: 'ticket', action: 'summary', method: 'GET')
                 }
             }
+
+            '/activities'(resources: 'activity') {
+                '/observations'(resources: 'observation')
+            }
         }
 
         group '/bookmarks', {

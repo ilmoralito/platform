@@ -463,6 +463,27 @@ class BootStrap {
         }
 
         assert Device.count() == deviceList.size()
+
+        // ACTIVITIES
+        if (!AcademicActivity.count()) {
+            AcademicActivity academicActivity1 = new AcademicActivity(
+                name: 'Lorem ipsum dolor sit amet',
+                organizedBy: economicSciences,
+                employee: employee10
+            ).save(failOnError: true)
+
+            AcademicActivity academicActivity2 = new AcademicActivity(
+                name: 'Lorem ipsum dolor sit amet',
+                organizedBy: economicSciences,
+                employee: employee10
+            ).save(failOnError: true)
+
+            AcademicActivity academicActivity3 = new AcademicActivity(
+                name: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit',
+                organizedBy: economicSciences,
+                employee: employee10
+            ).save(failOnError: true)
+        }
     }
 
     private void production() {

@@ -4,7 +4,6 @@ class Activity {
 
     String name
     String state = 'created'
-    Employee createdBy
     Coordination organizedBy
     Employee authorizedBy
     Date authorizationDate
@@ -13,7 +12,9 @@ class Activity {
 
     static constraints = {
         name blank: false
-        state inList: ['created', 'confirmed', 'approved', 'authorized', 'canceled'], maxSize: 100
+        state inList: ['created', 'notified', 'confirmed', 'approved', 'authorized', 'canceled'], maxSize: 100
+        authorizedBy nullable: true
+        authorizationDate nullable: true
     }
 
     static belongsTo = [employee: Employee]
@@ -23,6 +24,8 @@ class Activity {
     static mapping = {
         version false
         table 'activities'
+        sort dateCreated: 'desc'
         state defaultValue: "'created'"
+        observations cascade: 'all-delete-orphan'
     }
 }
