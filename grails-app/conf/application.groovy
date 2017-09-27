@@ -78,7 +78,6 @@ grails {
                 [pattern: '/tickets/status/*',                  access: ['ROLE_ADMIN']],
                 [pattern: '/tickets/employee/*',                access: ['ROLE_ADMIN']],
                 [pattern: '/tickets/device/*',                  access: ['ROLE_ADMIN']],
-                [pattern: '/tickets',                           access: ['ROLE_ADMIN', 'ROLE_USER']],
                 [pattern: '/tickets/create',                    access: ['ROLE_ADMIN', 'ROLE_USER']],
                 [pattern: '/tickets/*',                         access: ['ROLE_ADMIN', 'ROLE_USER']],
                 [pattern: '/tickets/*/edit',                    access: ['ROLE_ADMIN', 'ROLE_USER']],
