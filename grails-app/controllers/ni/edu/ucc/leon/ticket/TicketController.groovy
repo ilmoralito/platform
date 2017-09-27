@@ -94,7 +94,9 @@ class TicketController {
 
     def filter() {
         [
-            employeeList: employeeService.list(),
+            employeeList: employeeService.list().sort { a, b ->
+                a.fullName <=> b.fullName
+            },
             deviceList: deviceService.list(),
             statesList: Helper.statesList,
         ]
