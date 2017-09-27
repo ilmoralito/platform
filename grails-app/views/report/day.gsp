@@ -7,7 +7,7 @@
         <g:render template="nav"/>
 
         <g:if test="${results}">
-            <table class="table tabel-hover">
+            <table class="table table-hover">
                 <thead>
                     <tr>
                         <th>Dia</th>
