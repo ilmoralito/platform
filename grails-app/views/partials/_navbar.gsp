@@ -20,10 +20,6 @@
             <div class="collapse navbar-collapse" id="nami">
                 <ul class="nav navbar-nav navbar-right">
                     <sec:ifLoggedIn>
-                        <li class="${controllerName == 'dashboard' ? 'active' : ''}">
-                            <a href="/dashboard">Tablero</a>
-                        </li>
-
                         <sec:ifAllGranted roles='ROLE_ADMIN'>
                             <li class="dropdown ${controllerName == 'report' ? 'active' : ''}">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reportes</a>
