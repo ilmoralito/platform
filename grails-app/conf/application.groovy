@@ -52,6 +52,9 @@ grails {
                 // ACTIVITY
                 [pattern: '/employees/*/activities/**',         access: ['ROLE_PROTOCOL', 'ROLE_ASSISTANT', 'ROLE_COORDINATOR', 'ROLE_HEAD_OFFICE_DELEGATE', 'ROLE_ACADEMIC_COORDINATOR', 'ROLE_ADMINISTRATIVE_COORDINATOR']],
 
+                // COLOR
+                [pattern: '/colors/**',                         access: ['ROLE_PROTOCOL']],
+
                 // EMPLOYEE
                 [pattern: '/employees/*/tickets/**',            access: ['ROLE_ADMIN', 'ROLE_USER']],
                 [pattern: '/employees/*/updateFullName',        access: ['ROLE_ADMIN', 'ROLE_USER']],

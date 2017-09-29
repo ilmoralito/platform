@@ -13,6 +13,8 @@ class UrlMappings {
 
         '/careers'(resources: 'career')
 
+        '/colors'(resources: 'color', excludes: ['create'])
+
         '/devices'(resources: 'device')
 
         '/holidays'(resources: 'holiday')

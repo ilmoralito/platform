@@ -5,6 +5,10 @@
         Tablero
     </g:link>
 
+    <sec:ifAllGranted roles='ROLE_PROTOCOL'>
+        <g:link resource="color" action="index" method="GET" class="list-group-item ${controllerName == 'color' ? 'active' : ''}">Colores</g:link>
+    </sec:ifAllGranted>
+
     <sec:ifAnyGranted roles='ROLE_PROTOCOL, ROLE_ASSISTANT, ROLE_COORDINATOR, ROLE_HEAD_OFFICE_DELEGATE, ROLE_ACADEMIC_COORDINATOR, ROLE_ADMINISTRATIVE_COORDINATOR'>
         <g:link resource="employee/activity" employeeId="${springSecurityService.currentUser.employee.id}" action="index" method="GET" class="list-group-item ${controllerName == 'activity' ? 'active' : ''}">
             Actividades
