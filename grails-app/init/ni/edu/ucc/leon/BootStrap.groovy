@@ -295,8 +295,6 @@ class BootStrap {
             area: 'administrative'
         ).save(failOnError: true)
 
-        assert Coordination.count() == 10
-
         // EMPLOYEE COORDINATIONS
         if (!EmployeeCoordination.exists(employee1, warehouse)) {
             new EmployeeCoordination(

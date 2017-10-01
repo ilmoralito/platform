@@ -1,6 +1,6 @@
 <g:applyLayout name="twoColumns">
     <head>
-        <title>Crear coordinacion</title>
+        <title>Coordinacion</title>
     </head>
 
     <content tag="main">
@@ -37,14 +37,22 @@
                         <platform:coordinationAreas area="${coordination.area}"/>
                     </td>
                 </tr>
+
+                <g:if test="${colorList}">
+                    <tr>
+                        <td>Colores</td>
+                        <td>
+                            <g:join in="${colorList.name}"/>
+                        </td>
+                    </tr>
+                </g:if>
             </tbody>
         </table>
 
         <g:link resource="coordination" action="edit" id="${coordination.id}" class="btn btn-primary">Editar</g:link>
-        <a href="#" class="btn btn-warning" onclick="if (confirm('¿Seguro?')) { document.getElementById('deleteForm').submit(); } else { return false; }">Eliminar</a>
+        <a href="#" class="btn btn-danger" onclick="if (confirm('¿Seguro?')) document.getElementById('deleteForm').submit()">Eliminar</a>
         <g:form resource="coordination" action="delete" id="${coordination.id}" name="deleteForm" class="hide">
             <g:hiddenField name="_method" value="DELETE"/>
         </g:form>
-        <g:link resource="coordination" action="index" method="GET" class="btn btn-default">Regresar</g:link>
     </content>
 </g:applyLayout>

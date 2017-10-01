@@ -1,28 +1,31 @@
 package ni.edu.ucc.leon.coordination
 
-import static org.springframework.http.HttpStatus.NOT_FOUND
 import grails.validation.ValidationException
 import ni.edu.ucc.leon.CoordinationService
+import ni.edu.ucc.leon.CoordinationColor
+import ni.edu.ucc.leon.ColorService
 import ni.edu.ucc.leon.Coordination
+import ni.edu.ucc.leon.Color
 
 class CoordinationController {
-    CoordinationService coordinationService
+
+    @Autowired CoordinationService coordinationService
+    @Autowired ColorService colorService
 
     static allowedMethods = [save: 'POST', update: 'PUT', delete: 'DELETE']
 
     def index() {
-        List<Coordination> coordinationList = coordinationService.list()
-
-        respond coordinationList
+        respond coordinationService.list()
     }
 
     def create() {
-        respond new Coordination(params)
+        respond new Coordination(params), model: [colorList: colorService.findAll()]
     }
 
-    def save(String name, String acronym, String extensionNumber, Integer copyFee, String area) {
+    def save() {
         try {
-            Coordination coordination = coordinationService.save(name, acronym, extensionNumber, copyFee, area)
+            List<Long> colors = params.list('colors').collect { color -> color.toLong() } as List
+            Coordination coordination = coordinationService.save(params.name, params.acronym, params.extensionNumber, params.int('copyFee'), params.area, colors)
 
             flash.message = 'Coordinacion guardada'
             redirect coordination
@@ -31,21 +34,26 @@ class CoordinationController {
         }
     }
 
-    def show(Long id) {
-        Coordination coordination = id ? coordinationService.find(id) : null
+    def show(final Long id) {
+        Coordination coordination = coordinationService.find(id)
+        List<Color> colorList = CoordinationColor.findAllByCoordination(coordination)
 
-        respond coordination
+        respond coordination, model: [colorList: colorList]
     }
 
-    def edit(Long id) {
-        Coordination coordination = id ? coordinationService.find(id) : null
+    def edit(final Long id) {
+        Coordination coordination = coordinationService.find(id)
 
-        respond coordination
+        respond coordination, model: [
+            colorList: colorService.findAll(),
+            coordinationColorList: CoordinationColor.findAllByCoordination(coordination)
+        ]
     }
 
-    def update(Long id, String name, String acronym, String extensionNumber, Integer copyFee, String area) {
+    def update() {
         try {
-            Coordination coordination = coordinationService.update(id, name, acronym, extensionNumber, copyFee, area)
+            List<Long> colors = params.list('colors').collect { color -> color.toLong() } as List
+            Coordination coordination = coordinationService.update(params.long('id'), params.name, params.acronym, params.extensionNumber, params.int('copyFee'), params.area, colors)
 
             if (!coordination) {
                 notFound()
@@ -58,7 +66,7 @@ class CoordinationController {
         }
     }
 
-    def delete(Long id) {
+    def delete(final Long id) {
         Coordination coordination = coordinationService.delete(id)
 
         if (!coordination) {

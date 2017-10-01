@@ -10,6 +10,7 @@
 
             <div class="form-group">
                 <g:submitButton name="send" value="Actualizar" class="btn btn-primary"/>
+                <g:link resource="${coordination}" method="GET" class="btn btn-default">Regresar</g:link>
             </div>
         </g:form>
 
