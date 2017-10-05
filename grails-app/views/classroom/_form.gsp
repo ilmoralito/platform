@@ -14,10 +14,14 @@
 </div>
 
 <div class="form-group">
+    <label for="powerOutletNumber">Numero de enchufes</label>
+    <g:textField name="powerOutletNumber" value="${classroom?.powerOutletNumber}" class="form-control"/>
+</div>
+
+<div class="form-group">
     <div class="checkbox">
         <label>
-            <g:checkBox name="wifi" value="true" checked="${classroom?.wifi}"/>
-            WIFI
+            <g:checkBox name="wifi" value="true" checked="${classroom?.wifi}"/> WIFI
         </label>
     </div>
 </div>
@@ -25,8 +29,7 @@
 <div class="form-group">
     <div class="checkbox">
         <label>
-            <g:checkBox name="airConditioned" value="true" checked="${classroom?.airConditioned}"/>
-            Climatizado
+            <g:checkBox name="airConditioned" value="true" checked="${classroom?.airConditioned}"/> Climatizado
         </label>
     </div>
 </div>

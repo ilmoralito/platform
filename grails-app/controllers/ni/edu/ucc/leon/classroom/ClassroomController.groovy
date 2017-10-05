@@ -9,14 +9,13 @@ import ni.edu.ucc.leon.ClassroomService
 import ni.edu.ucc.leon.Classroom
 
 class ClassroomController {
+
     @Autowired ClassroomService classroomService
 
     static allowedMethods = [save: 'POST', update: 'PUT', delete: 'DELETE']
 
     def index() {
-        List<Classroom> classroomList = classroomService.list()
-
-        respond classroomList
+        respond classroomService.list()
     }
 
     def show(Long id) {
@@ -27,9 +26,9 @@ class ClassroomController {
         respond new Classroom(params)
     }
 
-    def save(String code, String name, Integer capacity, Boolean wifi, Boolean airConditioned) {
+    def save(String code, String name, Integer capacity, Boolean wifi, Boolean airConditioned, Integer powerOutletNumber) {
         try {
-            Classroom classroom = classroomService.save(code, name, capacity, wifi ?: false, airConditioned ?: false)
+            Classroom classroom = classroomService.save(code, name, capacity, wifi ?: false, airConditioned ?: false, powerOutletNumber)
 
             flash.message = 'Aula creada'
             redirect classroom
@@ -42,9 +41,9 @@ class ClassroomController {
         respond id ? classroomService.find(id) : null
     }
 
-    def update(Long id, String code, String name, Integer capacity, Boolean wifi, Boolean airConditioned) {
+    def update(Long id, String code, String name, Integer capacity, Boolean wifi, Boolean airConditioned, Integer powerOutletNumber) {
         try {
-            Classroom classroom = classroomService.update(id, code, name, capacity, wifi ?: false, airConditioned ?: false)
+            Classroom classroom = classroomService.update(id, code, name, capacity, wifi ?: false, airConditioned ?: false, powerOutletNumber)
 
             if (!classroom) {
                 notFound()

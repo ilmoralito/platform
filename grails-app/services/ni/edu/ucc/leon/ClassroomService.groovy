@@ -11,9 +11,9 @@ interface ClassroomService {
 
     Classroom find(Serializable id)
 
-    Classroom save(String code, String name, Integer capacity, Boolean wifi, Boolean airConditioned)
+    Classroom save(String code, String name, Integer capacity, Boolean wifi, Boolean airConditioned, Integer powerOutletNumber)
 
-    Classroom update(Serializable id, String code, String name, Integer capacity, Boolean wifi, Boolean airConditioned)
+    Classroom update(Serializable id, String code, String name, Integer capacity, Boolean wifi, Boolean airConditioned, Integer powerOutletNumber)
 
     Classroom delete(Serializable id)
 }

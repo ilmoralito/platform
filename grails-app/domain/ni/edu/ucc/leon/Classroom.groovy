@@ -6,6 +6,7 @@ class Classroom {
     Integer capacity
     Boolean wifi = false
     Boolean airConditioned = false
+    Integer powerOutletNumber
 
     Date dateCreated
     Date lastUpdated
@@ -18,6 +19,7 @@ class Classroom {
                 capacity > 0
             }
         }
+        powerOutletNumber min: 1
     }
 
     static mapping = {
@@ -26,5 +28,6 @@ class Classroom {
         sort 'code'
         wifi defaultValue: false
         airConditioned defaultValue: false
+        powerOutletNumber defaultValue: 1
     }
 }

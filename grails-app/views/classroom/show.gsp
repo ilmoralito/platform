@@ -39,16 +39,19 @@
                         <platform:yesNo condition="${classroom?.airConditioned}"/>
                     </td>
                 </tr>
+
+                <tr>
+                    <td>Numero de enchufes</td>
+                    <td>${classroom.powerOutletNumber}</td>
+                </tr>
             </tbody>
         </table>
 
         <g:link resource="classroom" action="edit" id="${classroom.id}" class="btn btn-primary">Editar</g:link>
 
-        <a href="#" class="btn btn-warning" onclick="if (confirm('¿Seguro?')) { document.getElementById('deleteForm').submit(); } else { return false; }">Eliminar</a>
-        <g:form resource="classroom" action="delete" id="${classroom.id}" name="deleteForm" class="hide">
+        <a href="#" class="btn btn-warning" onclick="if (confirm('¿Seguro?')) document.getElementById('deleteForm').submit()">Eliminar</a>
+        <g:form resource="classroom" action="delete" id="${classroom.id}" name="deleteForm">
             <g:hiddenField name="_method" value="DELETE"/>
         </g:form>
-
-        <g:link resource="classroom" action="index" class="btn btn-default">Regresar</g:link>
     </content>
 </g:applyLayout>
