@@ -33,6 +33,12 @@
                             <td>${result.count}</td>
                         </tr>
                     </g:each>
+                    <tr>
+                        <tr>
+                            <td>TOTAL</td>
+                            <td>${results.count.sum()}</td>
+                        </tr>
+                    </tr>
                 </tbody>
             </table>
         </g:if>
