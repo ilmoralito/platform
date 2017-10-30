@@ -74,6 +74,18 @@ dependencies {
     compile 'org.apache.commons:commons-csv:1.2'
 }
 
+clientDependencies {
+    installDir = 'grails-app/assets/vendor'
+
+    npm {
+        'axios'('0.16.2')
+        'jquery'('3.2.1')
+        'bootstrap'('3.3.7')
+        'font-awesome'('4.7.0')
+        'bootstrap-datepicker'('1.7.1')
+    }
+}
+
 bootRun {
     jvmArgs('-Dspring.output.ansi.enabled=always')
     addResources = true
