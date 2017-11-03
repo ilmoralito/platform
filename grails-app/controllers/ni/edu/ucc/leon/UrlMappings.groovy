@@ -36,6 +36,21 @@ class UrlMappings {
 
             '/activities'(resources: 'activity') {
                 '/observations'(resources: 'observation')
+                '/notify'(controller: 'activity', action: 'sendNotification', method: 'PUT')
+
+                collection {
+                    '/requiring/attention'(controller: 'activity', action: 'requiringAttention', method: 'GET')
+                }
+
+                collection {
+                    "/state/$state"(controller: 'activity', action: 'filter', method: 'GET')
+                }
+
+                '/locations'(resources: 'location') {
+                    '/clone'(controller: 'location', action: 'clone', method: 'GET')
+                    '/showAll'(controller: 'location', action: 'showAll', method: 'GET')
+                    '/refreshments'(resources: 'refreshment', includes: ['create', 'save', 'edit', 'update', 'delete'])
+                }
             }
         }
 
@@ -105,6 +120,9 @@ class UrlMappings {
             get '/password' (controller: 'user', action: 'password')
             post '/changePassword' (controller: 'user', action: 'changePassword')
         }
+
+        //  ACTIVITIES
+        // '/activities/requiring/attention'(controller: 'activity', action: 'requiringAttention', method: 'GET')
 
         '/birthday'(controller: 'birthday', action: 'index')
 

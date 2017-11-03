@@ -8,7 +8,10 @@
             <g:hiddenField name="_method" value="PUT"/>
             <g:render template="form"/>
 
-            <g:submitButton name="send" value="Actualizar" class="btn btn-primary"/>
+            <div class="form-group">
+                <g:submitButton name="send" value="Actualizar" class="btn btn-primary"/>
+                <g:link resource="employee/activity" id="${activity.id}" employeeId="${params.employeeId}" method="GET" class="btn btn-default">Regresar</g:link>
+            </div>
         </g:form>
 
         <br>

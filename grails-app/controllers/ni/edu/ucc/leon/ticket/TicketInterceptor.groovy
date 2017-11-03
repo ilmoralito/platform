@@ -16,8 +16,14 @@ class TicketInterceptor {
     boolean before() {
         Ticket ticket = temporalTicketService.find(params.id)
 
-        if (ticket.status != 'open') {
-            response.sendError 403
+        if (ticket == null) {
+            response.sendError 404
+        }
+
+        if (ticket) {
+            if (ticket.status != 'open') {
+                response.sendError 403
+            }
         }
 
         true

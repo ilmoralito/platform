@@ -28,16 +28,18 @@
         class="form-control"/>
 </div>
 
-<div class="form-group">
-    <label for="colors">Colores</label>
+<g:if test="${colorList}">
+    <div class="form-group">
+        <label for="colors">Colores</label>
 
-    <g:each in="${colorList}" var="color">
-        <div class="form-group">
-            <div class="checkbox">
-                <label>
-                    <g:checkBox name="colors" value="${color.id}" checked="${color in coordinationColorList}"/> ${color.name}
-                </label>
+        <g:each in="${colorList}" var="color">
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <g:checkBox name="colors" value="${color.id}" checked="${color in coordinationColorList}"/> ${color.name}
+                    </label>
+                </div>
             </div>
-        </div>
-    </g:each>
-</div>
+        </g:each>
+    </div>
+</g:if>

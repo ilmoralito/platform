@@ -1,5 +1,6 @@
 /*
-*= require bootstrap
+*= require bootstrap/css/bootstrap
+*= require bootstrap-datepicker/css/bootstrap-datepicker3
 *= require_self
 */
 
@@ -19,6 +20,10 @@ textarea {
 
 textarea.vertical-only { resize: vertical; }
 
+input[readonly]{
+    background-color: transparent !important;
+}
+
 .well {
     background: #FEFEFE;
     margin-bottom: 5px;
@@ -35,6 +40,10 @@ textarea.vertical-only { resize: vertical; }
 
 .nav-tabs {
     margin-bottom: 15px;
+}
+
+.panel > .panel-heading {
+    background: #F6F6F6;
 }
 
 .border-less > tbody > tr:first-child > td {

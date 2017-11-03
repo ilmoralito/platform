@@ -12,20 +12,21 @@ class Activity {
 
     static constraints = {
         name blank: false
-        state inList: ['created', 'notified', 'confirmed', 'approved', 'authorized', 'canceled'], maxSize: 100
+        state inList: Helper.ACTIVITY_STATE_LIST, maxSize: 100
         authorizedBy nullable: true
         authorizationDate nullable: true
     }
 
     static belongsTo = [employee: Employee]
 
-    static hasMany = [observations: Observation]
+    static hasMany = [locations: Location, observations: Observation]
 
     static mapping = {
         version false
         table 'activities'
         sort dateCreated: 'desc'
         state defaultValue: "'created'"
+        locations cascade: 'all-delete-orphan'
         observations cascade: 'all-delete-orphan'
     }
 }

@@ -43,7 +43,7 @@ abstract class HolidayService implements IHolidayService {
 
         List<Map<String, Object>> results = monthList.collect { month ->
             [
-                month: Helper.months[month],
+                month: Helper.MONTHS[month],
                 holidays: holidayList.findAll { holiday ->
                     holiday.date[Calendar.MONTH] == month
                 }.collect {

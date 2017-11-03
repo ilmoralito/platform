@@ -7,17 +7,18 @@ import ni.edu.ucc.leon.ActivityService
 import ni.edu.ucc.leon.EmployeeService
 import ni.edu.ucc.leon.Activity
 import ni.edu.ucc.leon.Employee
+import ni.edu.ucc.leon.Helper
 
 class ActivityController {
 
-    @Autowired EmployeeCoordinationService employeeCoordinationService
-    @Autowired EmployeeService employeeService
-    @Autowired ActivityService activityService
+    EmployeeCoordinationService employeeCoordinationService
+    EmployeeService employeeService
+    ActivityService activityService
 
-    static allowedMethods = [ save: 'POST', update: 'PUT', delete: 'DELETE' ]
+    static allowedMethods = [ save: 'POST', update: 'PUT', delete: 'DELETE', sendNotification: 'PUT' ]
 
     def index(final Long employeeId) {
-        [activityList: activityService.listByEmployeeAndState(employeeId, 'created')]
+        respond ([activityList: activityService.listByEmployeeAndState(employeeId, 'created')], model: [stateList: Helper.ACTIVITY_STATE_LIST])
     }
 
     def create(final Long employeeId) {
@@ -49,7 +50,7 @@ class ActivityController {
     }
 
     def edit(final Long id, final Long employeeId) {
-        Employee employee = employeeService.find(id)
+        Employee employee = employeeService.find(employeeId)
 
         [
             activity: activityService.find(id),
@@ -63,11 +64,13 @@ class ActivityController {
             Activity activity = activityService.update(id, name, organizedBy)
 
             if (!activity) {
-                notFound()
-            } else {
-                flash.message = 'Actividad actualizada'
-                redirect uri: "/employees/${employeeId}/activities/${activity.id}", method: 'GET'
+                notFound(employeeId)
+
+                return
             }
+
+            flash.message = 'Actividad actualizada'
+            redirect uri: "/employees/${employeeId}/activities/${activity.id}", method: 'GET'
         } catch(ValidationException e) {
             render view: 'edit', model: [
                 errors: e.errors,
@@ -81,13 +84,43 @@ class ActivityController {
     def delete(final Long id, final Long employeeId) {
         Activity activity = activityService.delete(id)
 
-        if (!activity) notFound()
+        if (!activity) {
+            notFound(employeeId)
+
+            return
+        }
 
         flash.message = 'Actividad eliminada'
         redirect uri: "/employees/$employeeId/activities", method: 'GET'
     }
 
-    protected void notFound(final Long id, final Long employeeId) {
+    def sendNotification(final Long employeeId, final Long activityId) {
+        activityService.updateState('notified', activityId)
+
+        if (!activity) response.sendError 404
+
+        flash.message ='Estado actualizado'
+        redirect uri: "/employees/$employeeId/activities/$activityId", method: 'GET'
+    }
+
+    def filter(final Long employeeId, final String state) {
+        respond ([activityList: activityService.listByEmployeeAndState(employeeId, state)], model: [stateList: Helper.ACTIVITY_STATE_LIST], view: 'index')
+    }
+
+    def requiringAttention(final Long employeeId) {
+        List<Map> results = activityService.listRequiringAttention('notified', employeeId)
+        List<Map> activityListByOrganizer = results.groupBy { it.organizer }.collect {
+            [organizer: it.key, activities: it.value.collect {
+                [id: it.id, name: it.name]
+            }]
+        }
+
+        respond ([activityListByOrganizer: activityListByOrganizer], model: [stateList: Helper.ACTIVITY_STATE_LIST])
+    }
+
+    protected void notFound(final Long employeeId) {
         flash.message = 'Actividad no encontrada'
+
+        redirect uri: "/employees/$employeeId/activities", method: 'GET'
     }
 }

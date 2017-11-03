@@ -120,6 +120,6 @@ class PlatformTagLib {
     }
 
     def dayOfMonth = { attrs ->
-        out << Helper.months[new Date()[Calendar.MONTH]]
+        out << Helper.MONTHS[new Date()[Calendar.MONTH]]
     }
 }

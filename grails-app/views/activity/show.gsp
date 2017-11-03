@@ -18,7 +18,9 @@
                 <tr>
                     <td>Estado</td>
                     <td>
-                        <activity:state state="${activity.state}"/>
+                        <div class="label label-info">
+                            <activity:state currentState="${activity.state}"/>
+                        </div>
                     </td>
                 </tr>
                 <tr>
@@ -32,7 +34,7 @@
                     <td>${activity.organizedBy.name}</td>
                 </tr>
                 <tr>
-                    <td>Fecha de creacion</td>
+                    <td>Fecha y hora de creacion</td>
                     <td>
                         <g:formatDate date="${activity.dateCreated}" format="yyyy-MM-dd HH:mm"/>
                     </td>
@@ -40,15 +42,45 @@
             </tbody>
         </table>
 
-        <g:link resource="employee/activity" action="edit" id="${activity.id}" employeeId="${params.employeeId}" method="GET" class="btn btn-default">
-            Editar
-        </g:link>
-        <g:link class="btn btn-default">Administrar ubicaciones</g:link>
-        <a href="#" class="btn btn-danger" onclick="if (confirm('Estas seguro?')) document.querySelector('#deleteForm').submit()">
-            Eliminar
-        </a>
-        <g:form name="deleteForm" resource="employee/activity" params="[id: activity.id, employeeId: params.employeeId]" action="delete" method="DELETE" class="hide">
+        %{--<g:if test="${activity.state == 'create'}">--}%
+            <g:link
+                resource="employee/activity"
+                action="edit"
+                id="${activity.id}"
+                employeeId="${params.employeeId}"
+                method="GET"
+                class="btn btn-primary">Editar</g:link>
+
+            <a
+                href="#"
+                class="btn btn-danger"
+                onclick="if (confirm('¿Seguro?')) document.querySelector('#deleteForm').submit()">Eliminar</a>
+
+            <a class="btn btn-warning" onclick="document.querySelector('#notifyForm').submit()">Notificar</a>
+        %{--</g:if>--}%
+
+        <g:link
+            resource="employee/activity/location"
+            params="[activityId: activity.id, employeeId: params.employeeId]"
+            method="GET"
+            class="btn btn-default">Ubicaciones</g:link>
+
+        <g:form
+            name="deleteForm"
+            resource="employee/activity"
+            params="[id: activity.id, employeeId: params.employeeId]"
+            action="delete"
+            method="DELETE">
             <g:hiddenField name="_method" value="DELETE"/>
+        </g:form>
+
+        <g:form
+            name="notifyForm"
+            resource="employee/activity"
+            action="sendNotification"
+            params="[employeeId: params.employeeId, activityId: activity.id]"
+            method="PUT">
+            <g:hiddenField name="_method" value="PUT"/>
         </g:form>
     </content>
 </g:applyLayout>

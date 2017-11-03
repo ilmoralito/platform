@@ -7,7 +7,7 @@ class ActivityInterceptor {
     SpringSecurityService springSecurityService
 
     ActivityInterceptor() {
-        match(controller: 'activity', action: '*')
+        match(controller: 'activity', action: ~/(index|create|save|show|edit|update|delete|sendNotification|filter)/)
     }
 
     boolean before() {

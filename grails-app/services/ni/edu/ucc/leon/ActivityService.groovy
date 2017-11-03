@@ -1,10 +1,13 @@
 package ni.edu.ucc.leon
 
+import org.hibernate.transform.AliasToEntityMapResultTransformer
 import ni.edu.ucc.leon.AdministrativeActivity
 import ni.edu.ucc.leon.CoordinationService
 import ni.edu.ucc.leon.AcademicActivity
 import ni.edu.ucc.leon.EmployeeService
 import grails.gorm.services.Service
+import org.hibernate.SessionFactory
+import grails.gorm.services.Query
 import ni.edu.ucc.leon.Activity
 
 interface IActivityService {
@@ -13,13 +16,18 @@ interface IActivityService {
 
     Activity delete(final Serializable id)
 
-    List<Activity> listByEmployeeAndState(final Serializable employeeId, final String state)
+    @Query("UPDATE ${Activity activity} SET ${activity.state} = $state WHERE activity.id = $id")
+    void updateState(final String state, final Serializable id)
 
     List<Map> activityNamesPerEmployee(final Serializable employeeId)
 
-    Activity save(final Serializable employeeId, final String name, final Serializable coordinationId)
+    List<Activity> listByEmployeeAndState(final Serializable employeeId, final String state)
 
     Activity update(final Serializable id, final String name, final Serializable coordinationId)
+
+    Activity save(final Serializable employeeId, final String name, final Serializable coordinationId)
+
+    List<Map> listRequiringAttention(final String state, final Serializable employeeId)
 }
 
 @Service(Activity)
@@ -27,6 +35,8 @@ abstract class ActivityService implements IActivityService {
 
     CoordinationService coordinationService
     EmployeeService employeeService
+
+     @Autowired SessionFactory sessionFactory
 
     @Override
     List<Activity> listByEmployeeAndState(final Serializable employeeId, final String state) {
@@ -71,5 +81,41 @@ abstract class ActivityService implements IActivityService {
         }
 
         activity
+    }
+
+    @Override
+    List<Map> listRequiringAttention(final String state, final Serializable employeeId) {
+        final session = sessionFactory.currentSession
+        final String query = '''
+            SELECT 
+                a.id id, a.name name, c.name organizer
+            FROM
+                activities a
+                    INNER JOIN
+                coordinations c ON a.organized_by_id = c.id
+            WHERE
+                a.state = :state
+                    AND a.organized_by_id IN (SELECT 
+                        ec.coordination_id
+                    FROM
+                        employee_coordinations ec
+                            INNER JOIN
+                        coordinations c ON ec.coordination_id = c.id
+                            INNER JOIN
+                        employees e ON e.id = ec.employee_id
+                    WHERE
+                        e.id = :employeeId)
+        '''
+        final sqlQuery = session.createSQLQuery(query)
+        final results = sqlQuery.with {
+            resultTransformer = AliasToEntityMapResultTransformer.INSTANCE
+
+            setString('state', state)
+            setLong('employeeId', employeeId)
+
+            list()
+        }
+
+        results
     }
 }

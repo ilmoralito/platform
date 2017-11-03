@@ -98,7 +98,7 @@ class TicketController {
                 a.fullName <=> b.fullName
             },
             deviceList: deviceService.list(),
-            statesList: Helper.statesList,
+            statesList: Helper.STATE_LIST,
         ]
     }
 

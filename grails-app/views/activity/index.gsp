@@ -4,25 +4,20 @@
     </head>
 
     <content tag="main">
-        <div class="clearfix">
-            <div class="pull-right">
-                <g:link class="btn btn-default">Sumario</g:link>
-                <g:link resource="employee/activity" action="create" employeeId="${params.employeeId}" method="GET" class="btn btn-primary">
-                    Crear actividad
-                </g:link>
-            </div>
-        </div>
+        <g:render template="toolbar"/>
 
         <g:if test="${activityList}">
             <table class="table table-hover">
                 <colgroup>
-                    <col span="1" style="width: 95%;">
-                    <col span="1" style="width: 5%;">
+                    <col span="1" style="width: 89%;">
+                    <col span="1" style="width: 10%;">
+                    <col span="1" style="width: 1%;">
                 </colgroup>
 
                 <thead>
                     <tr>
                         <th>Actividades</th>
+                        <th></th>
                         <th></th>
                     </tr>
                 </thead>
@@ -35,8 +30,15 @@
                                     ${activity.name}
                                 </g:link>
                             </td>
+                            <td class="text-center">
+                                <g:link resource="employee/activity/location" params="[activityId: activity.id, employeeId: params.employeeId]" method="GET">
+                                    Ubicaciones
+                                </g:link>
+                            </td>
                             <td>
-                                <activity:state state="${activity.state}"/>
+                                <span class="${activity.locations.size() ? 'label label-primary' : ''}">
+                                    ${activity.locations.size() ?: ''}
+                                </span>
                             </td>
                         </tr>
                     </g:each>

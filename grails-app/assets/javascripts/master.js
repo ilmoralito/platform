@@ -1,5 +1,6 @@
-//= require jquery-2.2.0.min
+//= require jquery/jquery
 //= require bootstrap
+//= require bootstrap-datepicker/bootstrap-datepicker
 //= require_self
 
 (function() {

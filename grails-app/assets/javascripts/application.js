@@ -1,6 +1,7 @@
-//= require jquery-2.2.0.min
-//= require axios.min.js
-//= require bootstrap
+//= require jquery/jquery
+//= require bootstrap/js/bootstrap
+//= require bootstrap-datepicker/js/bootstrap-datepicker
+//= require axios/axios.min
 //= require_self
 
 function h(e) {
@@ -13,46 +14,170 @@ $('textarea#description').each(function () {
     h(this);
 });
 
-$('.deleteBookmarkTrigger').on('click', function() {
-    let form = $(this).next();
+{
+    $('#startDateAndTime').datepicker({
+        todayHighlight: true,
+        format: 'yyyy-mm-dd',
+        autoclose: true,
+        startDate: '+3d'
+    });
+}
 
-    if (confirm('¿Seguro?')) {
-        form.submit();
+// LOCATION
+// Notify when the number of participants exceeds the capacity of the selected classroom
+{
+    const participants = document.querySelector('#participants');
+    const place = document.querySelector('#place');
+
+    function check() {
+        const numberOfparticipants = parseInt(participants.value, 10);
+        const helpBlock = document.querySelector('#helpBlock');
+        const capacity = getPlaceCapacity();
+
+        if (numberOfparticipants > capacity) {
+            helpBlock.innerHTML = 'El numero de participantes supera la capicada del aula';
+
+            return;
+        }
+
+        helpBlock.innerHTML = '';
     }
-});
 
-// Toggle bookmarks
-document.querySelectorAll('a.toggleTicketBookmark').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
+    function getPlaceCapacity() {
+        const dataset = getDataset();
+
+        return parseInt(dataset.classroomCapacity, 10);
+    }
+
+    function getDataset() {
+        const dataset = place.options[place.selectedIndex].dataset;
+
+        return dataset;
+    }
+
+    participants.addEventListener('blur', check);
+    place.addEventListener('change', check);
+}
+
+// Show classroom information
+{
+    const placeDetailTrigger = document.querySelector('#place-details-trigger');
+    const placeDetailContainer = document.querySelector('#place-details-container');
+
+    function handleTrigger() {
+        if (placeDetailContainer.innerHTML === '') {
+            renderPlaceDetail();
+
+            return
+        }
+
+        placeDetailContainer.innerHTML = '';
+    }
+
+    function handleChangePlace() {
+        if (placeDetailContainer.innerHTML !== '') {
+            renderPlaceDetail();
+        }
+    }
+
+    function renderPlaceDetail() {
+        const dataset = getDataset();
+
+        placeDetailContainer.innerHTML = `
+            <table class="table table-bordered table-condensed">
+                <colgroup>
+                    <col span="1" style="width: 20%;">
+                    <col span="1" style="width: 80%;">
+                </colgroup>
+
+                <tbody>
+                    <tr>
+                        <td>WIFI</td>
+                        <td>${dataset.classroomWifi === 'true' ? 'Si' : 'No'}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Climatizado</td>
+                        <td>${dataset.classroomAirconditioned === 'true' ? 'Si' : 'No'}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Capacidad</td>
+                        <td>${dataset.classroomCapacity}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Numero de toma corrientes</td>
+                        <td>${dataset.classroomPoweroutletnumber}</td>
+                    </tr>
+                </tbody>
+            </table>
+        `;
+    }
+
+    function getDataset() {
+        const place = document.querySelector('#place');
+        const dataset = place.options[place.selectedIndex].dataset;
+
+        return Object.assign({}, dataset);
+    }
+
+    placeDetailTrigger.addEventListener('click', handleTrigger);
+    place.addEventListener('change', handleChangePlace);
+}
+
+// Cleaner
+{
+    const cleaner = document.querySelector('#cleaner');
+
+    function clean(e) {
         e.preventDefault();
 
-        const url = '/bookmarks/toggle'
-        const params = new URLSearchParams();
+        const refreshments = document.querySelector('#refreshments');
+        const elements = Array.from(refreshments.querySelectorAll('input'));
 
-        params.append('ticketId', this.dataset.ticketId);
-        params.append('employeeId', this.dataset.employeeId);
+        elements.forEach(element => {
+            element.type === 'radio' ? element.checked = false : element.value = '';
+        });
+    }
 
-        axios({
-            url: url,
-            method: 'post',
-            responseType: 'json',
-            data: params
-        }).then(response => {
-            const target = document.querySelector(`#glyphicon-bookmark-${this.dataset.ticketId}`);
+    cleaner.addEventListener('click', clean);
+}
 
-            if (this.dataset.controllerName == 'ticket') {
-                target.style.color = target.style.color ? '#337AB7' : '#DDDDDD';
-            } else {
-                document.querySelector(`#ticket_${this.dataset.ticketId}`).outerHTML = '';
-            }
-        }).catch(error => {
-            console.error(error);
-        })
+// Toggle bookmarks
+{
+    document.querySelectorAll('a.toggleTicketBookmark').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const url = '/bookmarks/toggle'
+            const params = new URLSearchParams();
+
+            params.append('ticketId', this.dataset.ticketId);
+            params.append('employeeId', this.dataset.employeeId);
+
+            axios({
+                url: url,
+                method: 'post',
+                responseType: 'json',
+                data: params
+            }).then(response => {
+                const target = document.querySelector(`#glyphicon-bookmark-${this.dataset.ticketId}`);
+
+                if (this.dataset.controllerName == 'ticket') {
+                    target.style.color = target.style.color ? '#337AB7' : '#DDDDDD';
+                } else {
+                    document.querySelector(`#ticket_${this.dataset.ticketId}`).outerHTML = '';
+                }
+            }).catch(error => {
+                console.error(error);
+            })
+        });
     });
-});
+}
 
 // Change employee fullName property from profile view
-(() => {
+{
     const editButton = document.querySelector('#edit');
     const target = document.querySelector('#target');
     const orginalFullName = target.innerHTML;
@@ -158,10 +283,10 @@ document.querySelectorAll('a.toggleTicketBookmark').forEach(anchor => {
     }
 
     editButton.addEventListener('click', edit);
-})();
+}
 
 // TODO: find the right to display the next logic only in employee view
-(() => {
+{
     const copyText = document.querySelector('#email');
     const copyButton = document.querySelector('#copy');
     const messageBox = document.querySelector('#message');
@@ -187,4 +312,4 @@ document.querySelectorAll('a.toggleTicketBookmark').forEach(anchor => {
     }
 
     copyButton.addEventListener('click', copy);
-})();
+}
