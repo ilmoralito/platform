@@ -95,7 +95,14 @@ class ActivityController {
     }
 
     def sendNotification(final Long employeeId, final Long activityId) {
-        activityService.updateState('notified', activityId)
+        Activity activity = activityService.find(activityId)
+
+        if (!activity || !activity.locations) {
+            flash.message = 'Ubicaciones son necesarias para continuar'
+
+            redirect uri: "/employees/$employeeId/activities/$activityId", method: 'GET'
+            return
+        }
 
         if (!activity) response.sendError 404
 
