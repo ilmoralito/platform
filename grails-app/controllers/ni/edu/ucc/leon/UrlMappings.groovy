@@ -36,7 +36,7 @@ class UrlMappings {
 
             '/activities'(resources: 'activity') {
                 '/observations'(resources: 'observation')
-                '/notify'(controller: 'activity', action: 'sendNotification', method: 'PUT')
+                "/notify/$state?"(controller: 'activity', action: 'sendNotification', method: 'PUT')
 
                 collection {
                     '/requiring/attention'(controller: 'activity', action: 'requiringAttention', method: 'GET')

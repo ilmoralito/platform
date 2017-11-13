@@ -126,45 +126,47 @@
             </tbody>
         </table>
 
-        <g:form
-            name="deleteLocationForm"
-            resource="employee/activity/location"
-            params="[employeeId: params.employeeId, activityId: params.activityId, id: location.id]"
-            method="DELETE">
-            <g:hiddenField name="_method" value="DELETE"/>
-        </g:form>
+        <activity:isValid activityId="${params.activityId}">
+            <g:form
+                name="deleteLocationForm"
+                resource="employee/activity/location"
+                params="[employeeId: params.employeeId, activityId: params.activityId, id: location.id]"
+                method="DELETE">
+                <g:hiddenField name="_method" value="DELETE"/>
+            </g:form>
 
-        <g:link
-            resource="employee/activity/location"
-            action="edit"
-            params="[employeeId: params.employeeId, activityId: params.activityId, id: params.id]"
-            method="GET"
-            class="btn btn-primary">
-            Editar
-        </g:link>
-
-        <a class="btn btn-danger" onclick="if (confirm('¿Seguro?')) document.querySelector('#deleteLocationForm').submit()">Eliminar</a>
-
-        <g:if test="${!location?.refreshment}">
             <g:link
-                resource="employee/activity/location/refreshment"
-                action="create"
-                params="[employeeId: params.employeeId, activityId: params.activityId, locationId: location.id]"
-                method="GET"
-                class="btn btn-default">
-                Agregar refrigerio
-            </g:link>
-        </g:if>
-        <g:else>
-            <g:link
-                resource="employee/activity/location/refreshment"
+                resource="employee/activity/location"
                 action="edit"
-                params="[employeeId: params.employeeId, activityId: params.activityId, locationId: location.id, id: location.refreshment.id]"
+                params="[employeeId: params.employeeId, activityId: params.activityId, id: params.id]"
                 method="GET"
-                class="btn btn-default">
-                Editar refrigerio
+                class="btn btn-primary">
+                Editar
             </g:link>
-        </g:else>
+
+            <a class="btn btn-danger" onclick="if (confirm('¿Seguro?')) document.querySelector('#deleteLocationForm').submit()">Eliminar</a>
+
+            <g:if test="${!location?.refreshment}">
+                <g:link
+                    resource="employee/activity/location/refreshment"
+                    action="create"
+                    params="[employeeId: params.employeeId, activityId: params.activityId, locationId: location.id]"
+                    method="GET"
+                    class="btn btn-default">
+                    Agregar refrigerio
+                </g:link>
+            </g:if>
+            <g:else>
+                <g:link
+                    resource="employee/activity/location/refreshment"
+                    action="edit"
+                    params="[employeeId: params.employeeId, activityId: params.activityId, locationId: location.id, id: location.refreshment.id]"
+                    method="GET"
+                    class="btn btn-default">
+                    Editar refrigerio
+                </g:link>
+            </g:else>
+        </activity:isValid>
 
         <g:link
             resource="employee/activity/location"

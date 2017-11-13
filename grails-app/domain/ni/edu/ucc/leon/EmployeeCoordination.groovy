@@ -11,7 +11,7 @@ class EmployeeCoordination {
         jobTitle blank: false
     }
 
-    static EmployeeCoordination create(Employee employee, Coordination coordination, String position, String jobTitle) {
+    public static final EmployeeCoordination create(Employee employee, Coordination coordination, String position, String jobTitle) {
         new EmployeeCoordination(
             employee: employee,
             coordination: coordination,
@@ -20,12 +20,16 @@ class EmployeeCoordination {
         ).save(flush: true)
     }
 
-    static List<EmployeeCoordination> listByEmployee(Employee employee) {
+    public static final List<EmployeeCoordination> listByEmployee(Employee employee) {
         EmployeeCoordination.where { employee == employee }.list()
     }
 
-    static Boolean exists(Employee employee, Coordination coordination) {
+    public static final Boolean exists(Employee employee, Coordination coordination) {
         EmployeeCoordination.where { employee == employee && coordination == coordination }.count()
+    }
+
+    public static final List<Coordination> listEmployeeCoordinations(final Employee employee) {
+        EmployeeCoordination.where { employee == employee }.list().coordination
     }
 
     static mapping = {

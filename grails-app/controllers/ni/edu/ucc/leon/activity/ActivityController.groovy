@@ -18,7 +18,12 @@ class ActivityController {
     static allowedMethods = [ save: 'POST', update: 'PUT', delete: 'DELETE', sendNotification: 'PUT' ]
 
     def index(final Long employeeId) {
-        respond ([activityList: activityService.listByEmployeeAndState(employeeId, 'created')], model: [stateList: Helper.ACTIVITY_STATE_LIST])
+        respond ([activityList: activityService.listByEmployeeAndState(employeeId, 'created')],
+            model: [
+                stateList: Helper.ACTIVITY_STATE_LIST,
+                number: countRequiringAttention(employeeId)
+            ]
+        )
     }
 
     def create(final Long employeeId) {
@@ -94,7 +99,7 @@ class ActivityController {
         redirect uri: "/employees/$employeeId/activities", method: 'GET'
     }
 
-    def sendNotification(final Long employeeId, final Long activityId) {
+    def sendNotification(final Long employeeId, final Long activityId, final String state) {
         Activity activity = activityService.find(activityId)
 
         if (!activity || !activity.locations) {
@@ -104,30 +109,91 @@ class ActivityController {
             return
         }
 
-        if (!activity) response.sendError 404
+        activityService.updateState(state ?: getNextNotificationState(), activityId)
 
-        flash.message ='Estado actualizado'
+        flash.message = 'Estado actualizado'
         redirect uri: "/employees/$employeeId/activities/$activityId", method: 'GET'
     }
 
     def filter(final Long employeeId, final String state) {
-        respond ([activityList: activityService.listByEmployeeAndState(employeeId, state)], model: [stateList: Helper.ACTIVITY_STATE_LIST], view: 'index')
+        respond (
+            [activityList: activityService.listByEmployeeAndState(employeeId, state)],
+            model: [
+                stateList: Helper.ACTIVITY_STATE_LIST,
+                number: activityService.countRequiringAttention(getNotificationState(), employeeId)
+            ],
+            view: 'index'
+        )
     }
 
     def requiringAttention(final Long employeeId) {
-        List<Map> results = activityService.listRequiringAttention('notified', employeeId)
-        List<Map> activityListByOrganizer = results.groupBy { it.organizer }.collect {
+        final List<Map> results = listRequiringAttention(employeeId)
+        final List<Map> activityListByOrganizer = results.groupBy { it.organizer }.collect {
             [organizer: it.key, activities: it.value.collect {
                 [id: it.id, name: it.name]
             }]
         }
 
-        respond ([activityListByOrganizer: activityListByOrganizer], model: [stateList: Helper.ACTIVITY_STATE_LIST])
+        respond ([activityListByOrganizer: activityListByOrganizer],
+            model: [
+                stateList: Helper.ACTIVITY_STATE_LIST,
+                number: countRequiringAttention(employeeId)
+            ]
+        )
     }
 
     protected void notFound(final Long employeeId) {
         flash.message = 'Actividad no encontrada'
 
         redirect uri: "/employees/$employeeId/activities", method: 'GET'
+    }
+
+    private final String getNotificationState() {
+        List<String> authorityList = authenticatedUser.authorities.authority
+
+        if ('ROLE_COORDINATOR' in authorityList) return 'notified'
+
+        if ('ROLE_ACADEMIC_COORDINATOR' in authorityList) return 'confirmed'
+
+        if ('ROLE_ADMINISTRATIVE_COORDINATOR' in authorityList) return 'approved'
+
+        if ('ROLE_PROTOCOL' in authorityList) return 'authorized'
+    }
+
+    private final String getNextNotificationState() {
+        List<String> authorityList = authenticatedUser.authorities.authority
+
+        if ('ROLE_ASSISTANT' in authorityList) return 'notified'
+
+        if ('ROLE_COORDINATOR' in authorityList) return 'confirmed'
+
+        if ('ROLE_ACADEMIC_COORDINATOR' in authorityList) return 'approved'
+
+        if ('ROLE_ADMINISTRATIVE_COORDINATOR' in authorityList) return 'authorized'
+
+        if ('ROLE_PROTOCOL' in authorityList) return 'attended'
+    }
+
+    private final Boolean isSupervisor() {
+        final List<String> supervisorList = ['ROLE_ACADEMIC_COORDINATOR', 'ROLE_ADMINISTRATIVE_COORDINATOR', 'ROLE_PROTOCOL']
+        final List<String> authorityList = authenticatedUser.authorities.authority
+
+        supervisorList.any { authority -> authority in authorityList }
+    }
+
+    private final List<Map> listRequiringAttention(final Long employeeId) {
+        final String state = getNotificationState()
+
+        if (isSupervisor()) return activityService.listRequiringAttention(state)
+
+        activityService.listRequiringAttention(state, employeeId)
+    }
+
+    private final Number countRequiringAttention(final Long employeeId) {
+        final String state = getNotificationState()
+
+        if (isSupervisor()) return activityService.countRequiringAttention(state)
+
+        activityService.countRequiringAttention(state, employeeId)
     }
 }

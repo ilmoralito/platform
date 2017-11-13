@@ -22,7 +22,7 @@ class BootStrap {
         // ROLES
         Role userRole = Role.findByAuthority('ROLE_USER') ?: new Role(authority: 'ROLE_USER').save(failOnError: true)
         Role adminRole = Role.findByAuthority('ROLE_ADMIN') ?: new Role(authority: 'ROLE_ADMIN').save(failOnError: true)
-        Role protocolRole = Role.findByAuthority('ROLE_USER') ?: new Role(authority: 'ROLE_PROTOCOL').save(failOnError: true)
+        Role protocolRole = Role.findByAuthority('ROLE_PROTOCOL') ?: new Role(authority: 'ROLE_PROTOCOL').save(failOnError: true)
         Role assistantRole = Role.findByAuthority('ROLE_ASSISTANT') ?: new Role(authority: 'ROLE_ASSISTANT').save(failOnError: true)
         Role coordinatorRole = Role.findByAuthority('ROLE_COORDINATOR') ?: new Role(authority: 'ROLE_COORDINATOR').save(failOnError: true)
         Role headOfficeDelegateRole = Role.findByAuthority('ROLE_HEAD_OFFICE_DELEGATE') ?: new Role(authority: 'ROLE_HEAD_OFFICE_DELEGATE').save(failOnError: true)

@@ -6,23 +6,25 @@
     <content tag="main">
         <g:if test="${locationList}">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-9">
                     <h4>
                         <g:link resource="employee/activity" id="${activity.id}" employeeId="${params.employeeId}" method="GET">
                             ${activity.name}
                         </g:link>
                     </h4>
                 </div>
-                
-                <div class="col-md-6">
-                    <g:link
-                        resource="employee/activity/location"
-                        action="create"
-                        params="[employeeId: params.employeeId, activityId: params.activityId]"
-                        method="GET"
-                        class="btn btn-primary pull-right">
-                        Agregar ubicacion
-                    </g:link>
+
+                <div class="col-md-3">
+                    <activity:isValid activityId="${activity.id}">
+                        <g:link
+                            resource="employee/activity/location"
+                            action="create"
+                            params="[employeeId: params.employeeId, activityId: params.activityId]"
+                            method="GET"
+                            class="btn btn-primary pull-right">
+                            Agregar ubicacion
+                        </g:link>
+                    </activity:isValid>
                 </div>
             </div>
 
@@ -61,13 +63,15 @@
                                 <g:formatDate date="${location.endDateAndTime}" format="hh:00"/>
                             </td>
                             <td>
-                                <g:link
-                                    resource="employee/activity/location"
-                                    action="clone"
-                                    params="[employeeId: params.employeeId, activityId: params.activityId, locationId: location.id]"
-                                    method="GET">
-                                    Duplicar
-                                </g:link>
+                                <activity:isValid activityId="${activity.id}">
+                                    <g:link
+                                        resource="employee/activity/location"
+                                        action="clone"
+                                        params="[employeeId: params.employeeId, activityId: params.activityId, locationId: location.id]"
+                                        method="GET">
+                                        Duplicar
+                                    </g:link>
+                                </activity:isValid>
                             </td>
                         </tr>
                     </g:each>

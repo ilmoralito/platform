@@ -1,12 +1,12 @@
 <div class="clearfix">
     <div class="pull-right">
-        <sec:ifAnyGranted roles='ROLE_COORDINATOR, ROLE_ACADEMIC_COORDINATOR, ROLE_ADMINISTRATIVE_COORDINATOR'>
+        <sec:ifAnyGranted roles='ROLE_COORDINATOR, ROLE_ACADEMIC_COORDINATOR, ROLE_ADMINISTRATIVE_COORDINATOR, ROLE_PROTOCOL'>
             <g:link
                 resource="employee/activity"
                 action="requiringAttention"
                 params="[employeeId: params.employeeId]"
                 class="btn btn-default ${actionName == 'requiringAttention' ? 'active' : ''}">
-                Notificaciones
+                Notificaciones <span class="label label-info">${number ?: null}</span>
             </g:link>
         </sec:ifAnyGranted>
 

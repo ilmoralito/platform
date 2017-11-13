@@ -14,6 +14,7 @@ class Helper {
         'confirmed',
         'approved',
         'authorized',
+        'attended',
         'canceled'
     ]
 

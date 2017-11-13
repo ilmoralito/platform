@@ -13,11 +13,11 @@ import ni.edu.ucc.leon.Helper
 
 class LocationController {
 
-    @Autowired CoordinationColorService coordinationColorService
-    @Autowired ClassroomService classroomService
-    @Autowired LocationService locationService
-    @Autowired ActivityService activityService
-    @Autowired ColorService colorService
+    CoordinationColorService coordinationColorService
+    ClassroomService classroomService
+    LocationService locationService
+    ActivityService activityService
+    ColorService colorService
 
     static allowedMethods = [ save: 'POST', update: 'PUT', delete: 'DELETE' ]
 

@@ -27,16 +27,21 @@ interface IActivityService {
 
     Activity save(final Serializable employeeId, final String name, final Serializable coordinationId)
 
+    Number countRequiringAttention(final String state, final Serializable employeeId)
+
+    Number countRequiringAttention(final String state)
+
     List<Map> listRequiringAttention(final String state, final Serializable employeeId)
+
+    List<Map> listRequiringAttention(final String state)
 }
 
 @Service(Activity)
 abstract class ActivityService implements IActivityService {
 
+    @Autowired SessionFactory sessionFactory
     CoordinationService coordinationService
     EmployeeService employeeService
-
-     @Autowired SessionFactory sessionFactory
 
     @Override
     List<Activity> listByEmployeeAndState(final Serializable employeeId, final String state) {
@@ -87,7 +92,7 @@ abstract class ActivityService implements IActivityService {
     List<Map> listRequiringAttention(final String state, final Serializable employeeId) {
         final session = sessionFactory.currentSession
         final String query = '''
-            SELECT 
+            SELECT
                 a.id id, a.name name, c.name organizer
             FROM
                 activities a
@@ -95,7 +100,7 @@ abstract class ActivityService implements IActivityService {
                 coordinations c ON a.organized_by_id = c.id
             WHERE
                 a.state = :state
-                    AND a.organized_by_id IN (SELECT 
+                    AND a.organized_by_id IN (SELECT
                         ec.coordination_id
                     FROM
                         employee_coordinations ec
@@ -117,5 +122,84 @@ abstract class ActivityService implements IActivityService {
         }
 
         results
+    }
+
+    @Override
+    List<Map> listRequiringAttention(final String state) {
+        final session = sessionFactory.currentSession
+        final String query = '''
+            SELECT
+                a.id id, a.name name, c.name organizer
+            FROM
+                activities a
+                    INNER JOIN
+                coordinations c ON a.organized_by_id = c.id
+            WHERE
+                a.state = :state'''
+        final sqlQuery = session.createSQLQuery(query)
+        final results = sqlQuery.with {
+            resultTransformer = AliasToEntityMapResultTransformer.INSTANCE
+
+            setString('state', state)
+
+            list()
+        }
+
+        results
+    }
+
+    @Override
+    Number countRequiringAttention(final String state, final Serializable employeeId) {
+        final session = sessionFactory.currentSession
+        final String query = '''
+            SELECT
+                COUNT(a.id)
+            FROM
+                activities a
+                    INNER JOIN
+                coordinations c ON a.organized_by_id = c.id
+            WHERE
+                a.state = :state
+                    AND a.organized_by_id IN (SELECT
+                        ec.coordination_id
+                    FROM
+                        employee_coordinations ec
+                            INNER JOIN
+                        coordinations c ON ec.coordination_id = c.id
+                            INNER JOIN
+                        employees e ON e.id = ec.employee_id
+                    WHERE
+                        e.id = :employeeId)'''
+        final sqlQuery = session.createSQLQuery(query)
+        final result = sqlQuery.with {
+            setString('state', state)
+            setLong('employeeId', employeeId)
+
+            uniqueResult()
+        }
+
+        result
+    }
+
+    @Override
+    Number countRequiringAttention(final String state) {
+        final session = sessionFactory.currentSession
+        final String query = '''
+            SELECT
+                COUNT(a.id)
+            FROM
+                activities a
+                    INNER JOIN
+                coordinations c ON a.organized_by_id = c.id
+            WHERE
+                a.state = :state'''
+        final sqlQuery = session.createSQLQuery(query)
+        final result = sqlQuery.with {
+            setString('state', state)
+
+            uniqueResult()
+        }
+
+        result
     }
 }

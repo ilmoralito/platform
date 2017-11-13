@@ -18,7 +18,7 @@
                 <tr>
                     <td>Estado</td>
                     <td>
-                        <div class="label label-info">
+                        <div class="label ${activity.state == 'attended' ? 'label-success' : activity.state == 'canceled' ? 'label-danger' : 'label-info'}">
                             <activity:state currentState="${activity.state}"/>
                         </div>
                     </td>
@@ -30,7 +30,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Organizado por</td>
+                    <td>Organizador</td>
                     <td>${activity.organizedBy.name}</td>
                 </tr>
                 <tr>
@@ -42,7 +42,7 @@
             </tbody>
         </table>
 
-        %{--<g:if test="${activity.state == 'create'}">--}%
+        <activity:isValid activityId="${activity.id}">
             <g:link
                 resource="employee/activity"
                 action="edit"
@@ -56,17 +56,47 @@
                 class="btn btn-danger"
                 onclick="if (confirm('¿Seguro?')) document.querySelector('#deleteForm').submit()">Eliminar</a>
 
-            <a class="btn btn-warning" onclick="document.querySelector('#notifyForm').submit()">Notificar</a>
-        %{--</g:if>--}%
+            <g:if test="${activity.locations}">
+                <a class="btn btn-warning" onclick="document.querySelector('#notifyForm').submit()">Notificar</a>
+            </g:if>
+        </activity:isValid>
 
-        <g:link
-            resource="employee/activity/location"
-            params="[activityId: activity.id, employeeId: params.employeeId]"
-            method="GET"
-            class="btn btn-default">Ubicaciones</g:link>
+        <sec:ifAnyGranted roles='ROLE_PROTOCOL'>
+            <g:if test="${activity.state == 'authorized'}">
+                <div class="btn-group">
+                    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Marcar actividad <span class="caret"></span>
+                    </button>
 
-        <g:form
-            name="deleteForm"
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="#" onclick="document.querySelector('#notifyAttendedForm').submit()">Atendido</a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="document.querySelector('#notifyCanceledForm').submit()">Cancelado</a>
+                        </li>
+                    </ul>
+                </div>
+            </g:if>
+        </sec:ifAnyGranted>
+
+        <g:if test="${activity.locations}">
+            <g:link
+                resource="employee/activity/location"
+                params="[activityId: activity.id, employeeId: params.employeeId]"
+                method="GET"
+                class="btn btn-default">Ubicaciones</g:link>
+        </g:if>
+        <g:else>
+            <g:link
+                resource="employee/activity/location"
+                action="create"
+                params="[employeeId: params.employeeId, activityId: activity.id]"
+                method="GET"
+                class="btn btn-default">Agregar ubicacion</g:link>
+        </g:else>
+
+        <g:form name="deleteForm"
             resource="employee/activity"
             params="[id: activity.id, employeeId: params.employeeId]"
             action="delete"
@@ -74,13 +104,28 @@
             <g:hiddenField name="_method" value="DELETE"/>
         </g:form>
 
-        <g:form
-            name="notifyForm"
+        <g:form name="notifyForm"
             resource="employee/activity"
             action="sendNotification"
             params="[employeeId: params.employeeId, activityId: activity.id]"
             method="PUT">
-            <g:hiddenField name="_method" value="PUT"/>
+                <g:hiddenField name="_method" value="PUT"/>
+        </g:form>
+
+        <g:form name="notifyAttendedForm"
+            resource="employee/activity"
+            action="sendNotification"
+            params="[employeeId: params.employeeId, activityId: activity.id, state: 'attended']"
+            method="PUT">
+                <g:hiddenField name="_method" value="PUT"/>
+        </g:form>
+
+        <g:form name="notifyCanceledForm"
+            resource="employee/activity"
+            action="sendNotification"
+            params="[employeeId: params.employeeId, activityId: activity.id, state: 'canceled']"
+            method="PUT">
+                <g:hiddenField name="_method" value="PUT"/>
         </g:form>
     </content>
 </g:applyLayout>
