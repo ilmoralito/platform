@@ -18,7 +18,8 @@ class ActivityInterceptor {
     }
 
     boolean before() {
-        Activity activity = activityService.find(params.id ?: params.activityId)
+        Long id = Long.parseLong(params?.id ? params.id : params.activityId)
+        Activity activity = activityService.find(id)
 
         if (activity.state == 'created' && activityStateService.isActivityCreator(activity) == false) {
             response.sendError 403

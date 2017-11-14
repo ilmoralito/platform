@@ -44,6 +44,23 @@ abstract class ActivityService implements IActivityService {
     EmployeeService employeeService
 
     @Override
+    Activity delete(final Serializable id) {
+        Activity activity = find(id)
+
+        if (activity) {
+            activity.locations.each { location ->
+                TableLinen.removeAll(location)
+            }
+
+            activity.locations.clear()
+        }
+
+        activity.delete()
+
+        activity
+    }
+
+    @Override
     List<Activity> listByEmployeeAndState(final Serializable employeeId, final String state) {
         Activity.where { employee.id == employeeId && state == state }.list()
     }
