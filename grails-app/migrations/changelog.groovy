@@ -10,4 +10,5 @@ databaseChangeLog = {
     include file: 'add-projector-table-field.groovy'
     include file: 'change-waterBottles-constraint-to-nullable.groovy'
     include file: 'add-national-anthem-triumphal-anthem-university-anthem.groovy'
+    include file: 'add-microphone-field-to-location.groovy'
 }

@@ -23,6 +23,7 @@ class Location {
     Boolean projectorTable = false
     Integer waterBottles
     String observation
+    Boolean microphone = false
     Refreshment refreshment
 
     Date dateCreated
@@ -55,6 +56,7 @@ class Location {
         sound defaultValue: false
         projectorTable defaultValue: false
         waterBottles defaultValue: 0
+        microphone defaultValue: false
         observation type: 'text'
     }
 }
