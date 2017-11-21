@@ -37,14 +37,6 @@ class LocationController {
 
     def save(SaveLocationCommand command) {
         if (command.hasErrors()) {
-            // respond ([errors: command.errors], model: [
-            //     hourList: Helper.HOURS,
-            //     montageList: Helper.MONTAGE,
-            //     colorList: colorService.findAll(),
-            //     classroomList: classroomService.groupedByCode(),
-            //     organizerColorList: coordinationColorService.listColorsByCoordination(activityService.find(command.activityId).organizedBy)
-            // ], view: 'create')
-
             flash.message = 'Parametros incorretos'
             redirect uri: request.getHeader('referer')
 
@@ -70,6 +62,7 @@ class LocationController {
                 command.universityAnthem,
                 command.triumphalAnthem,
                 command.sound,
+                command.microphone,
                 command.projectorTable,
                 command.waterBottles,
                 command.observation

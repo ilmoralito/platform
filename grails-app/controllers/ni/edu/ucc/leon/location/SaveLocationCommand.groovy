@@ -24,6 +24,7 @@ class SaveLocationCommand implements grails.validation.Validateable {
     Boolean universityAnthem
     Boolean triumphalAnthem
     Boolean sound
+    Boolean microphone
     Boolean projectorTable
     Integer waterBottles
     List<Long> colors

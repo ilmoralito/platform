@@ -20,10 +20,10 @@ class Location {
     Boolean universityAnthem = false
     Boolean triumphalAnthem = false
     Boolean sound = false
+    Boolean microphone = false
     Boolean projectorTable = false
     Integer waterBottles
     String observation
-    Boolean microphone = false
     Refreshment refreshment
 
     Date dateCreated

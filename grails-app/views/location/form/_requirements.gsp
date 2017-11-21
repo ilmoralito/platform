@@ -34,6 +34,12 @@
                         <g:checkBox name="sound" checked="${location?.sound}"/> Sonido
                     </label>
                 </div>
+
+                <div class="checkbox">
+                    <label>
+                        <g:checkBox name="microphone" checked="${location?.microphone}"/> Microfono
+                    </label>
+                </div>
             </div>
 
             <div class="col-md-4">
