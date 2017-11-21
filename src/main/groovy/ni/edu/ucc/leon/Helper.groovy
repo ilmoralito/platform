@@ -8,6 +8,25 @@ import java.text.SimpleDateFormat
 @CompileStatic
 class Helper {
 
+    public static final List<LinkedHashMap> LOGISTICS_TYPE_LIST = [
+        [english: 'concierge', spanish: 'Conserjeria'],
+        [english: 'generalServices', spanish: 'Servicios generales'],
+        [english: 'protocol', spanish: 'Protocolo'],
+    ]
+
+    public static final Date FIRST_DAY_OF_WEEK() {
+        Calendar calendar = Calendar.instance
+        Integer diff = Calendar.MONDAY - calendar.get(DAY_OF_WEEK)
+
+        calendar.add DAY_OF_WEEK, diff
+
+        calendar.getTime().clearTime()
+    }
+
+    public static final Date LAST_DAY_OF_WEEK() {
+        FIRST_DAY_OF_WEEK() + 6
+    }
+
     public static final List<String> ACTIVITY_STATE_LIST = [
         'created',
         'notified',

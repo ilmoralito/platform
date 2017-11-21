@@ -40,9 +40,7 @@ class UrlMappings {
 
                 collection {
                     '/requiring/attention'(controller: 'activity', action: 'requiringAttention', method: 'GET')
-                }
-
-                collection {
+                    "/weekly/logistics/$type"(controller: 'activity', action: 'weeklyLogistics', method: 'GET')
                     "/state/$state"(controller: 'activity', action: 'filter', method: 'GET')
                 }
 

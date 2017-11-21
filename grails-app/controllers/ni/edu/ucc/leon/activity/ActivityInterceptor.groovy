@@ -6,10 +6,10 @@ import ni.edu.ucc.leon.Activity
 
 class ActivityInterceptor {
 
-    int order = 1
-
-    ActivityStateService activityStateService
     ActivityService activityService
+    @Autowired ActivityStateService activityStateService
+
+    int order = 1
 
     ActivityInterceptor() {
         match(controller: 'activity', action: ~/(update|delete)/)
@@ -18,38 +18,38 @@ class ActivityInterceptor {
     }
 
     boolean before() {
-        Long id = Long.parseLong(params?.id ? params.id : params.activityId)
-        Activity activity = activityService.find(id)
+        // Long id = Long.parseLong(params?.id ? params.id : params.activityId)
+        // Activity activity = activityService.find(id)
 
-        if (activity.state == 'created' && activityStateService.isActivityCreator(activity) == false) {
-            response.sendError 403
+        // if (activity.state == 'created' && activityStateService.isActivityCreator(activity) == false) {
+        //     response.sendError 403
 
-            return false
-        }
+        //     return false
+        // }
 
-        if (activity.state == 'notified' && activityStateService.isValidAuthority('ROLE_COORDINATOR') == false && activityStateService.isValidCoordination(activity.organizedBy) == false) {
-            response.sendError 403
+        // if (activity.state == 'notified' && activityStateService.isValidAuthority('ROLE_COORDINATOR') == false && activityStateService.isValidCoordination(activity.organizedBy) == false) {
+        //     response.sendError 403
 
-            return false
-        }
+        //     return false
+        // }
 
-        if (activity.state == 'confirmed' && activityStateService.isValidAuthority('ROLE_ACADEMIC_COORDINATOR') == false) {
-            response.sendError 404
+        // if (activity.state == 'confirmed' && activityStateService.isValidAuthority('ROLE_ACADEMIC_COORDINATOR') == false) {
+        //     response.sendError 404
 
-            return false
-        }
+        //     return false
+        // }
 
-        if (activity.state == 'approved' && activityStateService.isValidAuthority('ROLE_ADMINISTRATIVE_COORDINATOR') == false) {
-            response.sendError 404
+        // if (activity.state == 'approved' && activityStateService.isValidAuthority('ROLE_ADMINISTRATIVE_COORDINATOR') == false) {
+        //     response.sendError 404
 
-            return false
-        }
+        //     return false
+        // }
 
-        if (activity.state in ['authorized', 'attended', 'canceled']) {
-            response.sendError 403
+        // if (activity.state in ['authorized', 'attended', 'canceled']) {
+        //     response.sendError 403
 
-            return false
-        }
+        //     return false
+        // }
 
         true
     }

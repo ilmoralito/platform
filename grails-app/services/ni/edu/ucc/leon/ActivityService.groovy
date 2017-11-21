@@ -39,9 +39,9 @@ interface IActivityService {
 @Service(Activity)
 abstract class ActivityService implements IActivityService {
 
-    @Autowired SessionFactory sessionFactory
-    CoordinationService coordinationService
     EmployeeService employeeService
+    CoordinationService coordinationService
+    @Autowired org.hibernate.SessionFactory sessionFactory
 
     @Override
     Activity delete(final Serializable id) {

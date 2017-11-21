@@ -5,8 +5,11 @@ import grails.validation.ValidationException
 import ni.edu.ucc.leon.EmployeeCoordination
 import ni.edu.ucc.leon.ActivityService
 import ni.edu.ucc.leon.EmployeeService
+import ni.edu.ucc.leon.LocationService
+import ni.edu.ucc.leon.TableLinen
 import ni.edu.ucc.leon.Activity
 import ni.edu.ucc.leon.Employee
+import ni.edu.ucc.leon.Location
 import ni.edu.ucc.leon.Helper
 
 class ActivityController {
@@ -14,6 +17,7 @@ class ActivityController {
     EmployeeCoordinationService employeeCoordinationService
     EmployeeService employeeService
     ActivityService activityService
+    LocationService locationService
 
     static allowedMethods = [ save: 'POST', update: 'PUT', delete: 'DELETE', sendNotification: 'PUT' ]
 

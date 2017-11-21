@@ -6,24 +6,38 @@
                 action="requiringAttention"
                 params="[employeeId: params.employeeId]"
                 class="btn btn-default ${actionName == 'requiringAttention' ? 'active' : ''}">
-                Notificaciones <span class="label label-info">${number ?: null}</span>
+                Notificaciones <span class="label label-info">${toolbar.notificationNumber ?: null}</span>
             </g:link>
         </sec:ifAnyGranted>
 
+        <sec:ifAnyGranted roles="ROLE_PROTOCOL">
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Logistica semanal <span class="caret"></span>
+                </button>
+
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <g:each in="${toolbar.logisticsTypeList}" var="type">
+                        <li class="${params.type == type.english ? 'active' : ''}">
+                            <g:link
+                                resource="employee/activity"
+                                action="weeklyLogistics"
+                                params="[employeeId: params.employeeId, type: type.english]">
+                                ${type.spanish}
+                            </g:link>
+                        </li>
+                    </g:each>
+                </ul>
+            </div>
+        </sec:ifAnyGranted>
+
         <div class="btn-group">
-            <button type="button" class="btn btn-default">Filtrar por estado</button>
-                <button
-                    type="button"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                    class="btn btn-default dropdown-toggle">
-                <span class="caret"></span>
-                <span class="sr-only">Toggle Dropdown</span>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Filtrar por estado <span class="caret"></span>
             </button>
 
             <ul class="dropdown-menu">
-                <g:each in="${stateList}" var="state">
+                <g:each in="${toolbar.activityStateList}" var="state">
                     <li class="${params?.state == state ? 'active' : ''}">
                         <g:link
                             resource="employee/activity"
