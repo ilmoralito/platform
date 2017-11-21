@@ -18,12 +18,7 @@ class ActivityController {
     static allowedMethods = [ save: 'POST', update: 'PUT', delete: 'DELETE', sendNotification: 'PUT' ]
 
     def index(final Long employeeId) {
-        respond ([activityList: activityService.listByEmployeeAndState(employeeId, 'created')],
-            model: [
-                stateList: Helper.ACTIVITY_STATE_LIST,
-                number: countRequiringAttention(employeeId)
-            ]
-        )
+        respond ([activityList: activityService.listByEmployeeAndState(employeeId, 'created')], model: [toolbar: createToolbar(employeeId)])
     }
 
     def create(final Long employeeId) {
@@ -116,14 +111,7 @@ class ActivityController {
     }
 
     def filter(final Long employeeId, final String state) {
-        respond (
-            [activityList: activityService.listByEmployeeAndState(employeeId, state)],
-            model: [
-                stateList: Helper.ACTIVITY_STATE_LIST,
-                number: activityService.countRequiringAttention(getNotificationState(), employeeId)
-            ],
-            view: 'index'
-        )
+        respond ([activityList: activityService.listByEmployeeAndState(employeeId, state)], model: [toolbar: createToolbar(employeeId)], view: 'index')
     }
 
     def requiringAttention(final Long employeeId) {
@@ -134,12 +122,11 @@ class ActivityController {
             }]
         }
 
-        respond ([activityListByOrganizer: activityListByOrganizer],
-            model: [
-                stateList: Helper.ACTIVITY_STATE_LIST,
-                number: countRequiringAttention(employeeId)
-            ]
-        )
+        respond ([activityListByOrganizer: activityListByOrganizer], model: [toolbar: createToolbar(employeeId)])
+    }
+
+    def weeklyLogistics(final Long employeeId, final String type) {
+        respond ([results: locationService.listWeeklyLogistics(type)], model: [toolbar: createToolbar(employeeId)])
     }
 
     protected void notFound(final Long employeeId) {
@@ -196,4 +183,18 @@ class ActivityController {
 
         activityService.countRequiringAttention(state, employeeId)
     }
+
+    private Toolbar createToolbar(final Long employeeId) {
+        new Toolbar (
+            notificationNumber: countRequiringAttention(employeeId),
+            logisticsTypeList: Helper.LOGISTICS_TYPE_LIST,
+            activityStateList: Helper.ACTIVITY_STATE_LIST
+        )
+    }
+}
+
+class Toolbar {
+    Integer notificationNumber
+    List<LinkedHashMap> logisticsTypeList
+    List<LinkedHashMap> activityStateList
 }
