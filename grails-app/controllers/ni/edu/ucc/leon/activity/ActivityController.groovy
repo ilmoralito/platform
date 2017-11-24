@@ -1,5 +1,6 @@
 package ni.edu.ucc.leon.activity
 
+import com.craigburke.document.builder.PdfDocumentBuilder
 import ni.edu.ucc.leon.EmployeeCoordinationService
 import grails.validation.ValidationException
 import ni.edu.ucc.leon.EmployeeCoordination
@@ -131,6 +132,88 @@ class ActivityController {
 
     def weeklyLogistics(final Long employeeId, final String type) {
         respond ([results: locationService.listWeeklyLogistics(type)], model: [toolbar: createToolbar(employeeId)])
+    }
+
+    def printWeeklyLogistics(final Long employeeId, final String type) {
+        PdfDocumentBuilder pdfBuilder = new PdfDocumentBuilder(response.outputStream)
+        List<Map> logisticList = locationService.listWeeklyLogistics(type)
+        Closure template = {
+            'document' font: [family: 'Courier', size: 7.pt], margin: [top: 0.3.inches, left: 0.3.inches, right: 0.3.inches]
+        }
+
+        pdfBuilder.create {
+            document (
+                template: template,
+
+                header: { info ->
+                    table(border: [size: 0]) {
+                        row {
+                            cell "UCC LEON - Protocolo - Logistica semanal del ${Helper.FIRST_DAY_OF_WEEK().format('yyyy-MM-dd')} al ${Helper.LAST_DAY_OF_WEEK().format('yyyy-MM-dd')}", align: 'center'
+                        }
+                    }
+                },
+
+                footer: { info ->
+                    table(border: [size: 0]) {
+                        row {
+                            cell 'Elaborado por: Orlando Gaitan Coordinador de protocolo', align: 'center'
+                        }
+                    }
+                }
+            ) {
+                table(padding: 3.px) {
+                    row {
+                        cell 'Lugar'
+                        cell 'Nombre'
+                        cell 'Horario'
+                        cell 'Participantes'
+
+                        if (type == 'concierge') {
+                            cell 'Montaje'
+                        }
+
+                        if (type == 'protocol') {
+                            cell 'Manteleria'
+                            cell 'B. de agua'
+                            cell 'Refrigerios'
+                        }
+
+                        cell 'Requerimiento'
+                    }
+
+                    logisticList.each { logistic ->
+                        row {
+                            cell logistic.date, colspan: logistic.locations[0].size() - 1
+                        }
+
+                        logistic.locations.each { location ->
+                            row {
+                                cell location.place
+                                cell location.name
+                                cell "$location.startTime a $location.endTime"
+                                cell location.participants
+
+                                if (type == 'concierge') {
+                                    cell location.typeOfAssembly
+                                }
+
+                                if (type == 'protocol') {
+                                    cell join(in: location.tableLinen)
+                                    cell location.waterBottles
+                                    cell location?.refreshment?.quantity
+                                }
+
+                                cell join(in: location.requirements)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        response.contentType = "application/pdf"
+        response.setHeader("Content-disposition", "attachment;filename=test.pdf")
+        response.outputStream.flush()
     }
 
     protected void notFound(final Long employeeId) {

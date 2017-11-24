@@ -74,7 +74,12 @@
                 </table>
             </g:each>
 
-            <g:link class="btn btn-primary">Imprimir</g:link>
+            <g:link
+                resource="employee/activity"
+                action="printWeeklyLogistics"
+                params="[employeeId: params.employeeId, type: params.type]"
+                method="GET"
+                class="btn btn-primary">Imprimir</g:link>
         </g:if>
         <g:else>
             <p>Sin datos que mostrar</p>
