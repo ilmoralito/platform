@@ -162,6 +162,7 @@ class LocationController {
                 command.universityAnthem,
                 command.triumphalAnthem,
                 command.sound,
+                command.microphone,
                 command.projectorTable,
                 command.waterBottles,
                 command.observation

@@ -59,4 +59,10 @@ class Location {
         microphone defaultValue: false
         observation type: 'text'
     }
+
+    static transients = ['schedule']
+
+    String getSchedule() {
+        "${startDateAndTime.format('hh:mm') a endDateAndTime.format('hh:mm')}"
+    }
 }

@@ -26,7 +26,7 @@
 
         <div class="form-group">
             <label for="startDateAndTime">Fecha y hora de inicio</label>
-            <g:field type="date" name="startDateAndTime" value="${location?.startDateAndTime?.format('yyyy-MM-dd')}" readonly class="form-control"/>
+            <g:textField name="startDateAndTime" value="${location?.startDateAndTime?.format('yyyy-MM-dd')}" readonly class="form-control"/>
         </div>
 
         <div class="form-group">

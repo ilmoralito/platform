@@ -59,6 +59,7 @@ interface ILocationService {
         final Boolean universityAnthem,
         final Boolean triumphalAnthem,
         final Boolean sound,
+        final Boolean microphone,
         final Boolean projectorTable,
         final Integer waterBottles,
         final String observation
@@ -197,25 +198,25 @@ abstract class LocationService implements ILocationService {
         Classroom classroom = classroomService.find(place)
 
         Location location = new Location(
-            classroom,
-            startDateAndTime,
-            endDateAndTime,
-            participants,
-            typeOfAssembly,
-            datashow,
-            podium,
-            displayTable,
-            flags,
-            water,
-            coffee,
-            nationalAnthem,
-            universityAnthem,
-            triumphalAnthem,
-            sound,
-            microphone,
-            projectorTable,
-            waterBottles,
-            observation
+            place: classroom,
+            startDateAndTime: startDateAndTime,
+            endDateAndTime: endDateAndTime,
+            participants: participants,
+            typeOfAssembly: typeOfAssembly,
+            datashow: datashow,
+            podium: podium,
+            displayTable: displayTable,
+            flags: flags,
+            water: water,
+            coffee: coffee,
+            nationalAnthem: nationalAnthem,
+            universityAnthem: universityAnthem,
+            triumphalAnthem: triumphalAnthem,
+            sound: sound,
+            microphone: microphone,
+            projectorTable: projectorTable,
+            waterBottles: waterBottles,
+            observation: observation
         )
 
         activity.addToLocations(location)
@@ -251,6 +252,7 @@ abstract class LocationService implements ILocationService {
         final Boolean universityAnthem,
         final Boolean triumphalAnthem,
         final Boolean sound,
+        final Boolean microphone,
         final Boolean projectorTable,
         final Integer waterBottles,
         final String observation
@@ -274,6 +276,7 @@ abstract class LocationService implements ILocationService {
             location.universityAnthem = universityAnthem
             location.triumphalAnthem = triumphalAnthem
             location.sound = sound
+            location.microphone = microphone
             location.projectorTable = projectorTable
             location.waterBottles = waterBottles
             location.observation = observation
