@@ -49,6 +49,9 @@ grails {
                 [pattern: '/login/authfail',                                access: ['permitAll']],
                 [pattern: '/logout/**',                                     access: ['permitAll']],
 
+                // CSUTOMER
+                [pattern: '/customers/**',                                  access: ['ROLE_PROTOCOL']],
+
                 // ACTIVITY
                 [pattern: '/employees/*/activities/state/*',                access: ['ROLE_PROTOCOL', 'ROLE_ASSISTANT', 'ROLE_COORDINATOR', 'ROLE_HEAD_OFFICE_DELEGATE', 'ROLE_ACADEMIC_COORDINATOR', 'ROLE_ADMINISTRATIVE_COORDINATOR']],
                 [pattern: '/employees/*/activities/**',                     access: ['ROLE_PROTOCOL', 'ROLE_ASSISTANT', 'ROLE_COORDINATOR', 'ROLE_HEAD_OFFICE_DELEGATE', 'ROLE_ACADEMIC_COORDINATOR', 'ROLE_ADMINISTRATIVE_COORDINATOR']],

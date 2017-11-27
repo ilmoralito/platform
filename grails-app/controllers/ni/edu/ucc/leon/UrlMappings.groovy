@@ -23,6 +23,8 @@ class UrlMappings {
 
         '/roles'(resources: 'role', excludes: ['create'])
 
+        '/customers'(resources: 'customer')
+
         '/employees'(resources: 'employee', excludes: ['delete']) {
             '/updateFullName'(controller: 'employee', action: 'updateFullName', method: 'PUT')
 

@@ -11,4 +11,6 @@ databaseChangeLog = {
     include file: 'change-waterBottles-constraint-to-nullable.groovy'
     include file: 'add-national-anthem-triumphal-anthem-university-anthem.groovy'
     include file: 'add-microphone-field-to-location.groovy'
+    include file: 'add-customer-and-representative-tables.groovy'
+    include file: 'add-identification-card-to-representative.groovy'
 }

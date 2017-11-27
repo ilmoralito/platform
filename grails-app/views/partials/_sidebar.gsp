@@ -6,6 +6,8 @@
     </g:link>
 
     <sec:ifAllGranted roles='ROLE_PROTOCOL'>
+        <g:link resource="customer" action="index" method="GET" class="list-group-item ${controllerName == 'customer' ? 'active' : ''}">Clientes</g:link>
+
         <g:link resource="color" action="index" method="GET" class="list-group-item ${controllerName == 'color' ? 'active' : ''}">Colores</g:link>
     </sec:ifAllGranted>
 
