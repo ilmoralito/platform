@@ -7,7 +7,7 @@
         <div class="clearfix">
             <div class="pull-right">
                 <g:link resource="customer" action="create" method="GET" class="btn btn-primary">
-                    Crear actividad
+                    Agregar cliente
                 </g:link>
             </div>
         </div>
