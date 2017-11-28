@@ -13,6 +13,7 @@ class Customer {
     }
 
     static mapping = {
+        sort 'name'
         version false
         table 'customers'
     }
