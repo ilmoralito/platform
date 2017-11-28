@@ -7,6 +7,7 @@ class SaveCustomerCommand implements grails.validation.Validateable {
     String identificationCard
     String email
     String telephoneNumber
+    String academicTitle
 
     static constraints = {
         name blank: false, unique: true
@@ -14,5 +15,6 @@ class SaveCustomerCommand implements grails.validation.Validateable {
         identificationCard blank: false, unique: true
         email blank: false, unique: true, email: true
         telephoneNumber blank: false, unique: true
+        academicTitle blank: false
     }
 }

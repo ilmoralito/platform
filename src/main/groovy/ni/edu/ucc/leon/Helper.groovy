@@ -8,6 +8,13 @@ import java.text.SimpleDateFormat
 @CompileStatic
 class Helper {
 
+    public static final List<String> TITLES = [
+        'Licenciado',
+        'Ingeniero',
+        'Doctor',
+        'Master'
+    ]
+
     public static final List<LinkedHashMap> LOGISTICS_TYPE_LIST = [
         [english: 'concierge', spanish: 'Conserjeria'],
         [english: 'generalServices', spanish: 'Servicios generales'],

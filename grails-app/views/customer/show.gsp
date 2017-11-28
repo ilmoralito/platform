@@ -20,7 +20,7 @@
                 </tr>
                 <tr>
                     <td>Nombre</td>
-                    <td>${customer.representative.fullName}</td>
+                    <td>${customer.representative.nameAndTitle}</td>
                 </tr>
                 <tr>
                     <td>Cedula</td>

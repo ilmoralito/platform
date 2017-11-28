@@ -6,12 +6,14 @@ class Representative {
     String email
     String telephoneNumber
     String identificationCard
+    String academicTitle
 
     static constraints = {
         fullName blank: false
         email blank: false, unique: true, email: true
         telephoneNumber blank: false, unique: true, maxSize: 8, minSize: 8
         identificationCard blank: false, unique: true
+        academicTitle inList: Helper.TITLES
     }
 
     static belongsTo = [customer: Customer]
@@ -20,6 +22,13 @@ class Representative {
         version false
         customer unique: true
         table 'representatives'
-        telephoneNumber column: 'telephone_number', length: 8
+        telephoneNumber sqlType: 'varchar(8)'
+        academicTitle sqlType: 'varchar(100)'
     }
+
+    String getNameAndTitle() {
+        "$academicTitle $fullName"
+    }
+
+    static transients = ['nameAndTitle']
 }

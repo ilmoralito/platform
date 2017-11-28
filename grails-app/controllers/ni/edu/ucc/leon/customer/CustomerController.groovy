@@ -3,6 +3,7 @@ package ni.edu.ucc.leon.customer
 import grails.validation.ValidationException
 import ni.edu.ucc.leon.CustomerService
 import ni.edu.ucc.leon.Customer
+import ni.edu.ucc.leon.Helper
 
 class CustomerController {
 
@@ -13,7 +14,7 @@ class CustomerController {
     }
 
     def create() {
-        respond new Customer(params)
+        respond ([customer: new Customer(params)], model: [academicTitleList: Helper.TITLES])
     }
 
     def save(SaveCustomerCommand command) {
@@ -38,7 +39,7 @@ class CustomerController {
     }
 
     def edit(final Long id) {
-        respond id ? customerService.find(id) : null
+        respond ([customer: id ? customerService.find(id) : null], model: [academicTitleList: Helper.TITLES])
     }
 
     def update(UpdateCustomerCommand command) {

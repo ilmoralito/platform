@@ -27,7 +27,8 @@ abstract class CustomerService implements ICustomerService {
             email: command.email,
             fullName: command.fullName,
             telephoneNumber: command.telephoneNumber,
-            identificationCard: command.identificationCard
+            identificationCard: command.identificationCard,
+            academicTitle: command.academicTitle
         )
 
         customer.representative = representative
@@ -45,6 +46,7 @@ abstract class CustomerService implements ICustomerService {
                 representative.identificationCard = command.identificationCard
                 representative.email = command.email
                 representative.telephoneNumber = command.telephoneNumber
+                representative.academicTitle = command.academicTitle
             }
 
             customer.save(flush: true, failOnError: true)

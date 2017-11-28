@@ -11,6 +11,11 @@
 </div>
 
 <div class="form-group">
+    <label for="fullName">Titulo academico</label>
+    <g:select name="academicTitle" from="${academicTitleList}" value="${customer?.representative?.academicTitle}" class="form-control"/>
+</div>
+
+<div class="form-group">
     <label for="identificationCard">Cedula</label>
     <g:textField name="identificationCard" value="${customer?.representative?.identificationCard}" class="form-control"/>
 </div>
