@@ -7,6 +7,7 @@ import ni.edu.ucc.leon.EmployeeCoordination
 import ni.edu.ucc.leon.ActivityService
 import ni.edu.ucc.leon.EmployeeService
 import ni.edu.ucc.leon.LocationService
+import ni.edu.ucc.leon.CustomerService
 import ni.edu.ucc.leon.TableLinen
 import ni.edu.ucc.leon.Activity
 import ni.edu.ucc.leon.Employee
@@ -19,6 +20,7 @@ class ActivityController {
     EmployeeService employeeService
     ActivityService activityService
     LocationService locationService
+    CustomerService customerService
 
     static allowedMethods = [ save: 'POST', update: 'PUT', delete: 'DELETE', sendNotification: 'PUT' ]
 
@@ -27,24 +29,23 @@ class ActivityController {
     }
 
     def create(final Long employeeId) {
-        [
-            nameList: activityService.activityNamesPerEmployee(employeeId),
-            employeeCoordinations: employeeCoordinationService.listByEmployee(employeeService.find(employeeId))
-        ]
+        respond ([activity: new Activity(params)], model: model(employeeId))
     }
 
-    def save(final Long employeeId, final String name, final Long organizedBy) {
+    def save(SaveActivityCommand command) {
+        if (command.hasErrors()) {
+            respond ([errors: command.errors], model: model(command.employeeId), view: 'create')
+
+            return false
+        }
+
         try {
-            Activity activity = activityService.save(employeeId, name, organizedBy)
+            Activity activity = activityService.save(command)
 
             flash.message = 'Actividad creada'
-            redirect uri: "/employees/${employeeId}/activities/${activity.id}", method: 'GET'
+            redirect uri: "/employees/${command.employeeId}/activities/${activity.id}", method: 'GET'
         } catch(ValidationException e) {
-            render view: 'create', model: [
-                errors: e.errors,
-                nameList: activityService.activityNamesPerEmployee(employeeId),
-                employeeCoordinations: employeeCoordinationService.listByEmployee(employeeService.find(employeeId))
-            ]
+            respond ([errors: e.errors], model: model(command.employeeId), view: 'create')
         }
     }
 
@@ -57,32 +58,42 @@ class ActivityController {
     def edit(final Long id, final Long employeeId) {
         Employee employee = employeeService.find(employeeId)
 
-        [
+        respond ([activity: activityService.find(id)], model: [
             activity: activityService.find(id),
             nameList: activityService.activityNamesPerEmployee(employeeId),
-            employeeCoordinations: employeeCoordinationService.listByEmployee(employee)
-        ]
+            employeeCoordinations: employeeCoordinationService.listByEmployee(employee),
+            customerList: customerService.findAll()
+        ])
     }
 
-    def update(final Long id, final Long employeeId, final String name, final Long organizedBy) {
+    def update(UpdateActivityCommand command) {
+        if (command.hasErrors()) {
+            Map model = model(command.employeeId)
+
+            model['activity'] = activityService.find(id)
+
+            respond ([errors: command.errors], view: 'edit', model: model)
+
+            return
+        }
+
         try {
-            Activity activity = activityService.update(id, name, organizedBy)
+            Activity activity = activityService.update(command)
 
             if (!activity) {
-                notFound(employeeId)
+                notFound(command.employeeId)
 
                 return
             }
 
             flash.message = 'Actividad actualizada'
-            redirect uri: "/employees/${employeeId}/activities/${activity.id}", method: 'GET'
+            redirect uri: "/employees/${command.employeeId}/activities/${activity.id}", method: 'GET'
         } catch(ValidationException e) {
-            render view: 'edit', model: [
-                errors: e.errors,
-                activity: activityService.find(id),
-                nameList: activityService.activityNamesPerEmployee(employeeId),
-                employeeCoordinations: employeeCoordinationService.listByEmployee(employeeService.find(employeeId))
-            ]
+            Map model = model(command.employeeId)
+
+            model['activity'] = activityService.find(id)
+
+            respond ([errors: command.errors], model: model, view: 'edit')
         }
     }
 
@@ -277,6 +288,14 @@ class ActivityController {
             logisticsTypeList: Helper.LOGISTICS_TYPE_LIST,
             activityStateList: Helper.ACTIVITY_STATE_LIST
         )
+    }
+
+    private Map model(final Long employeeId) {
+        [
+            nameList: activityService.activityNamesPerEmployee(employeeId),
+            employeeCoordinations: employeeCoordinationService.listByEmployee(employeeService.find(employeeId)),
+            customerList: 'ROLE_PROTOCOL' in principal.authorities.authority ? customerService.findAll() : [:]
+        ]
     }
 }
 

@@ -8,6 +8,13 @@
     </datalist>
 </div>
 
+<sec:ifAllGranted roles='ROLE_PROTOCOL'>
+    <div class="form-group">
+        <label for="customer">Selecciona cliente</label>
+        <g:select name="customer" from="${customerList}" optionKey="id" optionValue="name" value="${activity?.customer?.id}" class="form-control"/>
+    </div>
+</sec:ifAllGranted>
+
 <g:if test="${employeeCoordinations.size() == 1}">
     <g:hiddenField name="organizedBy" value="${employeeCoordinations[0].coordination.id}"/>
 </g:if>

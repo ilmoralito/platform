@@ -15,6 +15,7 @@
                     <td>Nombre</td>
                     <td>${activity.name}</td>
                 </tr>
+
                 <tr>
                     <td>Estado</td>
                     <td>
@@ -23,16 +24,26 @@
                         </div>
                     </td>
                 </tr>
+
                 <tr>
                     <td>Creado por</td>
                     <td>
                         ${activity.employee.fullName}
                     </td>
                 </tr>
-                <tr>
-                    <td>Organizador</td>
-                    <td>${activity.organizedBy.name}</td>
-                </tr>
+
+                    <tr>
+                        <td>Organizador</td>
+                        <td>${activity.organizedBy.name}</td>
+                    </tr>
+
+                <g:if test="${activity.instanceOf(ni.edu.ucc.leon.CustomerActivity)}">
+                    <tr>
+                        <td>Cliente</td>
+                        <td>${activity.customer.name}</td>
+                    </tr>
+                </g:if>
+
                 <tr>
                     <td>Fecha y hora de creacion</td>
                     <td>

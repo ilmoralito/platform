@@ -13,4 +13,5 @@ databaseChangeLog = {
     include file: 'add-microphone-field-to-location.groovy'
     include file: 'add-customer-and-representative-tables.groovy'
     include file: 'add-identification-card-to-representative.groovy'
+    include file: 'create-customer-activity-table.groovy'
 }

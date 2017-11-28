@@ -1,10 +1,13 @@
 package ni.edu.ucc.leon
 
 import org.hibernate.transform.AliasToEntityMapResultTransformer
+import ni.edu.ucc.leon.activity.UpdateActivityCommand
+import ni.edu.ucc.leon.activity.SaveActivityCommand
 import ni.edu.ucc.leon.AdministrativeActivity
 import ni.edu.ucc.leon.CoordinationService
 import ni.edu.ucc.leon.AcademicActivity
 import ni.edu.ucc.leon.EmployeeService
+import ni.edu.ucc.leon.CustomerService
 import grails.gorm.services.Service
 import org.hibernate.SessionFactory
 import grails.gorm.services.Query
@@ -23,9 +26,9 @@ interface IActivityService {
 
     List<Activity> listByEmployeeAndState(final Serializable employeeId, final String state)
 
-    Activity update(final Serializable id, final String name, final Serializable coordinationId)
+    Activity save(SaveActivityCommand command)
 
-    Activity save(final Serializable employeeId, final String name, final Serializable coordinationId)
+    Activity update(UpdateActivityCommand command)
 
     Number countRequiringAttention(final String state, final Serializable employeeId)
 
@@ -39,6 +42,7 @@ interface IActivityService {
 @Service(Activity)
 abstract class ActivityService implements IActivityService {
 
+    CustomerService customerService
     EmployeeService employeeService
     CoordinationService coordinationService
     @Autowired org.hibernate.SessionFactory sessionFactory
@@ -79,27 +83,39 @@ abstract class ActivityService implements IActivityService {
     }
 
     @Override
-    Activity save(final Serializable employeeId, final String name, final Serializable coordinationId) {
-        Employee employee = employeeService.find(employeeId)
-        Coordination coordination = coordinationService.find(coordinationId)
+    Activity save(SaveActivityCommand command) {
+        Employee employee = employeeService.find(command.employeeId)
+        Coordination coordination = coordinationService.find(command.organizedBy)
 
-        if (coordination.area in ['academic', 'school']) {
-            new AcademicActivity(name: name, employee: employee, organizedBy: coordination).save(failOnError:true)
+        if (command.customer) {
+            new CustomerActivity(
+                name: command.name,
+                employee: employee,
+                organizedBy: coordination,
+                customer: command.customer
+            ).save(failOnError: true)
+        } else if (coordination.area in ['academic', 'school']) {
+            new AcademicActivity(name: command.name, employee: employee, organizedBy: coordination).save(failOnError:true)
         } else {
-            new AdministrativeActivity(name: name, employee: employee, organizedBy: coordination).save(failOnError:true)
+            new AdministrativeActivity(name: command.name, employee: employee, organizedBy: coordination).save(failOnError:true)
         }
     }
 
     @Override
-    Activity update(final Serializable id, final String name, final Serializable coordinationId) {
-        Activity activity = find(id)
-        Coordination coordination = coordinationService.find(coordinationId)
+    Activity update(UpdateActivityCommand command) {
+        Activity activity = find(command.id)
 
-        if (activity && coordination) {
-            activity.name = name
-            activity.organizedBy = coordination
+        if (activity) {
+            activity.with {
+                name = command.name
+                organizedBy = coordinationService.find(command.organizedBy)
 
-            activity.save(failOnError: true)
+                if (command.customer) {
+                    customer = customerService.find(command.customer)
+                }
+
+                save(flush: true)
+            }
         }
 
         activity
