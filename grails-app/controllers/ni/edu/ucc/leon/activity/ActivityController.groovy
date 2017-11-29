@@ -113,16 +113,12 @@ class ActivityController {
     def sendNotification(final Long employeeId, final Long activityId, final String state) {
         Activity activity = activityService.find(activityId)
 
-        if (!activity || !activity.locations) {
-            flash.message = 'Ubicaciones son necesarias para continuar'
+        if (activity && activity.locations) {
+            activityService.updateState(state ? state : getNextNotificationState(), activityId)
 
-            redirect uri: "/employees/$employeeId/activities/$activityId", method: 'GET'
-            return
+            flash.message = 'Estado actualizado'
         }
 
-        activityService.updateState(state ?: getNextNotificationState(), activityId)
-
-        flash.message = 'Estado actualizado'
         redirect uri: "/employees/$employeeId/activities/$activityId", method: 'GET'
     }
 
@@ -234,7 +230,7 @@ class ActivityController {
     }
 
     private final String getNotificationState() {
-        List<String> authorityList = authenticatedUser.authorities.authority
+        List<String> authorityList = getCurrentUserAuthorityList()
 
         if ('ROLE_COORDINATOR' in authorityList) return 'notified'
 
@@ -246,7 +242,7 @@ class ActivityController {
     }
 
     private final String getNextNotificationState() {
-        List<String> authorityList = authenticatedUser.authorities.authority
+        List<String> authorityList = getCurrentUserAuthorityList()
 
         if ('ROLE_ASSISTANT' in authorityList) return 'notified'
 
@@ -256,12 +252,12 @@ class ActivityController {
 
         if ('ROLE_ADMINISTRATIVE_COORDINATOR' in authorityList) return 'authorized'
 
-        if ('ROLE_PROTOCOL' in authorityList) return 'attended'
+        if ('ROLE_PROTOCOL' in authorityList) return 'notified'
     }
 
     private final Boolean isSupervisor() {
         final List<String> supervisorList = ['ROLE_ACADEMIC_COORDINATOR', 'ROLE_ADMINISTRATIVE_COORDINATOR', 'ROLE_PROTOCOL']
-        final List<String> authorityList = authenticatedUser.authorities.authority
+        final List<String> authorityList = getCurrentUserAuthorityList()
 
         supervisorList.any { authority -> authority in authorityList }
     }
@@ -272,6 +268,10 @@ class ActivityController {
         if (isSupervisor()) return activityService.listRequiringAttention(state)
 
         activityService.listRequiringAttention(state, employeeId)
+    }
+
+    private final List<String> getCurrentUserAuthorityList() {
+        authenticatedUser.authorities.authority
     }
 
     private final Number countRequiringAttention(final Long employeeId) {
