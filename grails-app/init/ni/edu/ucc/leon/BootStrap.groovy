@@ -132,10 +132,6 @@ class BootStrap {
             it.clear()
         }
 
-        assert User.count() == 13
-        assert Role.count() == 8
-        assert UserRole.count() == 20
-
         // EMPLOYEES
         Employee employee1 = Employee.findByIdentityCard('291-260780-0001W') ?: new Employee(
             fullName: 'Employee one Full name',
@@ -220,8 +216,6 @@ class BootStrap {
             identityCard: '281-291252-0001W',
             user: administrativeCoordinatorUser
         ).save(failOnError: true)
-
-        assert Employee.count() == 14
 
         // COORDINATIONS
         Coordination warehouse = Coordination.findByName('Bodega') ?: new Coordination(
@@ -448,8 +442,6 @@ class BootStrap {
                 jobTitle: 'Director administrativo'
             ).save(failOnError: true)
         }
-
-        assert EmployeeCoordination.count() == 17
 
         // DEVICES
         List<String> deviceList = ['Network', 'Display', 'Keyboard', 'Mouse', 'UPS', 'Printer', 'Scanner']
