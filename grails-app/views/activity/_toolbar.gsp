@@ -1,6 +1,6 @@
 <div class="clearfix">
     <div class="pull-right">
-        <sec:ifAnyGranted roles='ROLE_COORDINATOR, ROLE_ACADEMIC_COORDINATOR, ROLE_ADMINISTRATIVE_COORDINATOR, ROLE_PROTOCOL'>
+        <sec:ifAnyGranted roles='ROLE_ACADEMIC_COORDINATOR, ROLE_ACADEMIC_DIRECTOR, ROLE_ADMINISTRATIVE_DIRECTOR, ROLE_PROTOCOL'>
             <g:link
                 resource="employee/activity"
                 action="requiringAttention"

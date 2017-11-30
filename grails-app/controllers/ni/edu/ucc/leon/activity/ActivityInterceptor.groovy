@@ -27,19 +27,19 @@ class ActivityInterceptor {
         //     return false
         // }
 
-        // if (activity.state == 'notified' && activityStateService.isValidAuthority('ROLE_COORDINATOR') == false && activityStateService.isValidCoordination(activity.organizedBy) == false) {
+        // if (activity.state == 'notified' && activityStateService.isValidAuthority('ROLE_ACADEMIC_COORDINATOR') == false && activityStateService.isValidCoordination(activity.organizedBy) == false) {
         //     response.sendError 403
 
         //     return false
         // }
 
-        // if (activity.state == 'confirmed' && activityStateService.isValidAuthority('ROLE_ACADEMIC_COORDINATOR') == false) {
+        // if (activity.state == 'confirmed' && activityStateService.isValidAuthority('ROLE_ACADEMIC_DIRECTOR') == false) {
         //     response.sendError 404
 
         //     return false
         // }
 
-        // if (activity.state == 'approved' && activityStateService.isValidAuthority('ROLE_ADMINISTRATIVE_COORDINATOR') == false) {
+        // if (activity.state == 'approved' && activityStateService.isValidAuthority('ROLE_ADMINISTRATIVE_DIRECTOR') == false) {
         //     response.sendError 404
 
         //     return false

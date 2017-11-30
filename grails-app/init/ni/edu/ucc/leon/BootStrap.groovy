@@ -24,10 +24,11 @@ class BootStrap {
         Role adminRole = Role.findByAuthority('ROLE_ADMIN') ?: new Role(authority: 'ROLE_ADMIN').save(failOnError: true)
         Role protocolRole = Role.findByAuthority('ROLE_PROTOCOL') ?: new Role(authority: 'ROLE_PROTOCOL').save(failOnError: true)
         Role assistantRole = Role.findByAuthority('ROLE_ASSISTANT') ?: new Role(authority: 'ROLE_ASSISTANT').save(failOnError: true)
-        Role coordinatorRole = Role.findByAuthority('ROLE_COORDINATOR') ?: new Role(authority: 'ROLE_COORDINATOR').save(failOnError: true)
-        Role headOfficeDelegateRole = Role.findByAuthority('ROLE_HEAD_OFFICE_DELEGATE') ?: new Role(authority: 'ROLE_HEAD_OFFICE_DELEGATE').save(failOnError: true)
         Role academicCoordinatorRole = Role.findByAuthority('ROLE_ACADEMIC_COORDINATOR') ?: new Role(authority: 'ROLE_ACADEMIC_COORDINATOR').save(failOnError: true)
         Role administrativeCoordinatorRole = Role.findByAuthority('ROLE_ADMINISTRATIVE_COORDINATOR') ?: new Role(authority: 'ROLE_ADMINISTRATIVE_COORDINATOR').save(failOnError: true)
+        Role headOfficeDelegateRole = Role.findByAuthority('ROLE_HEAD_OFFICE_DELEGATE') ?: new Role(authority: 'ROLE_HEAD_OFFICE_DELEGATE').save(failOnError: true)
+        Role academicDirectorRole = Role.findByAuthority('ROLE_ACADEMIC_DIRECTOR') ?: new Role(authority: 'ROLE_ACADEMIC_DIRECTOR').save(failOnError: true)
+        Role administrativeDirectorRole = Role.findByAuthority('ROLE_ADMINISTRATIVE_DIRECTOR') ?: new Role(authority: 'ROLE_ADMINISTRATIVE_DIRECTOR').save(failOnError: true)
 
         // USERS
         User userUser = User.findByEmail('user.user@ucc.edu.ni') ?: new User(email: 'user.user@ucc.edu.ni').save(failOnError: true)
@@ -35,12 +36,12 @@ class BootStrap {
         User anotherAdminUser = User.findByEmail('anotheradmin.user@ucc.edu.ni') ?: new User(email: 'anotheradmin.user@ucc.edu.ni').save(failOnError: true)
 
         User protocolUser = User.findByEmail('protocol.user@ucc.edu.ni') ?: new User(email: 'protocol.user@ucc.edu.ni').save(failOnError: true)
-        User coordinatorUser = User.findByEmail('coordinator.user@ucc.edu.ni') ?: new User(email: 'coordinator.user@ucc.edu.ni').save(failOnError: true)
+        User academicCoordinatorUser = User.findByEmail('academicCoordinator.user@ucc.edu.ni') ?: new User(email: 'academicCoordinator.user@ucc.edu.ni').save(failOnError: true)
         User assistant1User = User.findByEmail('assistant1.user@ucc.edu.ni') ?: new User(email: 'assistant1.user@ucc.edu.ni').save(failOnError: true)
         User assistant2User = User.findByEmail('assistant2.user@ucc.edu.ni') ?: new User(email: 'assistant2.user@ucc.edu.ni').save(failOnError: true)
         User headOfficeDelegateUser = User.findByEmail('headOfficeDelegate.user@ucc.edu.ni') ?: new User(email: 'headOfficeDelegate.user@ucc.edu.ni').save(failOnError: true)
-        User academicCoordinatorUser = User.findByEmail('academicCoordinator.user@ucc.edu.ni') ?: new User(email: 'academicCoordinator.user@ucc.edu.ni').save(failOnError: true)
-        User administrativeCoordinatorUser = User.findByEmail('administrativeCoordinator.user@ucc.edu.ni') ?: new User(email: 'administrativeCoordinator.user@ucc.edu.ni').save(failOnError: true)
+        User academicDirectorUser = User.findByEmail('academicDirector.user@ucc.edu.ni') ?: new User(email: 'academicDirector.user@ucc.edu.ni').save(failOnError: true)
+        User administrativeDirectorUser = User.findByEmail('administrativeDirector.user@ucc.edu.ni') ?: new User(email: 'administrativeDirector.user@ucc.edu.ni').save(failOnError: true)
 
         User employee5UserAccount = User.findByEmail('employee.5@ucc.edu.ni') ?: new User(email: 'employee.5@ucc.edu.ni').save(failOnError: true)
         User employee6UserAccount = User.findByEmail('employee.6@ucc.edu.ni') ?: new User(email: 'employee.6@ucc.edu.ni').save(failOnError: true)
@@ -95,12 +96,12 @@ class BootStrap {
             UserRole.create assistant2User, assistantRole
         }
 
-        if (!UserRole.exists(coordinatorUser.id, userRole.id)) {
-            UserRole.create coordinatorUser, userRole
+        if (!UserRole.exists(academicCoordinatorUser.id, userRole.id)) {
+            UserRole.create academicCoordinatorUser, userRole
         }
 
-        if (!UserRole.exists(coordinatorUser.id, coordinatorRole.id)) {
-            UserRole.create coordinatorUser, coordinatorRole
+        if (!UserRole.exists(academicCoordinatorUser.id, academicCoordinatorRole.id)) {
+            UserRole.create academicCoordinatorUser, academicCoordinatorRole
         }
 
         if (!UserRole.exists(headOfficeDelegateUser.id, userRole.id)) {
@@ -111,20 +112,20 @@ class BootStrap {
             UserRole.create headOfficeDelegateUser, headOfficeDelegateRole
         }
 
-        if (!UserRole.exists(academicCoordinatorUser.id, userRole.id)) {
-            UserRole.create academicCoordinatorUser, userRole
+        if (!UserRole.exists(academicDirectorUser.id, userRole.id)) {
+            UserRole.create academicDirectorUser, userRole
         }
 
-        if (!UserRole.exists(academicCoordinatorUser.id, academicCoordinatorRole.id)) {
-            UserRole.create academicCoordinatorUser, academicCoordinatorRole
+        if (!UserRole.exists(academicDirectorUser.id, academicDirectorRole.id)) {
+            UserRole.create academicDirectorUser, academicDirectorRole
         }
 
-        if (!UserRole.exists(administrativeCoordinatorUser.id, userRole.id)) {
-            UserRole.create administrativeCoordinatorUser, userRole
+        if (!UserRole.exists(administrativeDirectorUser.id, userRole.id)) {
+            UserRole.create administrativeDirectorUser, userRole
         }
 
-        if (!UserRole.exists(administrativeCoordinatorUser.id, administrativeCoordinatorRole.id)) {
-            UserRole.create administrativeCoordinatorUser, administrativeCoordinatorRole
+        if (!UserRole.exists(administrativeDirectorUser.id, administrativeDirectorRole.id)) {
+            UserRole.create administrativeDirectorUser, administrativeDirectorRole
         }
 
         UserRole.withSession {
@@ -184,7 +185,7 @@ class BootStrap {
         Employee employee9 = Employee.findByIdentityCard('281-290285-0001W') ?: new Employee(
             fullName: 'Employee Nine',
             identityCard: '281-290285-0001W',
-            user: coordinatorUser
+            user: academicCoordinatorUser
         ).save(failOnError: true)
 
         Employee employee10 = Employee.findByIdentityCard('281-290252-0001W') ?: new Employee(
@@ -208,13 +209,13 @@ class BootStrap {
         Employee employee13 = Employee.findByIdentityCard('281-290552-0001W') ?: new Employee(
             fullName: 'Employee Thirteen',
             identityCard: '281-290552-0001W',
-            user: academicCoordinatorUser
+            user: academicDirectorUser
         ).save(failOnError: true)
 
         Employee employee14 = Employee.findByIdentityCard('281-291252-0001W') ?: new Employee(
             fullName: 'Employee Fourteen',
             identityCard: '281-291252-0001W',
-            user: administrativeCoordinatorUser
+            user: administrativeDirectorUser
         ).save(failOnError: true)
 
         // COORDINATIONS

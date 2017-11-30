@@ -232,11 +232,11 @@ class ActivityController {
     private final String getNotificationState() {
         List<String> authorityList = getCurrentUserAuthorityList()
 
-        if ('ROLE_COORDINATOR' in authorityList) return 'notified'
+        if ('ROLE_ACADEMIC_COORDINATOR' in authorityList) return 'notified'
 
-        if ('ROLE_ACADEMIC_COORDINATOR' in authorityList) return 'confirmed'
+        if ('ROLE_ACADEMIC_DIRECTOR' in authorityList) return 'confirmed'
 
-        if ('ROLE_ADMINISTRATIVE_COORDINATOR' in authorityList) return 'approved'
+        if ('ROLE_ADMINISTRATIVE_DIRECTOR' in authorityList) return 'approved'
 
         if ('ROLE_PROTOCOL' in authorityList) return 'authorized'
     }
@@ -246,17 +246,19 @@ class ActivityController {
 
         if ('ROLE_ASSISTANT' in authorityList) return 'notified'
 
-        if ('ROLE_COORDINATOR' in authorityList) return 'confirmed'
+        if ('ROLE_ACADEMIC_COORDINATOR' in authorityList) return 'confirmed'
 
-        if ('ROLE_ACADEMIC_COORDINATOR' in authorityList) return 'approved'
+        if ('ROLE_ADMINISTRATIVE_COORDINATOR' in authorityList) return 'notified'
 
-        if ('ROLE_ADMINISTRATIVE_COORDINATOR' in authorityList) return 'authorized'
+        if ('ROLE_ACADEMIC_DIRECTOR' in authorityList) return 'approved'
+
+        if ('ROLE_ADMINISTRATIVE_DIRECTOR' in authorityList) return 'authorized'
 
         if ('ROLE_PROTOCOL' in authorityList) return 'notified'
     }
 
     private final Boolean isSupervisor() {
-        final List<String> supervisorList = ['ROLE_ACADEMIC_COORDINATOR', 'ROLE_ADMINISTRATIVE_COORDINATOR', 'ROLE_PROTOCOL']
+        final List<String> supervisorList = ['ROLE_ACADEMIC_DIRECTOR', 'ROLE_PROTOCOL']
         final List<String> authorityList = getCurrentUserAuthorityList()
 
         supervisorList.any { authority -> authority in authorityList }
@@ -264,6 +266,8 @@ class ActivityController {
 
     private final List<Map> listRequiringAttention(final Long employeeId) {
         final String state = getNotificationState()
+
+        if ('ROLE_ADMINISTRATIVE_DIRECTOR' in authenticatedUser.authorities.authority) return activityService.listRequiringAttention()
 
         if (isSupervisor()) return activityService.listRequiringAttention(state)
 
@@ -276,6 +280,8 @@ class ActivityController {
 
     private final Number countRequiringAttention(final Long employeeId) {
         final String state = getNotificationState()
+
+        if ('ROLE_ADMINISTRATIVE_DIRECTOR' in authenticatedUser.authorities.authority) return activityService.countRequiringAttention()
 
         if (isSupervisor()) return activityService.countRequiringAttention(state)
 

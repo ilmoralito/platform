@@ -16,15 +16,15 @@ class ActivityTagLib {
             out << body()
         }
 
-        if (activity.state == 'notified' && activityStateService.isValidAuthority('ROLE_COORDINATOR') && activityStateService.isValidCoordination(activity.organizedBy)) {
+        if (activity.state == 'notified' && activityStateService.isValidAuthority('ROLE_ACADEMIC_COORDINATOR') && activityStateService.isValidCoordination(activity.organizedBy)) {
             out << body()
         }
 
-        if (activity.state == 'confirmed'&& activityStateService.isValidAuthority('ROLE_ACADEMIC_COORDINATOR')) {
+        if (activity.state == 'confirmed' && activityStateService.isValidAuthority('ROLE_ACADEMIC_DIRECTOR')) {
             out << body()
         }
 
-        if (activity.state == 'approved' && activityStateService.isValidAuthority('ROLE_ADMINISTRATIVE_COORDINATOR')) {
+        if (activity.state in ['notified', 'approved'] && activityStateService.isValidAuthority('ROLE_ADMINISTRATIVE_DIRECTOR')) {
             out << body()
         }
     }

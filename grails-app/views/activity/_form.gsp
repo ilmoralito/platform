@@ -11,7 +11,7 @@
 <sec:ifAllGranted roles='ROLE_PROTOCOL'>
     <div class="form-group">
         <label for="customer">Selecciona cliente</label>
-        <g:select name="customer" from="${customerList}" optionKey="id" optionValue="name" value="${activity?.customer?.id}" class="form-control"/>
+        <g:select name="customer" from="${customerList}" optionKey="id" optionValue="name" class="form-control"/>
     </div>
 </sec:ifAllGranted>
 
