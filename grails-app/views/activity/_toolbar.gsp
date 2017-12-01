@@ -31,25 +31,6 @@
             </div>
         </sec:ifAnyGranted>
 
-        <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Filtrar por estado <span class="caret"></span>
-            </button>
-
-            <ul class="dropdown-menu">
-                <g:each in="${toolbar.activityStateList}" var="state">
-                    <li class="${params?.state == state ? 'active' : ''}">
-                        <g:link
-                            resource="employee/activity"
-                            action="filter"
-                            params="[employeeId: params.employeeId, state: state]">
-                            <activity:state currentState="${state}"/>
-                        </g:link>
-                    </li>
-                </g:each>
-            </ul>
-        </div>
-
         <g:link
             resource="employee/activity"
             action="create"

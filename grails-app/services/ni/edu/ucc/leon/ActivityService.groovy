@@ -15,6 +15,8 @@ import ni.edu.ucc.leon.Activity
 
 interface IActivityService {
 
+    List<Activity> list(final Serializable employeeId)
+
     Activity find(final Serializable id)
 
     Activity delete(final Serializable id)
@@ -23,8 +25,6 @@ interface IActivityService {
     void updateState(final String state, final Serializable id)
 
     List<Map> activityNamesPerEmployee(final Serializable employeeId)
-
-    List<Activity> listByEmployeeAndState(final Serializable employeeId, final String state)
 
     Activity save(SaveActivityCommand command)
 
@@ -52,6 +52,40 @@ abstract class ActivityService implements IActivityService {
     @Autowired org.hibernate.SessionFactory sessionFactory
 
     @Override
+    List<Map> list(final Serializable employeeId) {
+        final session = sessionFactory.currentSession
+        final query = """
+            SELECT
+                a.id id,
+                a.name name,
+                a.state state,
+                IFNULL(totalLocations, 0) locations
+            FROM
+                activities a
+                    INNER JOIN
+                employees e ON a.employee_id = e.id
+                    LEFT JOIN
+                (SELECT
+                    activity_id, COUNT(1) totalLocations
+                FROM
+                    locations
+                GROUP BY activity_id) lo ON a.id = lo.activity_id
+            WHERE
+                e.id = :employeeId
+                    AND state NOT IN ('attended' , 'canceled')"""
+        final sqlQuery = session.createSQLQuery(query)
+        final results = sqlQuery.with {
+            resultTransformer = AliasToEntityMapResultTransformer.INSTANCE
+
+            setLong('employeeId', employeeId)
+
+            list()
+        }
+
+        results
+    }
+
+    @Override
     Activity delete(final Serializable id) {
         Activity activity = find(id)
 
@@ -66,11 +100,6 @@ abstract class ActivityService implements IActivityService {
         activity.delete()
 
         activity
-    }
-
-    @Override
-    List<Activity> listByEmployeeAndState(final Serializable employeeId, final String state) {
-        Activity.where { employee.id == employeeId && state == state }.list()
     }
 
     @Override

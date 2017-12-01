@@ -44,7 +44,6 @@ class UrlMappings {
                     '/requiring/attention'(controller: 'activity', action: 'requiringAttention', method: 'GET')
                     "/weekly/logistics/$type"(controller: 'activity', action: 'weeklyLogistics', method: 'GET')
                     "/print/weekly/logistics/$type"(controller: 'activity', action: 'printWeeklyLogistics', method: 'GET')
-                    "/state/$state"(controller: 'activity', action: 'filter', method: 'GET')
                 }
 
                 '/locations'(resources: 'location') {

@@ -25,7 +25,7 @@ class ActivityController {
     static allowedMethods = [ save: 'POST', update: 'PUT', delete: 'DELETE', sendNotification: 'PUT' ]
 
     def index(final Long employeeId) {
-        respond ([activityList: activityService.listByEmployeeAndState(employeeId, 'created')], model: [toolbar: createToolbar(employeeId)])
+        respond ([activityList: activityService.list(employeeId)], model: [toolbar: createToolbar(employeeId)])
     }
 
     def create(final Long employeeId) {
@@ -120,10 +120,6 @@ class ActivityController {
         }
 
         redirect uri: "/employees/$employeeId/activities/$activityId", method: 'GET'
-    }
-
-    def filter(final Long employeeId, final String state) {
-        respond ([activityList: activityService.listByEmployeeAndState(employeeId, state)], model: [toolbar: createToolbar(employeeId)], view: 'index')
     }
 
     def requiringAttention(final Long employeeId) {
@@ -291,8 +287,7 @@ class ActivityController {
     private Toolbar createToolbar(final Long employeeId) {
         new Toolbar (
             notificationNumber: countRequiringAttention(employeeId),
-            logisticsTypeList: Helper.LOGISTICS_TYPE_LIST,
-            activityStateList: Helper.ACTIVITY_STATE_LIST
+            logisticsTypeList: Helper.LOGISTICS_TYPE_LIST
         )
     }
 
@@ -308,5 +303,4 @@ class ActivityController {
 class Toolbar {
     Integer notificationNumber
     List<LinkedHashMap> logisticsTypeList
-    List<LinkedHashMap> activityStateList
 }
