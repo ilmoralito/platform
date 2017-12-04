@@ -41,6 +41,7 @@ class UrlMappings {
                 "/notify/$state?"(controller: 'activity', action: 'sendNotification', method: 'PUT')
 
                 collection {
+                    "/summary/$year?"(controller: 'activity', action: 'summary', method: 'GET')
                     '/requiring/attention'(controller: 'activity', action: 'requiringAttention', method: 'GET')
                     "/weekly/logistics/$type"(controller: 'activity', action: 'weeklyLogistics', method: 'GET')
                     "/print/weekly/logistics/$type"(controller: 'activity', action: 'printWeeklyLogistics', method: 'GET')

@@ -15,6 +15,13 @@ import ni.edu.ucc.leon.Activity
 
 interface IActivityService {
 
+    List<Map> getSummary(final Serializable employeeId)
+
+    List<Map> getSummary(final Serializable employeeId, final Integer year)
+
+    @Query("SELECT DISTINCT(YEAR($a.dateCreated)) AS year FROM ${Activity a} INNER JOIN ${Employee e} ON a.employee.id = e.id WHERE e.id = $employeeId ORDER BY 1 DESC")
+    List<Number> yearList(final Serializable employeeId)
+
     List<Activity> list(final Serializable employeeId)
 
     Activity find(final Serializable id)
@@ -50,6 +57,93 @@ abstract class ActivityService implements IActivityService {
     EmployeeService employeeService
     CoordinationService coordinationService
     @Autowired org.hibernate.SessionFactory sessionFactory
+
+    @Override
+    List<Map> getSummary(final Serializable employeeId) {
+        final session = sessionFactory.currentSession
+        final String query = """
+            SELECT
+                s.name month,
+                s.m pivot,
+                SUM(CASE WHEN a.state = 'created' THEN 1 ELSE 0 END) created,
+                SUM(CASE WHEN a.state = 'notified' THEN 1 ELSE 0 END) notified,
+                SUM(CASE WHEN a.state = 'confirmed' THEN 1 ELSE 0 END) confirmed,
+                SUM(CASE WHEN a.state = 'approved' THEN 1 ELSE 0 END) approved,
+                SUM(CASE WHEN a.state = 'authorized' THEN 1 ELSE 0 END) authorized,
+                SUM(CASE WHEN a.state = 'attended' THEN 1 ELSE 0 END) attended,
+                SUM(CASE WHEN a.state = 'canceled' THEN 1 ELSE 0 END) canceled,
+                COUNT(a.id) total
+            FROM (
+                  SELECT  1 m, 'Jan' AS name
+                  UNION SELECT 2, 'Feb'
+                  UNION SELECT 3, 'Mar'
+                  UNION SELECT 4, 'Apr'
+                  UNION SELECT 5, 'May'
+                  UNION SELECT 6, 'Jun'
+                  UNION SELECT 7, 'Jul'
+                  UNION SELECT 8, 'Aug'
+                  UNION SELECT 9, 'Sep'
+                  UNION SELECT 10, 'Oct'
+                  UNION SELECT 11, 'Nov'
+                  UNION SELECT 12, 'Dec'
+            ) s
+            LEFT JOIN (activities a INNER JOIN employees e ON a.employee_id = e.id AND e.id = :employeeId) ON (s.m = MONTH(a.date_created))
+            GROUP BY 1, 2 ORDER BY pivot DESC"""
+        final sqlQuery = session.createSQLQuery(query)
+        final result = sqlQuery.with {
+            resultTransformer = AliasToEntityMapResultTransformer.INSTANCE
+
+            setLong('employeeId', employeeId)
+
+            list()
+        }
+
+        result
+    }
+
+    @Override
+    List<Map> getSummary(final Serializable employeeId, final Integer year) {
+        final session = sessionFactory.currentSession
+        final String query = """
+            SELECT
+                s.name month,
+                s.m pivot,
+                SUM(CASE WHEN a.state = 'created' THEN 1 ELSE 0 END) created,
+                SUM(CASE WHEN a.state = 'notified' THEN 1 ELSE 0 END) notified,
+                SUM(CASE WHEN a.state = 'confirmed' THEN 1 ELSE 0 END) confirmed,
+                SUM(CASE WHEN a.state = 'approved' THEN 1 ELSE 0 END) approved,
+                SUM(CASE WHEN a.state = 'authorized' THEN 1 ELSE 0 END) authorized,
+                SUM(CASE WHEN a.state = 'attended' THEN 1 ELSE 0 END) attended,
+                SUM(CASE WHEN a.state = 'canceled' THEN 1 ELSE 0 END) canceled,
+                COUNT(a.id) total
+            FROM (
+                  SELECT  1 m, 'Jan' AS name
+                  UNION SELECT 2, 'Feb'
+                  UNION SELECT 3, 'Mar'
+                  UNION SELECT 4, 'Apr'
+                  UNION SELECT 5, 'May'
+                  UNION SELECT 6, 'Jun'
+                  UNION SELECT 7, 'Jul'
+                  UNION SELECT 8, 'Aug'
+                  UNION SELECT 9, 'Sep'
+                  UNION SELECT 10, 'Oct'
+                  UNION SELECT 11, 'Nov'
+                  UNION SELECT 12, 'Dec'
+            ) s
+            LEFT JOIN (activities a INNER JOIN employees e ON a.employee_id = e.id AND e.id = :employeeId AND YEAR(a.date_created) = :year) ON (s.m = MONTH(a.date_created))
+            GROUP BY 1, 2 ORDER BY pivot DESC"""
+        final sqlQuery = session.createSQLQuery(query)
+        final result = sqlQuery.with {
+            resultTransformer = AliasToEntityMapResultTransformer.INSTANCE
+
+            setLong('employeeId', employeeId)
+            setInteger('year', year)
+
+            list()
+        }
+
+        result
+    }
 
     @Override
     List<Map> list(final Serializable employeeId) {

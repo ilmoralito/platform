@@ -33,6 +33,13 @@
 
         <g:link
             resource="employee/activity"
+            action="summary"
+            employeeId="${params.employeeId}"
+            class="btn btn-default ${actionName == 'summary' ? 'active' : ''}"
+            method="GET">Resumen</g:link>
+
+        <g:link
+            resource="employee/activity"
             action="create"
             employeeId="${params.employeeId}"
             method="GET"

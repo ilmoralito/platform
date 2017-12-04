@@ -110,6 +110,15 @@ class ActivityController {
         redirect uri: "/employees/$employeeId/activities", method: 'GET'
     }
 
+    def summary(final Long employeeId, final Integer year) {
+        List<Map> results = !year ? activityService.getSummary(employeeId) : activityService.getSummary(employeeId, year)
+
+        respond ([results: results], model : [
+            yearList: activityService.yearList(employeeId),
+            toolbar: createToolbar(employeeId)
+        ])
+    }
+
     def sendNotification(final Long employeeId, final Long activityId, final String state) {
         Activity activity = activityService.find(activityId)
 
