@@ -20,7 +20,7 @@ class ActivityTagLib {
             out << body()
         }
 
-        if (activity.state == 'confirmed' && activityStateService.isValidAuthority('ROLE_ACADEMIC_DIRECTOR')) {
+        if (activity.state in ['notified', 'confirmed'] && activityStateService.isValidAuthority('ROLE_ACADEMIC_DIRECTOR')) {
             out << body()
         }
 

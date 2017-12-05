@@ -14,6 +14,10 @@ class ActivityStateService {
         authority in getCurrentUserAuthorities()
     }
 
+    Boolean areValidAuthorities(final List<String> authorities) {
+        authorities.any { it in getCurrentUserAuthorities() }
+    }
+
     Boolean isValidCoordination(final Coordination coordination) {
         coordination in EmployeeCoordination.listEmployeeCoordinations(springSecurityService.currentUser.employee)
     }

@@ -8,6 +8,7 @@ import ni.edu.ucc.leon.ActivityService
 import ni.edu.ucc.leon.EmployeeService
 import ni.edu.ucc.leon.LocationService
 import ni.edu.ucc.leon.CustomerService
+import ni.edu.ucc.leon.Coordination
 import ni.edu.ucc.leon.TableLinen
 import ni.edu.ucc.leon.Activity
 import ni.edu.ucc.leon.Employee
@@ -262,35 +263,35 @@ class ActivityController {
         if ('ROLE_PROTOCOL' in authorityList) return 'notified'
     }
 
-    private final Boolean isSupervisor() {
-        final List<String> supervisorList = ['ROLE_ACADEMIC_DIRECTOR', 'ROLE_PROTOCOL']
-        final List<String> authorityList = getCurrentUserAuthorityList()
-
-        supervisorList.any { authority -> authority in authorityList }
-    }
-
-    private final List<Map> listRequiringAttention(final Long employeeId) {
-        final String state = getNotificationState()
-
-        if ('ROLE_ADMINISTRATIVE_DIRECTOR' in authenticatedUser.authorities.authority) return activityService.listRequiringAttention()
-
-        if (isSupervisor()) return activityService.listRequiringAttention(state)
-
-        activityService.listRequiringAttention(state, employeeId)
-    }
-
     private final List<String> getCurrentUserAuthorityList() {
         authenticatedUser.authorities.authority
     }
 
+    private final List<Map> listRequiringAttention(final Long employeeId) {
+        final String state = getNotificationState()
+        List<String> authorities = getCurrentUserAuthorityList()
+
+        if ('ROLE_ADMINISTRATIVE_DIRECTOR' in authorities) return activityService.listRequiringAttention()
+
+        Coordination coordination = Coordination.findByName('Direccion academica')
+        if ('ROLE_ACADEMIC_DIRECTOR' in authorities) return activityService.listRequiringAttention(coordination.id)
+
+        if ('ROLE_PROTOCOL' in authorities) return activityService.listRequiringAttention(state)
+
+        if ('ROLE_ACADEMIC_COORDINATOR' in authorities) return activityService.listRequiringAttention(state, employeeId)
+    }
+
     private final Number countRequiringAttention(final Long employeeId) {
         final String state = getNotificationState()
+        List<String> authorities = getCurrentUserAuthorityList()
 
-        if ('ROLE_ADMINISTRATIVE_DIRECTOR' in authenticatedUser.authorities.authority) return activityService.countRequiringAttention()
+        if ('ROLE_ADMINISTRATIVE_DIRECTOR' in authorities) return activityService.countRequiringAttention()
 
-        if (isSupervisor()) return activityService.countRequiringAttention(state)
+        if ('ROLE_ACADEMIC_DIRECTOR' in authorities) return activityService.countRequiringAttention(Coordination.findByName('Direccion academica').id)
 
-        activityService.countRequiringAttention(state, employeeId)
+        if ('ROLE_PROTOCOL' in authorities) return activityService.countRequiringAttention(state)
+
+        if ('ROLE_ACADEMIC_COORDINATOR' in authorities) return activityService.countRequiringAttention(state, employeeId)
     }
 
     private Toolbar createToolbar(final Long employeeId) {

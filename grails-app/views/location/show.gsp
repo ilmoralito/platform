@@ -12,9 +12,7 @@
 
             <tbody>
                 <tr>
-                    <td colspan="2" style="border-top: 0;">
-                        <b>DATOS GENERALES</b>
-                    </td>
+                    <td colspan="2" style="border-top: 0;">DATOS GENERALES</td>
                 </tr>
 
                 <tr>
@@ -44,9 +42,7 @@
                 </g:each>
 
                 <tr>
-                    <td colspan="2" style="border-top: 0;">
-                        <b>MONTAJE</b>
-                    </td>
+                    <td colspan="2">MONTAJE</td>
                 </tr>
 
                 <g:if test="${colorList}">
@@ -74,9 +70,7 @@
                 </g:each>
 
                 <tr>
-                    <td colspan="2" style="border-top: 0;">
-                        <b>REQUERIMIENTOS</b>
-                    </td>
+                    <td colspan="2">REQUERIMIENTOS</td>
                 </tr>
 
                 <g:each in="${requirements}" var="data">
@@ -97,9 +91,7 @@
 
                 <g:if test="${refreshment}">
                     <tr>
-                        <td colspan="2" style="border-top: 0;">
-                            <b>REFRIGERIOS</b>
-                        </td>
+                        <td colspan="2">REFRIGERIOS</td>
                     </tr>
 
                     <g:each in="${refreshment}" var="data">
@@ -114,9 +106,7 @@
 
                 <g:if test="${location.observation}">
                     <tr>
-                        <td colspan="2">
-                            <b>OBSERVACION</b>
-                        </td>
+                        <td colspan="2">OBSERVACION</td>
                     </tr>
 
                     <tr>

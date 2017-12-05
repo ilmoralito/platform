@@ -12,9 +12,7 @@
 
             <tbody>
                 <tr>
-                    <td colspan="2" style="border-top: 0;">
-                        <b>DATOS GENERALES</b>
-                    </td>
+                    <td colspan="2" style="border-top: 0;">DATOS GENERALES</td>
                 </tr>
 
                 <tr>
@@ -47,9 +45,7 @@
                 </tr>
 
                 <tr>
-                    <td colspan="2">
-                        <b>MONTAJE</b>
-                    </td>
+                    <td colspan="2">MONTAJE</td>
                 </tr>
 
                 <tr>
@@ -93,9 +89,7 @@
                 </tr>
 
                 <tr>
-                    <td colspan="2">
-                        <b>REQUERIMIENTOS</b>
-                    </td>
+                    <td colspan="2">REQUERIMIENTOS</td>
                 </tr>
 
                 <tr>
@@ -154,9 +148,7 @@
 
                 <g:if test="${location.refreshment}">
                     <tr>
-                        <td colspan="2">
-                            <b>REFRIGERIOS</b>
-                        </td>
+                        <td colspan="2">REFRIGERIOS</td>
                     </tr>
 
                     <tr>
@@ -177,9 +169,7 @@
 
                 <g:if test="${location.observation}">
                     <tr>
-                        <td colspan="2">
-                            <b>OBSERVACION</b>
-                        </td>
+                        <td colspan="2">OBSERVACION</td>
                     </tr>
 
                     <tr>
@@ -188,9 +178,7 @@
                 </g:if>
 
                 <tr>
-                    <td colspan="2">
-                        <b>METADATOS</b>
-                    </td>
+                    <td colspan="2">METADATOS</td>
                 </tr>
 
                 <tr>

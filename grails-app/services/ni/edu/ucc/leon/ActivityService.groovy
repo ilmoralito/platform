@@ -39,11 +39,15 @@ interface IActivityService {
 
     List<Map> listRequiringAttention(final String state, final Serializable employeeId)
 
+    List<Map> listRequiringAttention(final Serializable coordinationId)
+
     List<Map> listRequiringAttention(final String state)
 
     List<Map> listRequiringAttention()
 
     Number countRequiringAttention(final String state, final Serializable employeeId)
+
+    Number countRequiringAttention(final Serializable coordinationId)
 
     Number countRequiringAttention(final String state)
 
@@ -285,6 +289,39 @@ abstract class ActivityService implements IActivityService {
     }
 
     @Override
+    List<Map> listRequiringAttention(final Serializable coordinationId) {
+        final session = sessionFactory.currentSession
+        final String query = """
+            (
+                SELECT
+                    a.id id, a.name name, c.name organizer
+                FROM
+                    activities a INNER JOIN coordinations c ON a.organized_by_id = c.id
+                WHERE
+                    a.state = 'confirmed'
+            )
+            UNION
+            (
+                SELECT
+                    a.id id, a.name name, c.name organizer
+                FROM
+                    activities a INNER JOIN coordinations c ON a.organized_by_id = c.id
+                WHERE
+                    a.state = 'notified' and a.organized_by_id = :coordinationId
+            )"""
+        final sqlQuery = session.createSQLQuery(query)
+        final results = sqlQuery.with {
+            resultTransformer = AliasToEntityMapResultTransformer.INSTANCE
+
+            setLong('coordinationId', coordinationId)
+
+            list()
+        }
+
+        results
+    }
+
+    @Override
     List<Map> listRequiringAttention(final String state) {
         final session = sessionFactory.currentSession
         final String query = '''
@@ -364,6 +401,38 @@ abstract class ActivityService implements IActivityService {
         final result = sqlQuery.with {
             setString('state', state)
             setLong('employeeId', employeeId)
+
+            uniqueResult()
+        }
+
+        result
+    }
+
+    @Override
+    Number countRequiringAttention(final Serializable coordinationId) {
+        final session = sessionFactory.currentSession
+        final String query = """
+            SELECT
+                COUNT(*)
+            FROM
+            (
+                SELECT
+                    a.id id, a.name name, c.name organizer
+                FROM
+                    activities a INNER JOIN coordinations c ON a.organized_by_id = c.id
+                WHERE
+                    a.state = 'confirmed'
+                UNION
+                SELECT
+                    a.id id, a.name name, c.name organizer
+                FROM
+                    activities a INNER JOIN coordinations c ON a.organized_by_id = c.id
+                WHERE
+                    a.state = 'notified' AND a.organized_by_id = :coordinationId
+            ) result"""
+        final sqlQuery = session.createSQLQuery(query)
+        final result = sqlQuery.with {
+            setLong('coordinationId', coordinationId)
 
             uniqueResult()
         }
