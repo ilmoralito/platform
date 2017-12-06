@@ -53,6 +53,7 @@ grails {
                 [pattern: '/customers/**',                                  access: ['ROLE_PROTOCOL']],
 
                 // ACTIVITY
+                [pattern: '/activities/report/**',                          access: ['ROLE_PROTOCOL']],
                 [pattern: '/employees/*/activities/state/*',                access: ['ROLE_PROTOCOL', 'ROLE_ASSISTANT', 'ROLE_ACADEMIC_COORDINATOR', 'ROLE_ADMINISTRATIVE_COORDINATOR', 'ROLE_HEAD_OFFICE_DELEGATE', 'ROLE_ACADEMIC_DIRECTOR', 'ROLE_ADMINISTRATIVE_DIRECTOR']],
                 [pattern: '/employees/*/activities/**',                     access: ['ROLE_PROTOCOL', 'ROLE_ASSISTANT', 'ROLE_ACADEMIC_COORDINATOR', 'ROLE_ADMINISTRATIVE_COORDINATOR', 'ROLE_HEAD_OFFICE_DELEGATE', 'ROLE_ACADEMIC_DIRECTOR', 'ROLE_ADMINISTRATIVE_DIRECTOR']],
 

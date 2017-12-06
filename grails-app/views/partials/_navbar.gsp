@@ -20,19 +20,29 @@
             <div class="collapse navbar-collapse" id="nami">
                 <ul class="nav navbar-nav navbar-right">
                     <sec:ifLoggedIn>
-                        <sec:ifAllGranted roles='ROLE_ADMIN'>
+                        <sec:ifAnyGranted roles='ROLE_ADMIN, ROLE_PROTOCOL'>
                             <li class="dropdown ${controllerName == 'report' ? 'active' : ''}">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reportes</a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reportes</a>
 
                                 <ul class="dropdown-menu">
-                                    <li class="${controllerName == 'report' ? 'active' : ''}">
-                                        <g:link controller="report" method="GET">
-                                            Tickets
-                                        </g:link>
-                                    </li>
+                                    <sec:ifAllGranted roles="ROLE_ADMIN">
+                                        <li class="${controllerName == 'report' ? 'active' : ''}">
+                                            <g:link controller="report" method="GET">
+                                                Tickets
+                                            </g:link>
+                                        </li>
+                                    </sec:ifAllGranted>
+
+                                    <sec:ifAllGranted roles="ROLE_PROTOCOL">
+                                        <li class="${controllerName == 'activity' && actionName in ['reportSummary'] ? 'active' : ''}">
+                                            <g:link controller="activity" action="reportSummary" method="GET">
+                                                Actividades
+                                            </g:link>
+                                        </li>
+                                    </sec:ifAllGranted>
                                 </ul>
                             </li>
-                        </sec:ifAllGranted>
+                        </sec:ifAnyGranted>
 
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">

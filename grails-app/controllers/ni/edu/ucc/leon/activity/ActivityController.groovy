@@ -229,6 +229,12 @@ class ActivityController {
         response.outputStream.flush()
     }
 
+    def reportSummary(final Integer year) {
+        List<Map> results = !year ? activityService.getSummary() : activityService.getSummary(year)
+
+        respond ([results: results], model: [yearList: activityService.yearList()], view: '/activity/report/summary')
+    }
+
     protected void notFound(final Long employeeId) {
         flash.message = 'Actividad no encontrada'
 
