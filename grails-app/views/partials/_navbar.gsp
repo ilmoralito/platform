@@ -35,7 +35,7 @@
 
                                     <sec:ifAllGranted roles="ROLE_PROTOCOL">
                                         <li class="${controllerName == 'activity' && actionName in ['reportSummary'] ? 'active' : ''}">
-                                            <g:link controller="activity" action="reportSummary" method="GET">
+                                            <g:link resource="activity" action="reportSummary" method="GET">
                                                 Actividades
                                             </g:link>
                                         </li>

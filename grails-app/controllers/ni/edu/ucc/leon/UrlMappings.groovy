@@ -27,6 +27,8 @@ class UrlMappings {
 
         "/activities/report/summary/$year?"(controller: 'activity', action: 'reportSummary')
 
+        "/activities/report/summary/detail/$month/$year?"(controller: 'activity', action: 'summaryReportDetail')
+
         '/employees'(resources: 'employee', excludes: ['delete']) {
             '/updateFullName'(controller: 'employee', action: 'updateFullName', method: 'PUT')
 

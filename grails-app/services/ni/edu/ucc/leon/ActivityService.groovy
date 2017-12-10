@@ -15,6 +15,40 @@ import ni.edu.ucc.leon.Activity
 
 interface IActivityService {
 
+    @Query("""
+        SELECT NEW MAP
+            (
+                a.id AS id,
+                a.name AS name,
+                a.state AS state,
+                c.name AS coordination,
+                DATE_FORMAT(a.dateCreated, '%Y-%m-%d') AS dateCreated
+            )
+        FROM
+            ${Activity a}
+                INNER JOIN
+            ${Coordination c} ON a.organizedBy.id = c.id
+        WHERE
+            MONTH(a.dateCreated) = $month""")
+    List<Map> getSummaryDetail(final Integer month)
+
+    @Query("""
+        SELECT NEW MAP
+            (
+                a.id AS id,
+                a.name AS name,
+                a.state AS state,
+                c.name AS coordination,
+                DATE_FORMAT(a.dateCreated, '%Y-%m-%d') AS dateCreated
+            )
+        FROM
+            ${Activity a}
+                INNER JOIN
+            ${Coordination c} ON a.organizedBy.id = c.id
+        WHERE
+            MONTH(a.dateCreated) = $month AND YEAR(a.dateCreated) = $year""")
+    List<Map> getSummaryDetail(final Integer month, final Integer year)
+
     List<Map> getSummary()
 
     List<Map> getSummary(final Integer year)

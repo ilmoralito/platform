@@ -31,9 +31,16 @@
 
             <tbody>
                 <g:each in="${results}" var="result">
+                    <g:set var="p" value="${params.year ? [year: params.year, month: result.pivot] : [month: result.pivot]}"/>
+
                     <tr>
                         <td class="text-center">
-                            <g:link resource="activity" params="[]">${result.month}</g:link>
+                            <g:if test="${result.created || result.notified || result.confirmed || result.approved || result.authorized || result.attended || result.canceled}">
+                                <g:link resource="activity" action="summaryReportDetail" params="${p}" method="GET">${result.month}</g:link>
+                            </g:if>
+                            <g:else>
+                                ${result.month}
+                            </g:else>
                         </td>
                         <td class="text-center">${result.created}</td>
                         <td class="text-center">${result.notified}</td>
@@ -63,16 +70,6 @@
     </content>
 
     <content tag="right">
-        <ul class="nav nav-pills nav-stacked">
-            <li role="presentation" class="${!params.year ? 'active' : ''}">
-                <g:link resource="activity" action="reportSummary" method="GET">Global</g:link>
-            </li>
-
-            <g:each in="${yearList}" var="year">
-                <li role="presentation" class="${params.int('year') == year ? 'active' : ''}">
-                    <g:link resource="activity" action="reportSummary" params="[year: year]" method="GET">${year}</g:link>
-                </li>
-            </g:each>
-        </ul>
+        <g:render template="report/yearList"/>
     </content>
 </g:applyLayout>

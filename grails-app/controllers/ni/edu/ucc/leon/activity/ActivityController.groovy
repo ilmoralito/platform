@@ -235,6 +235,26 @@ class ActivityController {
         respond ([results: results], model: [yearList: activityService.yearList()], view: '/activity/report/summary')
     }
 
+    def summaryReportDetail(final Integer month, final Integer year) {
+        final String format = 'yyyy-MM-dd'
+        final List<Map> summary = !year ? activityService.getSummaryDetail(month) : activityService.getSummaryDetail(month, year)
+        final List<Map> results = summary.groupBy({ it.coordination }, { Date.parse(format, it.dateCreated).format(format) }).collect {
+            [
+                coordination: it.key,
+                dates: it.value.collect {
+                    [
+                        dateCreated: it.key,
+                        activities: it.value.collect {
+                            [id: it.id, name: it.name, state: it.state]
+                        }
+                    ]
+                }
+            ]
+        }
+
+        respond ([results: results], model: [yearList: activityService.yearList(), employeeId: authenticatedUser.id], view: '/activity/report/summaryDetail')
+    }
+
     protected void notFound(final Long employeeId) {
         flash.message = 'Actividad no encontrada'
 
