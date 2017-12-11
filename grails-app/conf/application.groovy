@@ -49,8 +49,11 @@ grails {
                 [pattern: '/login/authfail',                                access: ['permitAll']],
                 [pattern: '/logout/**',                                     access: ['permitAll']],
 
-                // CSUTOMER
+                // CUSTOMER
                 [pattern: '/customers/**',                                  access: ['ROLE_PROTOCOL']],
+
+                // GUEST
+                [pattern: '/guests/**',                                     access: ['ROLE_PROTOCOL']],
 
                 // ACTIVITY
                 [pattern: '/activities/report/summary',                     access: ['ROLE_PROTOCOL']],

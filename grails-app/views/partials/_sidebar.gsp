@@ -6,9 +6,23 @@
     </g:link>
 
     <sec:ifAllGranted roles='ROLE_PROTOCOL'>
-        <g:link resource="customer" action="index" method="GET" class="list-group-item ${controllerName == 'customer' ? 'active' : ''}">Clientes</g:link>
+        <g:link
+            resource="customer"
+            action="index"
+            method="GET"
+            class="list-group-item ${controllerName == 'customer' ? 'active' : ''}">Clientes</g:link>
 
-        <g:link resource="color" action="index" method="GET" class="list-group-item ${controllerName == 'color' ? 'active' : ''}">Colores</g:link>
+        <g:link
+            resource="color"
+            action="index"
+            method="GET"
+            class="list-group-item ${controllerName == 'color' ? 'active' : ''}">Colores</g:link>
+
+        <g:link
+            resource="guest"
+            action="index"
+            method="GET"
+            class="list-group-item ${controllerName == 'guest' ? 'active' : ''}">Visitas</g:link>
     </sec:ifAllGranted>
 
     <sec:ifAnyGranted roles='ROLE_PROTOCOL, ROLE_ASSISTANT, ROLE_ACADEMIC_COORDINATOR, ROLE_ADMINISTRATIVE_COORDINATOR, ROLE_HEAD_OFFICE_DELEGATE, ROLE_ACADEMIC_DIRECTOR, ROLE_ADMINISTRATIVE_DIRECTOR'>

@@ -25,6 +25,8 @@ class UrlMappings {
 
         '/customers'(resources: 'customer')
 
+        '/guests'(resources: 'guest', excludes: ['create'])
+
         "/activities/report/summary/$year?"(controller: 'activity', action: 'reportSummary')
 
         "/activities/report/summary/detail/$month/$year?"(controller: 'activity', action: 'summaryReportDetail')
