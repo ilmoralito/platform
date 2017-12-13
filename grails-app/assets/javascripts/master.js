@@ -33,9 +33,7 @@
     }
 
     function loadData() {
-        if (localStorage.indices) {
-            return JSON.parse(localStorage.indices)
-        }
+        if (localStorage.indices) return JSON.parse(localStorage.indices)
 
         return []
     }
@@ -43,6 +41,8 @@
 
     function highlight() {
         const indices = loadData()
+
+        console.log(indices)
 
         indices.forEach((index) => {
             document.getElementById('pb_' + index).classList.add('mark');

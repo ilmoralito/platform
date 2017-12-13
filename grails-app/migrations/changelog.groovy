@@ -17,4 +17,5 @@ databaseChangeLog = {
     include file: 'add-academic-title-to-representative.groovy'
     include file: 'add-guests-table.groovy'
     include file: 'add-coordinations_guests-table.groovy'
+    include file: 'change-extensionNumber-constraint-to-nullable.groovy'
 }

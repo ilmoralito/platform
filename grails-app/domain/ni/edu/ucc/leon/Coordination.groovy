@@ -16,7 +16,7 @@ class Coordination {
     static constraints = {
         name blank: false, unique: true
         acronym nullable: true
-        extensionNumber blank: false
+        extensionNumber nullable: true
         copyFee nullable: true, min: 1
         area inList: ['academic', 'administrative', 'school'], maxSize: 100
     }
