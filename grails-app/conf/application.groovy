@@ -71,6 +71,8 @@ grails {
                 // EMPLOYEE
                 [pattern: '/employees/*/tickets/**',                        access: ['ROLE_ADMIN', 'ROLE_USER']],
                 [pattern: '/employees/*/updateFullName',                    access: ['ROLE_ADMIN', 'ROLE_USER']],
+                [pattern: '/employees/*/guests/*',                          access: ['ROLE_PROTOCOL', 'ROLE_ASSISTANT', 'ROLE_ACADEMIC_COORDINATOR', 'ROLE_ADMINISTRATIVE_COORDINATOR', 'ROLE_HEAD_OFFICE_DELEGATE', 'ROLE_ACADEMIC_DIRECTOR', 'ROLE_ADMINISTRATIVE_DIRECTOR']],
+                [pattern: '/employees/*/guests',                            access: ['ROLE_PROTOCOL', 'ROLE_ASSISTANT', 'ROLE_ACADEMIC_COORDINATOR', 'ROLE_ADMINISTRATIVE_COORDINATOR', 'ROLE_HEAD_OFFICE_DELEGATE', 'ROLE_ACADEMIC_DIRECTOR', 'ROLE_ADMINISTRATIVE_DIRECTOR']],
                 [pattern: '/employees/**',                                  access: ['ROLE_ADMIN']],
 
                 // PHONEBOOK

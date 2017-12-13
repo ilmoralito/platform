@@ -31,9 +31,11 @@ class UrlMappings {
 
         "/activities/report/summary/detail/$month/$year?"(controller: 'activity', action: 'summaryReportDetail')
 
+        "/employees/$employeeId/guests/$coordination?"(controller: 'employee', action: 'guests', method: 'GET')
+        "/employees/$employeeId/guests"(controller: 'employee', action: 'store', method: 'POST')
+
         '/employees'(resources: 'employee', excludes: ['delete']) {
             '/updateFullName'(controller: 'employee', action: 'updateFullName', method: 'PUT')
-
             '/employeeCoordinations'(resources: 'employeeCoordination', excludes: ['create', 'show'])
 
             '/tickets'(resources: 'ticket') {

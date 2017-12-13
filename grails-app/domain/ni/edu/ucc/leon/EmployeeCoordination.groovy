@@ -1,6 +1,7 @@
 package ni.edu.ucc.leon
 
 class EmployeeCoordination {
+
     Employee employee
     Coordination coordination
     String position
@@ -12,12 +13,7 @@ class EmployeeCoordination {
     }
 
     public static final EmployeeCoordination create(Employee employee, Coordination coordination, String position, String jobTitle) {
-        new EmployeeCoordination(
-            employee: employee,
-            coordination: coordination,
-            position: position,
-            jobTitle: jobTitle
-        ).save(flush: true)
+        new EmployeeCoordination(employee: employee,coordination: coordination,position: position,jobTitle: jobTitle).save(flush: true)
     }
 
     public static final List<EmployeeCoordination> listByEmployee(Employee employee) {

@@ -1,6 +1,12 @@
 package ni.edu.ucc.leon
 
+import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
+
+@ToString
+@EqualsAndHashCode
 class Coordination {
+
     String name
     String acronym
     String extensionNumber
