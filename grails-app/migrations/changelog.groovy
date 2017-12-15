@@ -18,4 +18,6 @@ databaseChangeLog = {
     include file: 'add-guests-table.groovy'
     include file: 'add-coordinations_guests-table.groovy'
     include file: 'change-extensionNumber-constraint-to-nullable.groovy'
+    include file: 'add-coffeeshop-table.groovy'
+    include file: 'set-coffeeshop-name-field-unique.groovy'
 }

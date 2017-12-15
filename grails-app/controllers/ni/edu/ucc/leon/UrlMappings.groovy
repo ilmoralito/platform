@@ -27,7 +27,7 @@ class UrlMappings {
 
         '/guests'(resources: 'guest', excludes: ['create'])
 
-        '/coffeeshops'(resources: 'coffeeShop')
+        '/coffeeShops'(resources: 'coffeeShop', excludes: ['create'])
 
         "/activities/report/summary/$year?"(controller: 'activity', action: 'reportSummary')
 

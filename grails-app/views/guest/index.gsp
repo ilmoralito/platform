@@ -8,7 +8,7 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>Visita</th>
+                        <th>Visitas</th>
                     </tr>
                 </thead>
 

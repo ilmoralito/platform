@@ -16,7 +16,7 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>Lista de clientes</th>
+                        <th>Clientes</th>
                     </tr>
                 </thead>
 
