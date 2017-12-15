@@ -9,6 +9,12 @@
 
     <sec:ifAllGranted roles='ROLE_PROTOCOL'>
         <g:link
+            resource="coffeeshop"
+            action="index"
+            method="GET"
+            class="list-group-item ${controllerName == 'coffeeshop' ? 'active' : ''}">Cafetines</g:link>
+
+        <g:link
             resource="customer"
             action="index"
             method="GET"

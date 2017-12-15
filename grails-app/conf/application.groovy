@@ -55,6 +55,9 @@ grails {
                 // GUEST
                 [pattern: '/guests/**',                                     access: ['ROLE_PROTOCOL']],
 
+                // COFFEESHOP
+                [pattern: '/coffeeshops/**',                                access: ['ROLE_PROTOCOL']],
+
                 // ACTIVITY
                 [pattern: '/activities/report/summary',                     access: ['ROLE_PROTOCOL']],
                 [pattern: '/activities/report/summary/*',                   access: ['ROLE_PROTOCOL']],
