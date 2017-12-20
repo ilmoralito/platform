@@ -5,10 +5,8 @@
 
     <content tag="main">
         <table class="table table-hover">
-            <colgroup>
-                <col span="1" style="width: 25%;">
-                <col span="1" style="width: 75%;">
-            </colgroup>
+            <col width="25%">
+            <col width="75%">
 
             <tbody>
                 <tr>
@@ -27,15 +25,13 @@
 
                 <tr>
                     <td>Creado por</td>
-                    <td>
-                        ${activity.employee.fullName}
-                    </td>
+                    <td>${activity.employee.fullName}</td>
                 </tr>
 
-                    <tr>
-                        <td>Organizador</td>
-                        <td>${activity.organizedBy.name}</td>
-                    </tr>
+                <tr>
+                    <td>Organizador</td>
+                    <td>${activity.organizedBy.name}</td>
+                </tr>
 
                 <g:if test="${activity.instanceOf(ni.edu.ucc.leon.CustomerActivity)}">
                     <tr>
@@ -50,6 +46,13 @@
                         <g:formatDate date="${activity.dateCreated}" format="yyyy-MM-dd HH:mm"/>
                     </td>
                 </tr>
+
+                <g:if test="${activity.employeeVouchers || activity.guestVouchers}">
+                    <tr>
+                        <td>Vales</td>
+                        <td>${activity.employeeVouchers.size() + activity.guestVouchers.size()}</td>
+                    </tr>
+                </g:if>
             </tbody>
         </table>
 
@@ -68,7 +71,8 @@
                 onclick="if (confirm('¿Seguro?')) document.querySelector('#deleteForm').submit()">Eliminar</a>
 
             <g:if test="${activity.locations}">
-                <a class="btn btn-warning" onclick="document.querySelector('#notifyForm').submit()">Notificar</a>
+                <a class="btn btn-warning" onclick="document.querySelector('#notifyForm').submit()">
+                    <span class="glyphicon glyphicon-send" aria-hidden="true"></span> Notificar</a>
             </g:if>
         </activity:isValid>
 
@@ -91,21 +95,23 @@
             </g:if>
         </sec:ifAnyGranted>
 
-        <g:if test="${activity.locations}">
+        <g:link
+            resource="employee/activity/location"
+            action="${activity.locations ? 'index' : 'create'}"
+            params="[employeeId: params.employeeId, activityId: activity.id]"
+            method="GET"
+            class="btn btn-default">
+                <span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span> ${activity.locations ? 'Ubicaciones' : 'Agregar ubicacion'}</g:link>
+
+        <g:if test="${(activity.state == 'created' && activity.locations) || (activity.state != 'created' && activity.locations && (activity.employeeVouchers || activity.guestVouchers))}">
             <g:link
-                resource="employee/activity/location"
-                params="[activityId: activity.id, employeeId: params.employeeId]"
+                resource="employee/activity/voucher"
+                action="index"
+                params="[employeeId: params.employeeId, activityId: activity.id, type: 'employee']"
                 method="GET"
-                class="btn btn-default">Ubicaciones</g:link>
+                class="btn btn-default">
+                <span class="glyphicon glyphicon-tag" aria-hidden="true"></span> Vales</g:link>
         </g:if>
-        <g:else>
-            <g:link
-                resource="employee/activity/location"
-                action="create"
-                params="[employeeId: params.employeeId, activityId: activity.id]"
-                method="GET"
-                class="btn btn-default">Agregar ubicacion</g:link>
-        </g:else>
 
         <g:form name="deleteForm"
             resource="employee/activity"

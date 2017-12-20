@@ -1,31 +1,34 @@
 package ni.edu.ucc.leon.activity
 
 import ni.edu.ucc.leon.ActivityStateService
-import ni.edu.ucc.leon.ActivityService
 import ni.edu.ucc.leon.Activity
 
 class ActivityInterceptor {
 
-    ActivityService activityService
-    @Autowired ActivityStateService activityStateService
+    ActivityStateService activityStateService
 
     int order = 1
 
     ActivityInterceptor() {
         match(controller: 'activity', action: ~/(update|delete)/)
-        match(controller: 'location', action: ~/(save|update|delete|clone)/)
+        match(controller: 'voucher', action: ~/(save|store|delete)/)
         match(controller: 'refreshment', action: ~/(save|update|delete)/)
+        match(controller: 'location', action: ~/(save|update|delete|clone)/)
     }
 
     boolean before() {
-        // Long id = Long.parseLong(params?.id ? params.id : params.activityId)
-        // Activity activity = activityService.find(id)
+        // Long id = controllerName == 'activity' ? params.long('id') : params.long('activityId')
+        // Activity activity = Activity.get(id)
 
         // if (activity.state == 'created' && activityStateService.isActivityCreator(activity) == false) {
         //     response.sendError 403
 
         //     return false
         // }
+
+        // println activity.state // notified
+        // println activityStateService.isValidAuthority('ROLE_ACADEMIC_COORDINATOR') // false
+        // println activityStateService.isValidCoordination(activity.organizedBy) // true
 
         // if (activity.state == 'notified' && activityStateService.isValidAuthority('ROLE_ACADEMIC_COORDINATOR') == false && activityStateService.isValidCoordination(activity.organizedBy) == false) {
         //     response.sendError 403

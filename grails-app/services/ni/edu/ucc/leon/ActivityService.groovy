@@ -382,11 +382,23 @@ abstract class ActivityService implements IActivityService {
         final session = sessionFactory.currentSession
         final String query = '''
             SELECT
-                a.id id, a.name name, c.name organizer
+                a.id id, a.name name, c.name organizer, total_locations locations, total_vouchers vouchers
             FROM
                 activities a
                     INNER JOIN
                 coordinations c ON a.organized_by_id = c.id
+                    LEFT JOIN
+                (
+                    SELECT activity_id, count(1) AS total_locations
+                    FROM locations
+                    GROUP BY activity_id
+                ) lo ON a.id = lo.activity_id
+                    LEFT JOIN
+                (
+                    SELECT activity_id, count(1) AS total_vouchers
+                    FROM vouchers
+                    GROUP BY activity_id
+                ) vo ON a.id = vo.activity_id
             WHERE
                 a.state = :state
                     AND a.organized_by_id IN (SELECT
@@ -419,18 +431,42 @@ abstract class ActivityService implements IActivityService {
         final String query = """
             (
                 SELECT
-                    a.id id, a.name name, c.name organizer
+                    a.id id, a.name name, c.name organizer, total_locations locations, total_vouchers vouchers
                 FROM
                     activities a INNER JOIN coordinations c ON a.organized_by_id = c.id
+                        LEFT JOIN
+                    (
+                        SELECT activity_id, count(1) AS total_locations
+                        FROM locations
+                        GROUP BY activity_id
+                    ) lo ON a.id = lo.activity_id
+                        LEFT JOIN
+                    (
+                        SELECT activity_id, count(1) AS total_vouchers
+                        FROM vouchers
+                        GROUP BY activity_id
+                    ) vo ON a.id = vo.activity_id
                 WHERE
                     a.state = 'confirmed'
             )
             UNION
             (
                 SELECT
-                    a.id id, a.name name, c.name organizer
+                    a.id id, a.name name, c.name organizer, total_locations locations, total_vouchers vouchers
                 FROM
                     activities a INNER JOIN coordinations c ON a.organized_by_id = c.id
+                    LEFT JOIN
+                    (
+                        SELECT activity_id, count(1) AS total_locations
+                        FROM locations
+                        GROUP BY activity_id
+                    ) lo ON a.id = lo.activity_id
+                        LEFT JOIN
+                    (
+                        SELECT activity_id, count(1) AS total_vouchers
+                        FROM vouchers
+                        GROUP BY activity_id
+                    ) vo ON a.id = vo.activity_id
                 WHERE
                     a.state = 'notified' and a.organized_by_id = :coordinationId
             )"""
@@ -451,11 +487,23 @@ abstract class ActivityService implements IActivityService {
         final session = sessionFactory.currentSession
         final String query = '''
             SELECT
-                a.id id, a.name name, c.name organizer
+                a.id id, a.name name, c.name organizer, total_locations locations, total_vouchers vouchers
             FROM
                 activities a
                     INNER JOIN
                 coordinations c ON a.organized_by_id = c.id
+                    LEFT JOIN
+                (
+                    SELECT activity_id, count(1) AS total_locations
+                    FROM locations
+                    GROUP BY activity_id
+                ) lo ON a.id = lo.activity_id
+                    LEFT JOIN
+                (
+                    SELECT activity_id, count(1) AS total_vouchers
+                    FROM vouchers
+                    GROUP BY activity_id
+                ) vo ON a.id = vo.activity_id
             WHERE
                 a.state = :state'''
         final sqlQuery = session.createSQLQuery(query)
@@ -475,18 +523,42 @@ abstract class ActivityService implements IActivityService {
         final session = sessionFactory.currentSession
         final String query = """
            (SELECT
-               a.id id, a.name name, c.name organizer
+               a.id id, a.name name, c.name organizer, total_locations locations, total_vouchers vouchers
            FROM
                activities a
                    INNER JOIN
                coordinations c ON a.organized_by_id = c.id
+                   LEFT JOIN
+                (
+                    SELECT activity_id, count(1) AS total_locations
+                    FROM locations
+                    GROUP BY activity_id
+                ) lo ON a.id = lo.activity_id
+                    LEFT JOIN
+                (
+                    SELECT activity_id, count(1) AS total_vouchers
+                    FROM vouchers
+                    GROUP BY activity_id
+                ) vo ON a.id = vo.activity_id
            WHERE
                a.state = 'approved') UNION (SELECT
-               a.id id, a.name name, c.name organizer
+               a.id id, a.name name, c.name organizer, total_locations locations, total_vouchers vouchers
            FROM
                activities a
                    INNER JOIN
                coordinations c ON a.organized_by_id = c.id
+                   LEFT JOIN
+                (
+                    SELECT activity_id, count(1) AS total_locations
+                    FROM locations
+                    GROUP BY activity_id
+                ) lo ON a.id = lo.activity_id
+                    LEFT JOIN
+                (
+                    SELECT activity_id, count(1) AS total_vouchers
+                    FROM vouchers
+                    GROUP BY activity_id
+                ) vo ON a.id = vo.activity_id
            WHERE
                a.state = 'notified'
                    AND c.area = 'Administrative')"""

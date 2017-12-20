@@ -189,11 +189,7 @@ class LocationController {
     def delete(final Long activityId, final Long employeeId, final Long id) {
         Location location = locationService.delete(id)
 
-        if (!location) {
-            notFound(employeeId, activityId, id)
-
-            return
-        }
+        if (!location) response.sendError 404
 
         flash.message = 'Ubicacion eliminada'
         redirect uri: "/employees/$employeeId/activities/$activityId/locations", method: 'GET'

@@ -3,10 +3,20 @@ package ni.edu.ucc.leon
 import ni.edu.ucc.leon.location.SaveLocationCommand
 import ni.edu.ucc.leon.ClassroomService
 import grails.gorm.services.Service
+import grails.gorm.services.Query
 import ni.edu.ucc.leon.Location
 import ni.edu.ucc.leon.Helper
 
 interface ILocationService {
+
+    @Query("""
+        SELECT DISTINCT
+            NEW MAP((DATE_FORMAT(l.startDateAndTime, '%Y-%m-%d')) AS date)
+        FROM
+            ${Location l}
+        WHERE
+            l.activity.id = $activityId""")
+    List<Date> locationDateList(final Serializable activityId)
 
     Location find(final Serializable id)
 
@@ -299,8 +309,23 @@ abstract class LocationService implements ILocationService {
     Location delete(final Serializable id) {
         Location location = find(id)
 
+        // Remove table linen
         TableLinen.removeAll(location)
 
+        // Remove vouchers
+        Number employeeResult = EmployeeVoucher.where {
+            activity == location.activity && date == location.startDateAndTime.clearTime()
+        }.deleteAll() as int
+
+        log.info "$employeeResult employee vouchers affected"
+
+        Number guestResult = GuestVoucher.where {
+            activity == location.activity && date == location.startDateAndTime.clearTime()
+        }.deleteAll() as int
+
+        log.info "$guestResult guest vouchers affected"
+
+        // Remove location instance
         location.delete()
 
         location

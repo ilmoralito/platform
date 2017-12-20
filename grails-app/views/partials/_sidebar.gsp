@@ -39,7 +39,7 @@
             employeeId="${springSecurityService.currentUser.employee.id}"
             action="index"
             method="GET"
-            class="list-group-item ${controllerName in ['activity', 'location', 'refreshment'] ? 'active' : ''}">Actividades</g:link>
+            class="list-group-item ${controllerName in ['activity', 'location', 'refreshment', 'voucher'] ? 'active' : ''}">Actividades</g:link>
 
         <g:link
             resource="employee"

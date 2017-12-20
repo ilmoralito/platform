@@ -36,6 +36,22 @@ class UrlMappings {
         "/employees/$employeeId/guests/$coordination?"(controller: 'employee', action: 'guests', method: 'GET')
         "/employees/$employeeId/guests"(controller: 'employee', action: 'store', method: 'POST')
 
+        // VOUCHER
+        get "/employees/$employeeId/activities/$activityId/vouchers/$type" {
+            controller = 'voucher'
+            action = 'index'
+            constraints {
+                type inList: ['employee', 'guest']
+            }
+        }
+        post "/employees/$employeeId/activities/$activityId/vouchers/$type"(controller: 'voucher', action: 'save')
+        post "/employees/$employeeId/activities/$activityId/guestvouchers/$type"(controller: 'voucher', action: 'store')
+        get "/employees/$employeeId/activities/$activityId/vouchers/$id"(controller: 'voucher', action: 'show')
+        get "/employees/$employeeId/activities/$activityId/vouchers/$id/edit"(controller: 'voucher', action: 'edit')
+        delete "/employees/$employeeId/activities/$activityId/vouchers/$id"(controller: 'voucher', action: 'delete')
+        get "/employeeList/$date/$activityId"(controller: 'voucher', action: 'employeeList')
+        get "/guestList/$date/$activityId"(controller: 'voucher', action: 'guestList')
+
         '/employees'(resources: 'employee', excludes: ['delete']) {
             '/updateFullName'(controller: 'employee', action: 'updateFullName', method: 'PUT')
             '/employeeCoordinations'(resources: 'employeeCoordination', excludes: ['create', 'show'])
@@ -48,6 +64,7 @@ class UrlMappings {
 
             '/activities'(resources: 'activity') {
                 '/observations'(resources: 'observation')
+                // '/vouchers'(resources: 'voucher', excludes: ['create'])
                 "/notify/$state?"(controller: 'activity', action: 'sendNotification', method: 'PUT')
 
                 collection {

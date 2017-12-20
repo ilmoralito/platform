@@ -136,7 +136,7 @@ class ActivityController {
         final List<Map> results = listRequiringAttention(employeeId)
         final List<Map> activityListByOrganizer = results.groupBy { it.organizer }.collect {
             [organizer: it.key, activities: it.value.collect {
-                [id: it.id, name: it.name]
+                [id: it.id, name: it.name, locations: it.locations, vouchers: it.vouchers]
             }]
         }
 

@@ -1,7 +1,7 @@
 //= require jquery/jquery
 //= require bootstrap/js/bootstrap
 //= require bootstrap-datepicker/js/bootstrap-datepicker
-//= require axios/axios.min
+//= require axios/axios
 //= require_self
 
 function h(e) {
@@ -21,6 +21,113 @@ $('textarea#description').each(function () {
         autoclose: true,
         startDate: '+3d'
     });
+}
+
+// VOUCHER
+{
+    // update employee/guest list when date change
+    const date = document.querySelector('#date');
+
+    date.addEventListener('change', updateParticipantList);
+
+    function getParticipantList(url) {
+        return axios(url);
+    }
+
+    function renderParticipantList(participantList, type) {
+        const target = type === 'employee' ? '#employeeList' : '#guestList';
+        const result = participantList.map(participant => {
+            const name = type === 'employee' ? 'employees' : 'guests';
+
+            return `
+                <div class="checkbox">
+                    <label>
+                        <input
+                            type="checkbox"
+                            name="${name}"
+                            value="${participant.id}">
+                        ${participant.fullName}
+                    </label>
+                </div>
+            `;
+        }).join('');
+
+        document.querySelector(target).innerHTML = result;
+    }
+
+    async function updateParticipantList() {
+        const option = this.options[this.selectedIndex];
+        const activityId = this.dataset.activityId;
+        const type = this.dataset.activityType;
+        const token = type === 'employee' ? 'employeeList' : 'guestList';
+        const url = `/${token}/${option.value}/${activityId}`;
+        const participantList = await getParticipantList(url);
+
+        renderParticipantList(participantList.data.participantList, type);
+    }
+
+    // when change coffeeshop update prices
+    const coffeeShop = document.querySelector('#coffeeShop');
+
+    coffeeShop.addEventListener('change', updatePrices);
+
+    function updatePrices(e) {
+        const breakfast = document.querySelector('#breakfast');
+        const lunch = document.querySelector('#lunch');
+        const dinner = document.querySelector('#dinner');
+        const others = document.querySelector('#others');
+        const price = document.querySelector('#price');
+
+        const dataset = this.options[this.selectedIndex].dataset;
+
+        price.value = 0;
+        breakfast.checked = false;
+        lunch.checked = false;
+        dinner.checked = false;
+        others.checked = false;
+
+        breakfast.dataset.price = dataset.breakfastPrice;
+        lunch.dataset.price = dataset.lunchPrice;
+        dinner.dataset.price = dataset.dinnerPrice;
+        others.dataset.price = dataset.othersPrice;
+    }
+
+    // Adding and substracting price
+    const price = document.querySelector('#price');
+
+    document.querySelectorAll('.prices').forEach(price => {
+        price.addEventListener('change', applyPrice);
+    });
+
+    function applyPrice(e) {
+        const selectedPrice = parseInt(this.dataset.price, 10);
+
+        if (this.checked) {
+            addPrice(selectedPrice);
+
+            return;
+        }
+
+        substractPrice(selectedPrice);
+    }
+
+    function getActualPrice() {
+        return parseInt(price.value, 10);
+    }
+
+    function addPrice(selectedPrice) {
+        const actualPrice = getActualPrice();
+        const newPrice = actualPrice + selectedPrice;
+
+        price.value = newPrice;
+    }
+
+    function substractPrice(selectedPrice) {
+        const actualPrice = getActualPrice();
+        const newPrice = actualPrice - selectedPrice;
+
+        price.value = newPrice;
+    }
 }
 
 // LOCATION

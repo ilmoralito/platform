@@ -19,13 +19,13 @@ class Activity {
 
     static belongsTo = [employee: Employee]
 
-    static hasMany = [locations: Location, observations: Observation]
+    static hasMany = [locations: Location, observations: Observation, employeeVouchers: EmployeeVoucher, guestVouchers: GuestVoucher]
 
     static mapping = {
         version false
         table 'activities'
         sort dateCreated: 'desc'
-        state defaultValue: "'created'"
+        state column: 'state', sqlType: 'varchar(100)', defaultValue: 'created'
         locations cascade: 'all-delete-orphan'
         observations cascade: 'all-delete-orphan'
     }

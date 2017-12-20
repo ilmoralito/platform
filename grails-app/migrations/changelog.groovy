@@ -20,4 +20,5 @@ databaseChangeLog = {
     include file: 'change-extensionNumber-constraint-to-nullable.groovy'
     include file: 'add-coffeeshop-table.groovy'
     include file: 'set-coffeeshop-name-field-unique.groovy'
+    include file: 'add-coffeeshop-to-voucher.groovy'
 }

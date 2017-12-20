@@ -7,72 +7,77 @@
         <g:render template="toolbar"/>
 
         <g:if test="${results}">
-            <g:each in="${results}" var="result">
                 <table class="table table-hover">
                     <col width="20%">
                     <col width="80%">
 
-                    <caption>${result.date}</caption>
-
                     <tbody>
-                        <g:each in="${result.locations}" var="location">
+                        <g:each in="${results}" var="result">
                             <tr>
-                                <td colspan="2">${location.name}</td>
-                            </tr>
-
-                            <tr>
-                                <td>Aula</td>
-                                <td>${location.place}</td>
-                            </tr>
-
-                            <tr>
-                                <td>Horario</td>
-                                <td>${location.startTime} a ${location.endTime}</td>
-                            </tr>
-
-                            <tr>
-                                <td>Participantes</td>
-                                <td>${location.participants}</td>
-                            </tr>
-
-                            <g:if test="${params.type == 'concierge'}">
-                                <tr>
-                                    <td>Tipo de montaje</td>
-                                    <td>${location.typeOfAssembly}</td>
-                                </tr>
-                            </g:if>
-
-                            <g:if test="${params.type == 'protocol'}">
-                                <tr>
-                                    <td>Manteleria</td>
-                                    <td>
-                                        <g:join in="${location.tableLinen}"/>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>Botellas de agua</td>
-                                    <td>${location.waterBottles}</td>
-                                </tr>
-
-                                <g:if test="${location.quantity}">
-                                    <tr>
-                                        <td>Cantidad de refrigerios</td>
-                                        <td>${location.quantity}</td>
-                                    </tr>
-                                </g:if>
-                            </g:if>
-
-                            <tr>
-                                <td>Requerimientos</td>
-                                <td>
-                                    <g:join in="${location.requirements}"/>
+                                <td colspan="2">
+                                    <b>${result.date}</b>
                                 </td>
                             </tr>
+
+                            <g:each in="${result.locations}" var="location">
+                                <tr>
+                                    <td>Nombre de actividad</td>
+                                    <td>${location.name}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Aula</td>
+                                    <td>${location.place}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Horario</td>
+                                    <td>${location.startTime} a ${location.endTime}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Participantes</td>
+                                    <td>${location.participants}</td>
+                                </tr>
+
+                                <g:if test="${params.type == 'concierge'}">
+                                    <tr>
+                                        <td>Tipo de montaje</td>
+                                        <td>${location.typeOfAssembly}</td>
+                                    </tr>
+                                </g:if>
+
+                                <g:if test="${params.type == 'protocol'}">
+                                    <tr>
+                                        <td>Manteleria</td>
+                                        <td>
+                                            <g:join in="${location.tableLinen}"/>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Botellas de agua</td>
+                                        <td>${location.waterBottles}</td>
+                                    </tr>
+
+                                    <g:if test="${location.quantity}">
+                                        <tr>
+                                            <td>Cantidad de refrigerios</td>
+                                            <td>${location.quantity}</td>
+                                        </tr>
+                                    </g:if>
+                                </g:if>
+
+                                <tr>
+                                    <td>Requerimientos</td>
+                                    <td>
+                                        <g:join in="${location.requirements}"/>
+                                    </td>
+                                </tr>
+                            </g:each>
                         </g:each>
                     </tbody>
                 </table>
-            </g:each>
 
             <g:link
                 resource="employee/activity"

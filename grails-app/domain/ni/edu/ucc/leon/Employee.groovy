@@ -26,9 +26,9 @@ class Employee {
     static hasMany = [tickets: Ticket]
 
     static mapping = {
-        version false
         table 'employees'
-        sort dateCreated: 'desc'
+        version false
+        sort 'fullName'
         enabled defaultValue: true
         contract defaultValue: "'permanent'"
     }

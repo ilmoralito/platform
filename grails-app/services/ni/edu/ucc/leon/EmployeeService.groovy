@@ -8,6 +8,8 @@ interface IEmployeeService {
 
     Employee find(final Serializable id)
 
+    List<Employee> findAllByEnabled(final Boolean enabled)
+
     Employee save(final String fullName, final String identityCard, final String contract)
 
     Employee update(final Serializable id, final String fullName, final String identityCard, final String contract, final Boolean enabled)
