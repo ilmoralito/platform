@@ -42,6 +42,13 @@
     </content>
 
     <content tag="right">
+        <sec:ifAllGranted roles='ROLE_PROTOCOL'>
+            <g:link controller="voucher" action="print" params="[activityId: params.activityId]" method="GET" class="btn btn-primary btn-block">
+                Imprimir vales
+            </g:link>
+        </sec:ifAllGranted>
+        <br>
+
         <g:render template="nav"/>
 
         <g:form

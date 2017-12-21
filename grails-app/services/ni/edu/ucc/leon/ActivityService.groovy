@@ -1,16 +1,20 @@
 package ni.edu.ucc.leon
 
 import org.hibernate.transform.AliasToEntityMapResultTransformer
+import grails.plugin.springsecurity.SpringSecurityService
+import org.hibernate.SessionFactory
+import grails.gorm.services.Query
+
 import ni.edu.ucc.leon.activity.UpdateActivityCommand
 import ni.edu.ucc.leon.activity.SaveActivityCommand
-import ni.edu.ucc.leon.AdministrativeActivity
+
 import ni.edu.ucc.leon.CoordinationService
-import ni.edu.ucc.leon.AcademicActivity
 import ni.edu.ucc.leon.EmployeeService
 import ni.edu.ucc.leon.CustomerService
 import grails.gorm.services.Service
-import org.hibernate.SessionFactory
-import grails.gorm.services.Query
+
+import ni.edu.ucc.leon.AdministrativeActivity
+import ni.edu.ucc.leon.AcademicActivity
 import ni.edu.ucc.leon.Activity
 
 interface IActivityService {
@@ -69,7 +73,6 @@ interface IActivityService {
 
     Activity delete(final Serializable id)
 
-    @Query("UPDATE ${Activity activity} SET ${activity.state} = $state WHERE activity.id = $id")
     void updateState(final String state, final Serializable id)
 
     List<Map> activityNamesPerEmployee(final Serializable employeeId)
@@ -98,10 +101,11 @@ interface IActivityService {
 @Service(Activity)
 abstract class ActivityService implements IActivityService {
 
+    @Autowired org.hibernate.SessionFactory sessionFactory
+    @Autowired SpringSecurityService springSecurityService
+    CoordinationService coordinationService
     CustomerService customerService
     EmployeeService employeeService
-    CoordinationService coordinationService
-    @Autowired org.hibernate.SessionFactory sessionFactory
 
     @Override
     List<Map> getSummary() {
@@ -323,6 +327,32 @@ abstract class ActivityService implements IActivityService {
         activity.delete()
 
         activity
+    }
+
+    @Override
+    void updateState(final String state, final Serializable id) {
+        Activity activity = find(id)
+
+        if (activity) {
+            activity.state = state
+
+            if (activity.instanceOf(AcademicActivity) && activity.state == 'confirmed') {
+                activity.confirmedBy = springSecurityService.currentUser.employee
+                activity.confirmationDate = new Date()
+            }
+
+            if (activity.instanceOf(AcademicActivity) && activity.state == 'approved') {
+                activity.approvedBy = springSecurityService.currentUser.employee
+                activity.approvalDate = new Date()
+            }
+
+            if (state == 'authorized') {
+                activity.authorizedBy = springSecurityService.currentUser.employee
+                activity.authorizationDate = new Date()
+            }
+
+            activity.save(flush: true)
+        }
     }
 
     @Override

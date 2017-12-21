@@ -21,8 +21,9 @@
 
                             <g:each in="${result.locations}" var="location">
                                 <tr>
-                                    <td>Nombre de actividad</td>
-                                    <td>${location.name}</td>
+                                    <td colspan="2">
+                                        <b>${location.name}</b>
+                                    </td>
                                 </tr>
 
                                 <tr>

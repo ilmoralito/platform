@@ -51,6 +51,7 @@ class UrlMappings {
         delete "/employees/$employeeId/activities/$activityId/vouchers/$id"(controller: 'voucher', action: 'delete')
         get "/employeeList/$date/$activityId"(controller: 'voucher', action: 'employeeList')
         get "/guestList/$date/$activityId"(controller: 'voucher', action: 'guestList')
+        get "/print/$activityId/vouchers"(controller: 'voucher', action: 'print')
 
         '/employees'(resources: 'employee', excludes: ['delete']) {
             '/updateFullName'(controller: 'employee', action: 'updateFullName', method: 'PUT')

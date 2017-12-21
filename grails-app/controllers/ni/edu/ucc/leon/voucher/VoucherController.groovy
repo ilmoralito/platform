@@ -1,5 +1,6 @@
 package ni.edu.ucc.leon.voucher
 
+import com.craigburke.document.builder.PdfDocumentBuilder
 import grails.validation.ValidationException
 
 import ni.edu.ucc.leon.EmployeeVoucherService
@@ -98,6 +99,62 @@ class VoucherController {
         respond ([participantList: guestList], formats: ['json'])
     }
 
+    def print(final Long activityId) {
+        PdfDocumentBuilder pdfDocumentBuilder = new PdfDocumentBuilder(response.outputStream)
+        ni.edu.ucc.leon.Activity activity = ni.edu.ucc.leon.Activity.get(activityId)
+        List<EmployeeVoucher> employeeVoucherList = EmployeeVoucher.where { activity == activity }.list()
+        List<GuestVoucher> guestVoucherList = GuestVoucher.where { activity == activity }.list()
+        List<Voucher> voucherList = employeeVoucherList + guestVoucherList
+
+        pdfDocumentBuilder.create {
+            document (
+                margin:
+                    [top: 0.1.inches, right: 0.2.inches, bottom: 0.2.inches, left: 0.2.inches],
+                font:
+                    [family: 'Courier', size: 9.pt]
+            ) {
+                voucherList.eachWithIndex { voucher, index, iterator = index + 1 ->
+                    table(columns: [1, 2], padding: 1.px, margin: [bottom: 0.1.inches, top: 0.1.inches]) {
+                        row {
+                            cell 'A nombre de'
+                            cell voucher.instanceOf(EmployeeVoucher) ? voucher.employee.fullName : voucher.guest.fullName
+                        }
+
+                        row {
+                            cell 'Coordinacion'
+                            cell voucher.activity.organizedBy.name
+                        }
+
+                        row {
+                            cell 'Fecha'
+                            cell voucher.date.format('yyyy-MM-dd')
+                        }
+
+                        row {
+                            cell 'Valor'
+                            cell voucher.price
+                        }
+
+                        row {
+                            cell 'Servicios'
+                            cell getVoucherServices(voucher)
+                        }
+
+                        row {
+                            cell "Autorizado por: ${voucher.activity.authorizedBy.fullName}, fecha: ${voucher.activity.authorizationDate.format('yyyy-MM-dd hh:mm')}", colspan: 2, align: 'center'
+                        }
+                    }
+
+                    if (iterator % 6 == 0) pageBreak()
+                }
+            }
+        }
+
+        response.contentType = 'application/pdf'
+        response.setHeader('Content-disposition', 'attachment;filename=document.pdf')
+        response.outputStream.flush()
+    }
+
     private Model createModel(final Long activityId) {
         // TODO: Improve this logic
         List<EmployeeVoucher> employeeVoucherList = employeeVoucherService.findAllByActivity(activityId)
@@ -114,6 +171,23 @@ class VoucherController {
             employeeVoucherList: employeeVoucherService.getVoucherSummary(activityId),
             guestVoucherList: guestVoucherService.getVoucherSummary(activityId)
         )
+    }
+
+    private String getVoucherServices(final Voucher voucher) {
+        List<Map> summary = [
+            [label: 'Desayuno', service: voucher.breakfast],
+            [label: 'Almuerzo', service: voucher.lunch],
+            [label: 'Cena', service: voucher.dinner],
+            [label: 'Otros', service: voucher.others],
+        ]
+
+        List<String> result = summary.inject([]) { accumulator, currentValue ->
+            if (currentValue.service) accumulator << currentValue.label
+
+            accumulator
+        }
+
+        result.join(', ')
     }
 }
 

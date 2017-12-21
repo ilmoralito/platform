@@ -40,17 +40,48 @@
                     </tr>
                 </g:if>
 
+                <g:if test="${activity.employeeVouchers || activity.guestVouchers}">
+                    <tr>
+                        <td>Vales</td>
+                        <td>${activity.employeeVouchers.size() + activity.guestVouchers.size()}</td>
+                    </tr>
+                </g:if>
+
                 <tr>
-                    <td>Fecha y hora de creacion</td>
+                    <td colspan="2">META</td>
+                </tr>
+
+                <tr>
+                    <td>Creacion</td>
                     <td>
                         <g:formatDate date="${activity.dateCreated}" format="yyyy-MM-dd HH:mm"/>
                     </td>
                 </tr>
 
-                <g:if test="${activity.employeeVouchers || activity.guestVouchers}">
+                <g:if test="${activity.confirmedBy}">
                     <tr>
-                        <td>Vales</td>
-                        <td>${activity.employeeVouchers.size() + activity.guestVouchers.size()}</td>
+                        <td>Confirmacion</td>
+                        <td>
+                            <g:formatDate date="${activity.confirmationDate}" format="yyyy-MM-dd HH:mm"/>
+                        </td>
+                    </tr>
+                </g:if>
+
+                <g:if test="${activity.approvedBy}">
+                    <tr>
+                        <td>Aprobacion</td>
+                        <td>
+                            <g:formatDate date="${activity.approvalDate}" format="yyyy-MM-dd HH:mm"/>
+                        </td>
+                    </tr>
+                </g:if>
+
+                <g:if test="${activity.authorizedBy}">
+                    <tr>
+                        <td>Autorizacion</td>
+                        <td>
+                            <g:formatDate date="${activity.authorizationDate}" format="yyyy-MM-dd HH:mm"/>
+                        </td>
                     </tr>
                 </g:if>
             </tbody>
