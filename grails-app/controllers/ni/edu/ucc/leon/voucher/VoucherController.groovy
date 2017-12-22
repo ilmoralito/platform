@@ -16,6 +16,7 @@ import ni.edu.ucc.leon.EmployeeVoucher
 import ni.edu.ucc.leon.GuestVoucher
 import ni.edu.ucc.leon.CoffeeShop
 import ni.edu.ucc.leon.Employee
+import ni.edu.ucc.leon.Activity
 import ni.edu.ucc.leon.Voucher
 import ni.edu.ucc.leon.Guest
 
@@ -32,7 +33,7 @@ class VoucherController {
     static allowedMethods = [ save: 'POST', store: 'POST', delete: 'DELETE' ]
 
     def index(final Long employeeId, final Long activityId, final String type) {
-        respond ([], model: [model: createModel(activityId)])
+        respond ([activity: activityService.find(activityId)], model: [model: createModel(activityId)])
     }
 
     def save(SaveEmployeeVoucherCommand command) {
@@ -101,7 +102,7 @@ class VoucherController {
 
     def print(final Long activityId) {
         PdfDocumentBuilder pdfDocumentBuilder = new PdfDocumentBuilder(response.outputStream)
-        ni.edu.ucc.leon.Activity activity = ni.edu.ucc.leon.Activity.get(activityId)
+        Activity activity = activityService.find(activityId)
         List<EmployeeVoucher> employeeVoucherList = EmployeeVoucher.where { activity == activity }.list()
         List<GuestVoucher> guestVoucherList = GuestVoucher.where { activity == activity }.list()
         List<Voucher> voucherList = employeeVoucherList + guestVoucherList

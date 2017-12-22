@@ -43,9 +43,11 @@
 
     <content tag="right">
         <sec:ifAllGranted roles='ROLE_PROTOCOL'>
-            <g:link controller="voucher" action="print" params="[activityId: params.activityId]" method="GET" class="btn btn-primary btn-block">
-                Imprimir vales
-            </g:link>
+            <g:if test="${activity.state == 'authorized'}">
+                <g:link controller="voucher" action="print" params="[activityId: params.activityId]" method="GET" class="btn btn-primary btn-block">
+                    Imprimir vales
+                </g:link>
+            </g:if>
         </sec:ifAllGranted>
         <br>
 
