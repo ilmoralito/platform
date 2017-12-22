@@ -286,17 +286,24 @@ abstract class ActivityService implements IActivityService {
                 a.id id,
                 a.name name,
                 a.state state,
-                IFNULL(totalLocations, 0) locations
+                IFNULL(total_locations, 0) locations,
+                total_vouchers vouchers
             FROM
                 activities a
                     INNER JOIN
                 employees e ON a.employee_id = e.id
                     LEFT JOIN
                 (SELECT
-                    activity_id, COUNT(1) totalLocations
+                    activity_id, COUNT(1) total_locations
                 FROM
                     locations
                 GROUP BY activity_id) lo ON a.id = lo.activity_id
+                    LEFT JOIN
+                (SELECT
+                    activity_id, COUNT(1) total_vouchers
+                FROM
+                    vouchers
+                GROUP BY activity_id) vo ON a.id = vo.activity_id
             WHERE
                 e.id = :employeeId
                     AND state NOT IN ('attended' , 'canceled')"""

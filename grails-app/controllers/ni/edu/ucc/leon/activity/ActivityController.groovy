@@ -1,18 +1,21 @@
 package ni.edu.ucc.leon.activity
 
 import com.craigburke.document.builder.PdfDocumentBuilder
-import ni.edu.ucc.leon.EmployeeCoordinationService
 import grails.validation.ValidationException
-import ni.edu.ucc.leon.EmployeeCoordination
+
 import ni.edu.ucc.leon.ActivityService
 import ni.edu.ucc.leon.EmployeeService
 import ni.edu.ucc.leon.LocationService
 import ni.edu.ucc.leon.CustomerService
+
+import ni.edu.ucc.leon.EmployeeCoordinationService
+import ni.edu.ucc.leon.EmployeeCoordination
 import ni.edu.ucc.leon.Coordination
 import ni.edu.ucc.leon.TableLinen
 import ni.edu.ucc.leon.Activity
 import ni.edu.ucc.leon.Employee
 import ni.edu.ucc.leon.Location
+
 import ni.edu.ucc.leon.Helper
 
 class ActivityController {

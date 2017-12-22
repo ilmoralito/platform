@@ -8,14 +8,14 @@
 
         <g:if test="${activityList}">
             <table class="table table-bordered table-hover">
-                <col width="56%">
+                <col width="55%">
                 <col width="5%">
                 <col width="10%">
                 <col width="10%">
                 <col width="8%">
                 <col width="10%">
                 <col width="1%">
-                <!-- <col width="1%"> -->
+                <col width="1%">
 
                 <thead>
                     <tr>
@@ -28,11 +28,9 @@
                         <th>
                             <span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span>
                         </th>
-                        <!-- 
                         <th>
                             <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
                         </th>
-                        -->
                     </tr>
                 </thead>
 
@@ -76,12 +74,9 @@
                                     params="[activityId: activity.id, employeeId: params.employeeId]"
                                     method="GET">${activity.locations ?: ''}</g:link>
                             </td>
-                            <!--
-                            TODO: Figure out why does not get any value 
                             <td class="text-center">
-                                ${activity?.guestVouchers}
+                                ${activity.vouchers}
                             </td>
-                            -->
                         </tr>
                     </g:each>
                 </tbody>
