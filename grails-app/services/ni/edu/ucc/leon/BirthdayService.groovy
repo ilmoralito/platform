@@ -20,8 +20,7 @@ class BirthdayService {
                 employees e
             WHERE
                 MONTH(STR_TO_DATE(SUBSTR(e.identity_card, 5, 6), '%d%m%Y')) = :month
-            ORDER BY 2 DESC
-        """
+            ORDER BY 2 DESC"""
         final sqlQuery = session.createSQLQuery(query)
         final results = sqlQuery.with {
             resultTransformer = AliasToEntityMapResultTransformer.INSTANCE
@@ -46,8 +45,7 @@ class BirthdayService {
                 employees e
             WHERE
                 DAY(STR_TO_DATE(SUBSTR(e.identity_card, 5, 6), '%d%m%Y')) = :dayOfMonth
-                    AND MONTH(STR_TO_DATE(SUBSTR(e.identity_card, 5, 6), '%d%m%Y')) = :month
-        """
+                    AND MONTH(STR_TO_DATE(SUBSTR(e.identity_card, 5, 6), '%d%m%Y')) = :month"""
         final sqlQuery = session.createSQLQuery(query)
         final results = sqlQuery.with {
             resultTransformer = AliasToEntityMapResultTransformer.INSTANCE
@@ -75,8 +73,7 @@ class BirthdayService {
                 users u ON e.user_id = u.id
             WHERE
                 DAY(STR_TO_DATE(SUBSTR(e.identity_card, 5, 6), '%d%m%Y')) = :dayOfMonth
-                    AND MONTH(STR_TO_DATE(SUBSTR(e.identity_card, 5, 6), '%d%m%Y')) = :month
-        """
+                    AND MONTH(STR_TO_DATE(SUBSTR(e.identity_card, 5, 6), '%d%m%Y')) = :month"""
         final sqlQuery = session.createSQLQuery(query)
         final results = sqlQuery.with {
             resultTransformer = AliasToEntityMapResultTransformer.INSTANCE

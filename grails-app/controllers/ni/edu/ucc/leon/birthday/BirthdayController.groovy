@@ -4,9 +4,16 @@ import ni.edu.ucc.leon.BirthdayService
 
 class BirthdayController {
 
-    @Autowired BirthdayService birthdayService
+    BirthdayService birthdayService
 
     def index() {
-        [birthday: birthdayService.listBirthdayInMonth(), birthdayOfTheToday: birthdayService.listBirthdayOfTheDay()]
+        List<Map> birthday = birthdayService.listBirthdayInMonth().groupBy { it.day }.collect {
+            [day: it.key, birthdayList: it.value.fullName]
+        }
+
+        [
+            birthday: birthday,
+            birthdayOfTheToday: birthdayService.listBirthdayOfTheDay()
+        ]
     }
 }

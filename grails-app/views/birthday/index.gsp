@@ -19,25 +19,28 @@
                 </div>
             </g:if>
 
-            <table class="table table-hover table-striped">
-                <colgroup>
-                    <col span="1" style="width: 25%;">
-                    <col span="1" style="width: 75%;">
-                </colgroup>
+            <table class="table table-hover table-bordered">
+                <col width="1%;">
+                <col width="99%;">
 
                 <thead>
                     <tr>
-                        <th>Cumpleañeros del mes</th>
                         <th>Dia</th>
+                        <th>Cumpleañeros</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     <g:each in="${birthday}" var="b">
                         <tr>
-                            <td>${b.fullName}</td>
-                            <td>${b.day}</td>
+                            <td rowspan="${b.birthdayList.size() + 1}" class="text-center" style="vertical-align: middle;">${b.day}</td>
                         </tr>
+
+                        <g:each in="${b.birthdayList}" var="person">
+                            <tr>
+                                <td>${person}</td>
+                            </tr>
+                        </g:each>
                     </g:each>
                 </tbody>
             </table>
