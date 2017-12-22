@@ -58,7 +58,7 @@
                     </td>
                 </tr>
 
-                <g:if test="${activity.confirmedBy}">
+                <g:if test="${activity.instanceOf(AcademicActivity) && activity.confirmedBy}">
                     <tr>
                         <td>Confirmacion</td>
                         <td>
@@ -67,7 +67,7 @@
                     </tr>
                 </g:if>
 
-                <g:if test="${activity.approvedBy}">
+                <g:if test="${activity.instanceOf(AcademicActivity) && activity.approvedBy}">
                     <tr>
                         <td>Aprobacion</td>
                         <td>
