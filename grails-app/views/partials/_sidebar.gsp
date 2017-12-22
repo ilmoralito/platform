@@ -24,7 +24,7 @@
             resource="color"
             action="index"
             method="GET"
-            class="list-group-item ${controllerName == 'color' ? 'active' : ''}">Colores</g:link>
+            class="list-group-item ${controllerName == 'color' ? 'active' : ''}">Manteleria</g:link>
 
         <g:link
             resource="guest"

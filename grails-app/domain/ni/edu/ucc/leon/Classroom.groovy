@@ -1,6 +1,7 @@
 package ni.edu.ucc.leon
 
 class Classroom {
+
     String code
     String name
     Integer capacity
@@ -14,11 +15,7 @@ class Classroom {
     static constraints = {
         code blank: false, unique: true
         name nullable: true
-        capacity nullable: true, validator: { capacity ->
-            if (capacity) {
-                capacity > 0
-            }
-        }
+        capacity min: 1
         powerOutletNumber min: 1
     }
 
@@ -26,8 +23,8 @@ class Classroom {
         table 'classrooms'
         version false
         sort 'code'
-        wifi defaultValue: false
-        airConditioned defaultValue: false
-        powerOutletNumber defaultValue: 1
+        wifi column: 'wifi', defaultValue: false
+        airConditioned column: 'air_conditioned', defaultValue: false
+        powerOutletNumber column: 'power_outlet_number', defaultValue: 1
     }
 }
