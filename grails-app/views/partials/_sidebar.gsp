@@ -27,6 +27,12 @@
             class="list-group-item ${controllerName == 'color' ? 'active' : ''}">Manteleria</g:link>
 
         <g:link
+            resource="fixedVoucher"
+            action="index"
+            method="GET"
+            class="list-group-item ${controllerName == 'fixedVoucher' ? 'active' : ''}">Vales</g:link>
+
+        <g:link
             resource="guest"
             action="index"
             method="GET"

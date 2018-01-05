@@ -81,9 +81,11 @@ clientDependencies {
     npm {
         'axios'('0.16.2')
         'jquery'('3.2.1')
+        'select2'('4.0.5')
         'bootstrap'('3.3.7')
         'font-awesome'('4.7.0')
         'bootstrap-datepicker'('1.7.1')
+        'select2-bootstrap-theme'('0.1.0-beta.10')
     }
 }
 

@@ -143,6 +143,9 @@ grails {
                 // CAREERS
                 [pattern: '/careers/**',                                    access: ['ROLE_ADMIN']],
 
+                // FIXED VOUCHER
+                [pattern: '/fixed/vouchers/**',                             access: ['ROLE_PROTOCOL']],
+
                 // VOUCHER
                 [pattern: '/employeeList/*/*',                              access: ['ROLE_PROTOCOL', 'ROLE_ASSISTANT', 'ROLE_ACADEMIC_COORDINATOR', 'ROLE_ADMINISTRATIVE_COORDINATOR', 'ROLE_HEAD_OFFICE_DELEGATE', 'ROLE_ACADEMIC_DIRECTOR', 'ROLE_ADMINISTRATIVE_DIRECTOR']],
                 [pattern: '/guestList/*/*',                                 access: ['ROLE_PROTOCOL', 'ROLE_ASSISTANT', 'ROLE_ACADEMIC_COORDINATOR', 'ROLE_ADMINISTRATIVE_COORDINATOR', 'ROLE_HEAD_OFFICE_DELEGATE', 'ROLE_ACADEMIC_DIRECTOR', 'ROLE_ADMINISTRATIVE_DIRECTOR']],

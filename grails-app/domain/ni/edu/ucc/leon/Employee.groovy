@@ -23,7 +23,7 @@ class Employee {
         (EmployeeCoordination.findAllByEmployee(this) as List<EmployeeCoordination>)*.coordination as Set<Coordination>
     }
 
-    static hasMany = [tickets: Ticket]
+    static hasMany = [tickets: Ticket, vouchers: FixedVoucher]
 
     static mapping = {
         table 'employees'
@@ -31,5 +31,7 @@ class Employee {
         sort 'fullName'
         enabled defaultValue: true
         contract defaultValue: "'permanent'"
+        tickets cascade: 'all-delete-orphan'
+        vouchers cascade: 'all-delete-orphan'
     }
 }

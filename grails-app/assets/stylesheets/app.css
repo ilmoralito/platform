@@ -1,6 +1,8 @@
 /*
 *= require bootstrap/css/bootstrap
 *= require bootstrap-datepicker/css/bootstrap-datepicker3
+*= require select2/css/select2
+*= require select2-bootstrap-theme/select2-bootstrap
 *= require_self
 */
 

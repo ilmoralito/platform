@@ -40,6 +40,8 @@
 
         <a class="btn btn-danger" onclick="if (confirm('¿Seguro?')) document.querySelector('#form').submit();">Eliminar</a>
 
+        <g:link resource="coffeeShop" action="index" method="GET" class="btn btn-default">Regresar</g:link>
+
         <g:form resource="coffeeShop" action="delete" id="${coffeeShop.id}" name="form">
             <g:hiddenField name="_method" value="DELETE"/>
         </g:form>

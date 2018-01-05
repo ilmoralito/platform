@@ -36,6 +36,15 @@ class UrlMappings {
         "/employees/$employeeId/guests/$coordination?"(controller: 'employee', action: 'guests', method: 'GET')
         "/employees/$employeeId/guests"(controller: 'employee', action: 'store', method: 'POST')
 
+        // FIXED VOUHCER
+        get '/fixed/vouchers'(controller: 'fixedVoucher', action: 'index')
+        get "/fixed/vouchers/create/$date?"(controller: 'fixedVoucher', action: 'create')
+        post '/fixed/vouchers'(controller: 'fixedVoucher', action: 'save')
+        get "/fixed/vouchers/$id"(controller: 'fixedVoucher', action: 'show')
+        get "/fixed/vouchers/$id/edit"(controller: 'fixedVoucher', action: 'edit')
+        put "/fixed/vouchers/$id"(controller: 'fixedVoucher', action: 'update')
+        delete "/fixed/vouchers/$id"(controller: 'fixedVoucher', action: 'delete')
+
         // VOUCHER
         get "/employees/$employeeId/activities/$activityId/vouchers/$type" {
             controller = 'voucher'

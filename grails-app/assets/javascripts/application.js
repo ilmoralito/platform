@@ -2,10 +2,23 @@
 //= require bootstrap/js/bootstrap
 //= require bootstrap-datepicker/js/bootstrap-datepicker
 //= require axios/axios
+//= require select2/js/select2
 //= require_self
 
+$(document).ready(() => {
+    // $('#employeeList').select2({theme: 'bootstrap'});
+    $('#datepicker').datepicker({
+        autoclose: true,
+        format: 'yyyy-mm-dd',
+        startDate: new Date(),
+    });
+})
+
 function h(e) {
-    $(e).css({'height':'auto','overflow-y':'hidden'}).height(e.scrollHeight);
+    $(e).css({
+        'height':'auto',
+        'overflow-y':'hidden'
+    }).height(e.scrollHeight);
 }
 
 $('textarea#description').each(function () {
@@ -25,7 +38,66 @@ $('textarea#description').each(function () {
 
 // VOUCHER
 {
-    // update employee/guest list when date change
+    // Adding and substracting price
+    const price = document.querySelector('#price');
+
+    document.querySelectorAll('.prices').forEach(price => {
+        price.addEventListener('change', applyPrice);
+    });
+
+    function applyPrice(e) {
+        const selectedPrice = parseInt(this.dataset.price, 10);
+
+        if (this.checked) {
+            addPrice(selectedPrice);
+
+            return;
+        }
+
+        substractPrice(selectedPrice);
+    }
+
+    function getActualPrice() {
+        return parseInt(price.value, 10);
+    }
+
+    function addPrice(selectedPrice) {
+        const actualPrice = getActualPrice();
+        const newPrice = actualPrice + selectedPrice;
+
+        price.value = newPrice;
+    }
+
+    function substractPrice(selectedPrice) {
+        const actualPrice = getActualPrice();
+        const newPrice = actualPrice - selectedPrice;
+
+        price.value = newPrice;
+    }
+
+    // Update coordination when change employee
+    const employeeList = document.querySelector('#employeeList');
+
+    employeeList.addEventListener('change', updateCoordinationList);
+
+    function updateCoordinationList() {
+        const coordinationList = JSON.parse(this.options[this.selectedIndex].dataset.coordinationList);
+
+        renderNewCoordinationList(coordinationList);
+    }
+
+    function renderNewCoordinationList(coordinationList) {
+        const target = document.querySelector('#coordination');
+        const results = coordinationList.map(coordination => {
+            return `
+                <option value="${coordination.id}">${coordination.name}</option>
+            `;
+        }).join('')
+
+        target.innerHTML = results;
+    }
+
+    // Update employee/guest list when date change
     const date = document.querySelector('#date');
 
     date.addEventListener('change', updateParticipantList);
@@ -66,7 +138,7 @@ $('textarea#description').each(function () {
         renderParticipantList(participantList.data.participantList, type);
     }
 
-    // when change coffeeshop update prices
+    // When change coffeeshop update prices
     const coffeeShop = document.querySelector('#coffeeShop');
 
     coffeeShop.addEventListener('change', updatePrices);
@@ -90,43 +162,6 @@ $('textarea#description').each(function () {
         lunch.dataset.price = dataset.lunchPrice;
         dinner.dataset.price = dataset.dinnerPrice;
         others.dataset.price = dataset.othersPrice;
-    }
-
-    // Adding and substracting price
-    const price = document.querySelector('#price');
-
-    document.querySelectorAll('.prices').forEach(price => {
-        price.addEventListener('change', applyPrice);
-    });
-
-    function applyPrice(e) {
-        const selectedPrice = parseInt(this.dataset.price, 10);
-
-        if (this.checked) {
-            addPrice(selectedPrice);
-
-            return;
-        }
-
-        substractPrice(selectedPrice);
-    }
-
-    function getActualPrice() {
-        return parseInt(price.value, 10);
-    }
-
-    function addPrice(selectedPrice) {
-        const actualPrice = getActualPrice();
-        const newPrice = actualPrice + selectedPrice;
-
-        price.value = newPrice;
-    }
-
-    function substractPrice(selectedPrice) {
-        const actualPrice = getActualPrice();
-        const newPrice = actualPrice - selectedPrice;
-
-        price.value = newPrice;
     }
 }
 
