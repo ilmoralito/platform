@@ -100,15 +100,8 @@ class FixedVoucherController {
 
     def show(final Long id) {
         FixedVoucher fixedVoucher = id ? fixedVoucherService.find(id) : null
-        List<String> serviceList = [
-            [label: 'Desayuno', value: fixedVoucher.breakfast],
-            [label: 'Almuerzo', value: fixedVoucher.lunch],
-            [label: 'Cena', value: fixedVoucher.dinner],
-            [label: 'Otros', value: fixedVoucher.others]
-        ]
 
-
-        respond ([fixedVoucher: fixedVoucher], model: [serviceList: getServiceList(serviceList)])
+        respond ([fixedVoucher: fixedVoucher], model: [serviceList: Util.getServiceList(fixedVoucher)])
     }
 
     def edit(final Long id) {
@@ -268,12 +261,7 @@ class FixedVoucherController {
                             fullName: fixedVoucher.employee.fullName
                         ],
                         price: fixedVoucher.price,
-                        serviceList: getServiceList([
-                            [label: 'Desayuno', value: fixedVoucher.breakfast],
-                            [label: 'Almuerzo', value: fixedVoucher.lunch],
-                            [label: 'Cena', value: fixedVoucher.dinner],
-                            [label: 'Otros', value: fixedVoucher.others]
-                        ])
+                        serviceList: Util.getServiceList(fixedVoucher)
                     ]
                 }
             ]
@@ -288,16 +276,7 @@ class FixedVoucherController {
                 id: fixedVoucher.id,
                 employee: [fullName: fixedVoucher.employee.fullName],
                 price: fixedVoucher.price,
-                serviceList: [
-                    [label: 'Desayuno', value: fixedVoucher.breakfast],
-                    [label: 'Almuerzo', value: fixedVoucher.lunch],
-                    [label: 'Cena', value: fixedVoucher.dinner],
-                    [label: 'Otros', value: fixedVoucher.others]
-                ].inject([]) { accumulator, currentValue ->
-                    if (currentValue.value) accumulator << currentValue.label
-
-                    accumulator
-                }
+                serviceList: Util.getServiceList(fixedVoucher)
             ]
         }
 
@@ -320,15 +299,5 @@ class FixedVoucherController {
 
     private List<FixedVoucher> getFixedVoucherListInDate(final Date date) {
         FixedVoucher.where { date == date }.list()
-    }
-
-    private List<String> getServiceList(final List<Map> services) {
-        List<String> serviceList = services.inject([]) { accumulator, currentValue ->
-            if (currentValue.value) accumulator << currentValue.label
-
-            accumulator
-        }
-
-        serviceList
     }
 }

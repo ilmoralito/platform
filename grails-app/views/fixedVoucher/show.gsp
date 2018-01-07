@@ -33,9 +33,7 @@
 
                 <tr>
                     <td>Servicios</td>
-                    <td>
-                        <g:join in="${serviceList}"/>
-                    </td>
+                    <td>${serviceList}</td>
                 </tr>
 
                 <tr>

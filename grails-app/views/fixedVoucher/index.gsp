@@ -46,9 +46,7 @@
                                 </td>
                                 <td style="vertical-align: middle;">${fixedVoucher.employee.fullName}</td>
                                 <td style="vertical-align: middle;" class="price">${fixedVoucher.price}</td>
-                                <td style="vertical-align: middle;">
-                                    <g:join in="${fixedVoucher.serviceList}"/>
-                                </td>
+                                <td style="vertical-align: middle;">${fixedVoucher.serviceList}</td>
                             </tr>
                         </g:each>
                     </g:each>
@@ -78,7 +76,7 @@
 
                 <g:textField id="datepicker" name="date" class="form-control"/>
             </div>
-            
+
             <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-block">Confirmar</button>
             </div>

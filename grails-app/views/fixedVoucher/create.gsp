@@ -30,9 +30,7 @@
                             </td>
                             <td>${fixedVoucher.employee.fullName}</td>
                             <td>${fixedVoucher.price}</td>
-                            <td>
-                                <g:join in="${fixedVoucher.serviceList}"/>
-                            </td>
+                            <td>${fixedVoucher.serviceList}</td>
                         </tr>
                     </g:each>
 
