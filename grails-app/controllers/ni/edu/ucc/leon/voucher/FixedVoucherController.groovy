@@ -1,5 +1,7 @@
 package ni.edu.ucc.leon.voucher
 
+import grails.plugin.springsecurity.SpringSecurityService
+import com.craigburke.document.builder.PdfDocumentBuilder
 import grails.validation.ValidationException
 
 import ni.edu.ucc.leon.FixedVoucherService
@@ -9,9 +11,13 @@ import ni.edu.ucc.leon.EmployeeService
 import ni.edu.ucc.leon.FixedVoucher
 import ni.edu.ucc.leon.CoffeeShop
 import ni.edu.ucc.leon.Employee
+import ni.edu.ucc.leon.User
+
+import ni.edu.ucc.leon.voucher.Util
 
 class FixedVoucherController {
 
+    SpringSecurityService springSecurityService
     FixedVoucherService fixedVoucherService
     CoffeeShopService coffeeShopService
     EmployeeService employeeService
@@ -165,8 +171,81 @@ class FixedVoucherController {
         redirect uri: "/fixed/vouchers/create/${fixedVoucher.date.format('yyyy-MM-dd')}", method: 'GET'
     }
 
-    def print() {
-        render params
+    def print(PrintFixedVouchers command) {
+        if (command.hasErrors()) {
+            List<FixedVoucher> fixedVoucherList = fixedVoucherService.findAll()
+            List<Employee> employeeList = getEmployeeListToFilter(fixedVoucherList)
+
+            respond (
+                [errors: command.errors],
+                model:
+                    [
+                        fixedVoucherList: getFixedVoucherList(fixedVoucherList),
+                        employeeList: employeeList
+                    ],
+                    view: 'index'
+            )
+
+            return
+        }
+
+        List<FixedVoucher> fixedVouchers = FixedVoucher.getAll(command.fixedVouchers)
+        PdfDocumentBuilder pdfDocumentBuilder = new PdfDocumentBuilder(response.outputStream)
+        pdfDocumentBuilder.create {
+            document (
+                margin:
+                    [top: 0.1.inches, right: 0.2.inches, bottom: 0.2.inches, left: 0.2.inches],
+                font:
+                    [family: 'Courier', size: 9.pt]
+            ) {
+                fixedVouchers.eachWithIndex { FixedVoucher fixedVoucher, index, iterator = index + 1 ->
+                    table(
+                        columns: [1, 2],
+                        padding: 1.px,
+                        margin: [bottom: 0.1.inches, top: 0.1.inches]
+                    ) {
+                        row {
+                            cell 'A nombre de'
+                            cell fixedVoucher.employee.fullName
+                        }
+
+                        row {
+                            cell 'Coordinacion'
+                            cell fixedVoucher.coordination.name
+                        }
+
+                        row {
+                            cell 'Fecha'
+                            cell fixedVoucher.date.format('yyyy-MM-dd')
+                        }
+
+                        row {
+                            cell 'Valor'
+                            cell fixedVoucher.price
+                        }
+
+                        row {
+                            cell 'Servicios'
+                            cell Util.getServiceList(fixedVoucher)
+                        }
+
+                        row {
+                            User currentUser = springSecurityService.currentUser
+                            String printedBy = currentUser.employee.fullName
+                            String printingDate = new Date().format('yyyy-MM-dd')
+
+                            cell "Impreso por: $printedBy, Fecha de impresion: $printingDate", colspan: 2, align: 'center'
+                        }
+                    }
+
+                    if (iterator % 6 == 0) pageBreak()
+                }
+            }
+        }
+
+        response.contentType = 'application/pdf'
+        response.setHeader('Content-disposition', 'attachment;filename=doc.pdf')
+        response.outputStream.flush()
     }
 
     def filter() {
