@@ -20,17 +20,22 @@ class FixedVoucherController {
 
     def index() {
         List<FixedVoucher> fixedVoucherList = fixedVoucherService.findAll()
+        List<Employee> employeeList = getEmployeeListToFilter(fixedVoucherList)
 
-        respond ([fixedVoucherList: getFixedVoucherList(fixedVoucherList)])
+        respond ([fixedVoucherList: getFixedVoucherList(fixedVoucherList)], model: [employeeList: employeeList])
     }
 
     def create(BuildFixedVoucher command) {
         if (command.hasErrors()) {
             List<FixedVoucher> fixedVoucherList = fixedVoucherService.findAll()
+            List<Employee> employeeList = getEmployeeListToFilter(fixedVoucherList)
 
             respond (
                 [errors: command.errors],
-                model: [fixedVoucherList: getFixedVoucherList(fixedVoucherList)],
+                model: [
+                    fixedVoucherList: getFixedVoucherList(fixedVoucherList),
+                    employeeList: employeeList
+                ],
                 view: 'index'
             )
 
@@ -160,27 +165,42 @@ class FixedVoucherController {
         redirect uri: "/fixed/vouchers/create/${fixedVoucher.date.format('yyyy-MM-dd')}", method: 'GET'
     }
 
+    def print() {
+        render params
+    }
+
+    def filter() {
+        render params
+    }
+
+    private List<Employee> getEmployeeListToFilter(final List<FixedVoucher> fixedVoucherList) {
+        fixedVoucherList.employee.unique().sort { it.fullName }
+    }
+
     private List<Map> getFixedVoucherList(final List<FixedVoucher> fixedVoucherList) {
         List<Map> results = fixedVoucherList.groupBy { it.date }.collect {
             [
                 date: it.key.format('yyyy-MM-dd'),
-                fixedVoucherList: it.value.collect {
+                fixedVoucherList: it.value.collect { FixedVoucher fixedVoucher ->
                     [
-                        id: it.id,
-                        employee: [fullName: it.employee.fullName],
-                        price: it.price,
+                        id: fixedVoucher.id,
+                        employee: [
+                            id: fixedVoucher.employee.id,
+                            fullName: fixedVoucher.employee.fullName
+                        ],
+                        price: fixedVoucher.price,
                         serviceList: getServiceList([
-                            [label: 'Desayuno', value: it.breakfast],
-                            [label: 'Almuerzo', value: it.lunch],
-                            [label: 'Cena', value: it.dinner],
-                            [label: 'Otros', value: it.others]
+                            [label: 'Desayuno', value: fixedVoucher.breakfast],
+                            [label: 'Almuerzo', value: fixedVoucher.lunch],
+                            [label: 'Cena', value: fixedVoucher.dinner],
+                            [label: 'Otros', value: fixedVoucher.others]
                         ])
                     ]
                 }
             ]
         }
 
-        results
+        results.sort { a, b -> b.date <=> a.date }
     }
 
     private List<Map> buildFixedVoucherList(final List<FixedVoucher> fixedVoucherList) {

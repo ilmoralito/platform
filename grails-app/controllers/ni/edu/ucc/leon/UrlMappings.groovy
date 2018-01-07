@@ -44,6 +44,8 @@ class UrlMappings {
         get "/fixed/vouchers/$id/edit"(controller: 'fixedVoucher', action: 'edit')
         put "/fixed/vouchers/$id"(controller: 'fixedVoucher', action: 'update')
         delete "/fixed/vouchers/$id"(controller: 'fixedVoucher', action: 'delete')
+        get '/fixed/vouchers/print'(controller: 'fixedVoucher', action: 'print')
+        get '/fixed/vouchers/filter'(controller: 'fixedVoucher', action: 'filter')
 
         // VOUCHER
         get "/employees/$employeeId/activities/$activityId/vouchers/$type" {

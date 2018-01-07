@@ -7,6 +7,71 @@
 
 $(document).ready(() => {
     // $('#employeeList').select2({theme: 'bootstrap'});
+
+    // Toggle fixed voucher table row
+    {
+        const employees = document.querySelectorAll('.employees');
+
+        employees.forEach(employee => {
+            employee.addEventListener('change', toggleEmployee);
+        });
+
+        function getEmployeesToToggle(id) {
+            return document.querySelectorAll(`tr.${id}`);
+        }
+
+        function updateTotalPrice(targets, status) {
+            const totalPriceTarget = document.querySelector('#totalPrice');
+            let totalPrice = parseInt(totalPriceTarget.innerHTML, 10)
+
+            targets.forEach(target => {
+                const price = parseInt(target.querySelector('.price').innerHTML, 10);
+
+                if (status) {
+                    totalPrice += price;
+                } else {
+                    totalPrice -= price;
+                }
+
+                totalPriceTarget.innerHTML = totalPrice;
+            });
+        }
+
+        function toggleEmployee() {
+            const targets = getEmployeesToToggle(this.id);
+
+            targets.forEach(target => {
+                // toggle class
+                target.classList.toggle('hide');
+
+                // set fixed voucher checkbox checked to false
+                target.querySelector('input[type=checkbox]').checked = false;
+            });
+
+            updateTotalPrice(targets, this.checked);
+        }
+    }
+
+    // Toggle fixed voucher checkboxes to print
+    {
+        var checkboxTrigger = document.querySelector('#checkboxTrigger');
+
+        checkboxTrigger.addEventListener('change', toggleCheckboxes);
+
+        function toggleCheckboxes() {
+            const checkboxTriggerStatus = this.checked;
+            const fixedVouchers = getFixedVouchersToPrint();
+
+            fixedVouchers.forEach(element => {
+                element.checked = checkboxTriggerStatus;
+            });
+        }
+
+        function getFixedVouchersToPrint() {
+            return document.querySelectorAll('tr:not(.hide) input[type=checkbox]');
+        }
+    }
+
     $('#datepicker').datepicker({
         autoclose: true,
         format: 'yyyy-mm-dd',

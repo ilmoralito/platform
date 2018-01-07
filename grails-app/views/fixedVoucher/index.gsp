@@ -13,7 +13,9 @@
 
                 <thead>
                     <tr>
-                        <th></th>
+                        <th>
+                            <g:checkBox name="checkboxTrigger"/>
+                        </th>
                         <th>Empleado</th>
                         <th>Precio</th>
                         <th>Servicios</th>
@@ -24,17 +26,26 @@
                     <g:each in="${fixedVoucherList}" var="list">
                         <tr>
                             <td colspan="4">
-                                <g:link resources="fixedVoucher" action="create" params="[date: list.date]" method="GET">${list.date}</g:link>
+                                <g:link
+                                    resource="fixedVoucher"
+                                    action="create"
+                                    params="[date: list.date]"
+                                    method="GET">${list.date}</g:link>
                             </td>
                         </tr>
 
                         <g:each in="${list.fixedVoucherList}" var="fixedVoucher">
-                            <tr>
+                            <tr class="employee${fixedVoucher.employee.id}">
                                 <td class="text-center">
-                                    <g:checkBox name="fixedVouchers" form="printForm"/>
+                                    <g:checkBox
+                                        name="fixedVouchers"
+                                        value="${fixedVoucher.id}"
+                                        checked="false"
+                                        form="printForm"
+                                        class="fixedVouchers"/>
                                 </td>
                                 <td style="vertical-align: middle;">${fixedVoucher.employee.fullName}</td>
-                                <td style="vertical-align: middle;">${fixedVoucher.price}</td>
+                                <td style="vertical-align: middle;" class="price">${fixedVoucher.price}</td>
                                 <td style="vertical-align: middle;">
                                     <g:join in="${fixedVoucher.serviceList}"/>
                                 </td>
@@ -44,13 +55,15 @@
 
                     <tr>
                         <td colspan="2"></td>
-                        <td colspan="2">${fixedVoucherList.fixedVoucherList.price.flatten().sum()}</td>
+                        <td colspan="2" id="totalPrice">${fixedVoucherList.fixedVoucherList.price.flatten().sum()}</td>
                     </tr>
                 </tbody>
             </table>
 
-            <g:form>
-                <button type="submit" class="btn btn-primary">Imprimir</button>
+            <g:form name="printForm" resources="fixedVoucher" action="print" method="GET">
+                <button type="submit" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-print" aria-hidden="true"></span> Imprimir
+                </button>
             </g:form>
         </g:if>
         <g:else>
@@ -59,7 +72,7 @@
     </content>
 
     <content tag="right">
-        <g:form resources="fixedVoucher" action="create" method="GET" autocomplete="off">
+        <g:form resource="fixedVoucher" action="create" method="GET" autocomplete="off">
             <div class="form-group">
                 <label for="date">Fecha</label>
 
@@ -71,10 +84,27 @@
             </div>
         </g:form>
 
-        <g:link class="btn btn-primary btn-block">Vales de la semana actual</g:link>
+        <g:link resource="fixedVoucher" action="filter" method="GET" class="btn btn-default btn-block" style="margin: 0  0 15px 0;">
+            <span class="glyphicon glyphicon-filter" aria-hidden="true"></span> Filtrar
+        </g:link>
 
-        <g:link class="btn btn-primary btn-block">Filtar</g:link>
+        <div class="form-group">
+            <label>Filtrar por empleados</label>
 
+            <g:each in="${employeeList}" var="employee" status="index">
+                <div class="checkbox" style="${index == 0 ? 'margin-top: 0;' : ''}">
+                    <label>
+                        <g:checkBox
+                            id="employee${employee.id}"
+                            name="employees"
+                            value="${employee.id}"
+                            class="employees"/> ${employee.fullName}
+                    </label>
+                </div>
+            </g:each>
+        </div>
+
+        <br>
         <g:hasErrors bean="${errors}">
             <g:renderErrors bean="${errors}"/>
         </g:hasErrors>
