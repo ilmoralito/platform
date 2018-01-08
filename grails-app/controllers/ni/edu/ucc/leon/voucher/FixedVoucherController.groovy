@@ -14,6 +14,7 @@ import ni.edu.ucc.leon.Employee
 import ni.edu.ucc.leon.User
 
 import ni.edu.ucc.leon.voucher.Util
+import ni.edu.ucc.leon.DateUtil
 
 class FixedVoucherController {
 
@@ -21,11 +22,14 @@ class FixedVoucherController {
     FixedVoucherService fixedVoucherService
     CoffeeShopService coffeeShopService
     EmployeeService employeeService
+    DateUtil dateUtil
 
     static allowedMethods = [ save: 'POST', delete: 'DELETE', update: 'PUT']
 
     def index() {
-        List<FixedVoucher> fixedVoucherList = fixedVoucherService.findAll()
+        Date firstDayOfTheWeek = dateUtil.getFirstDayOfTheWeek()
+        Date lastDayOfTheWeek = dateUtil.getLastDayOfTheWeek()
+        List<FixedVoucher> fixedVoucherList = fixedVoucherService.filter(firstDayOfTheWeek,lastDayOfTheWeek)
         List<Employee> employeeList = getEmployeeListToFilter(fixedVoucherList)
 
         respond ([fixedVoucherList: getFixedVoucherList(fixedVoucherList)], model: [employeeList: employeeList])
@@ -33,7 +37,9 @@ class FixedVoucherController {
 
     def create(BuildFixedVoucher command) {
         if (command.hasErrors()) {
-            List<FixedVoucher> fixedVoucherList = fixedVoucherService.findAll()
+            Date firstDayOfTheWeek = dateUtil.getFirstDayOfTheWeek()
+            Date lastDayOfTheWeek = dateUtil.getLastDayOfTheWeek()
+            List<FixedVoucher> fixedVoucherList = fixedVoucherService.filter(firstDayOfTheWeek,lastDayOfTheWeek)
             List<Employee> employeeList = getEmployeeListToFilter(fixedVoucherList)
 
             respond (
@@ -166,7 +172,9 @@ class FixedVoucherController {
 
     def print(PrintFixedVouchers command) {
         if (command.hasErrors()) {
-            List<FixedVoucher> fixedVoucherList = fixedVoucherService.findAll()
+            Date firstDayOfTheWeek = dateUtil.getFirstDayOfTheWeek()
+            Date lastDayOfTheWeek = dateUtil.getLastDayOfTheWeek()
+            List<FixedVoucher> fixedVoucherList = fixedVoucherService.filter(firstDayOfTheWeek,lastDayOfTheWeek)
             List<Employee> employeeList = getEmployeeListToFilter(fixedVoucherList)
 
             respond (

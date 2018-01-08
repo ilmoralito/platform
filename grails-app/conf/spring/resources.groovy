@@ -1,5 +1,9 @@
 import ni.edu.ucc.leon.UserPasswordEncoderListener
-// Place your Spring DSL code here
+
 beans = {
     userPasswordEncoderListener(UserPasswordEncoderListener, ref('hibernateDatastore'))
+
+    dateUtil(ni.edu.ucc.leon.DateUtil) { bean ->
+        bean.autowire = true
+    }
 }
