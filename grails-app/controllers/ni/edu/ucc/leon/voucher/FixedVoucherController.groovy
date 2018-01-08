@@ -249,8 +249,22 @@ class FixedVoucherController {
         response.outputStream.flush()
     }
 
-    def filter() {
-        render params
+    def filter() {}
+
+    def applyFilter(ApplyFilter command) {
+        if (command.hasErrors()) {
+            respond ([errors: command.errors], view: 'filter')
+
+            return
+        }
+
+        List<FixedVoucher> fixedVoucherList = fixedVoucherService.filter(command.sinceDate, command.tillDate)
+
+        respond (
+            [fixedVoucherList: getFixedVoucherList(fixedVoucherList)],
+            model: [employeeList: getEmployeeListToFilter(fixedVoucherList)],
+            view: 'index'
+        )
     }
 
     private List<Employee> getEmployeeListToFilter(final List<FixedVoucher> fixedVoucherList) {

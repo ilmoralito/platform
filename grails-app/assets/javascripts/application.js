@@ -8,6 +8,12 @@
 $(document).ready(() => {
     // $('#employeeList').select2({theme: 'bootstrap'});
 
+    $('#datepicker').datepicker({
+        autoclose: true,
+        format: 'yyyy-mm-dd',
+        startDate: new Date(),
+    });
+
     // Toggle fixed voucher table row
     {
         const employees = document.querySelectorAll('.employees');
@@ -71,12 +77,6 @@ $(document).ready(() => {
             return document.querySelectorAll('tr:not(.hide) input[type=checkbox]');
         }
     }
-
-    $('#datepicker').datepicker({
-        autoclose: true,
-        format: 'yyyy-mm-dd',
-        startDate: new Date(),
-    });
 })
 
 function h(e) {

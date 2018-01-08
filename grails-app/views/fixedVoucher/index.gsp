@@ -4,6 +4,12 @@
     </head>
 
     <content tag="main">
+        <div class="clearfix">
+            <g:link resource="fixedVoucher" action="filter" method="GET" class="btn btn-sm btn-default pull-right">
+                <span class="glyphicon glyphicon-filter" aria-hidden="true"></span> Filtrar por fecha
+            </g:link>
+        </div>
+
         <g:if test="${fixedVoucherList}">
             <table class="table table-hover table-bordered">
                 <col width="1%">
@@ -81,10 +87,6 @@
                 <button type="submit" class="btn btn-primary btn-block">Confirmar</button>
             </div>
         </g:form>
-
-        <g:link resource="fixedVoucher" action="filter" method="GET" class="btn btn-default btn-block" style="margin: 0  0 15px 0;">
-            <span class="glyphicon glyphicon-filter" aria-hidden="true"></span> Filtrar
-        </g:link>
 
         <div class="form-group">
             <label>Filtrar por empleados</label>

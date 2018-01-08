@@ -12,6 +12,8 @@ interface IFixedVoucherService {
     FixedVoucher delete(final Serializable id)
 
     FixedVoucher update(final UpdateFixedVoucher command)
+
+    List<FixedVoucher> filter(final Date sinceDate, final Date tillDate)
 }
 
 @Service(FixedVoucher)
@@ -38,5 +40,10 @@ abstract class FixedVoucherService implements IFixedVoucherService {
         }
 
         fixedVoucher
+    }
+
+    @Override
+    List<FixedVoucher> filter(final Date sinceDate, final Date tillDate) {
+        FixedVoucher.where { date >= sinceDate && date <= tillDate }.list()
     }
 }

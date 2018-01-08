@@ -1,19 +1,11 @@
 /*
 *= require bootstrap/css/bootstrap
+*= require common
 *= require bootstrap-datepicker/css/bootstrap-datepicker3
 *= require select2/css/select2
 *= require select2-bootstrap-theme/select2-bootstrap
 *= require_self
 */
-
-body {
-    padding-top: 70px;
-    padding-bottom: 20px;
-}
-
-label {
-    font-weight: normal;
-}
 
 textarea {
     resize: none;
