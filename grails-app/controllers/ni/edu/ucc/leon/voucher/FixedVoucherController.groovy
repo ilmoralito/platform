@@ -235,7 +235,7 @@ class FixedVoucherController {
                             String printedBy = currentUser.employee.fullName
                             String printingDate = new Date().format('yyyy-MM-dd')
 
-                            cell "Impreso por: $printedBy, Fecha de impresion: $printingDate", colspan: 2, align: 'center'
+                            cell "#${fixedVoucher.id} - Impreso por: $printedBy, Fecha de impresion: $printingDate", colspan: 2, align: 'center'
                         }
                     }
 
