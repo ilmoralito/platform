@@ -142,7 +142,7 @@ class VoucherController {
                         }
 
                         row {
-                            cell "Autorizado por: ${voucher.activity.authorizedBy.fullName}, fecha: ${voucher.activity.authorizationDate.format('yyyy-MM-dd hh:mm')}", colspan: 2, align: 'center'
+                            cell "#$voucher.id - Autorizado por: ${voucher.activity.authorizedBy.fullName}, fecha: ${voucher.activity.authorizationDate.format('yyyy-MM-dd hh:mm')}", colspan: 2, align: 'center'
                         }
                     }
 
