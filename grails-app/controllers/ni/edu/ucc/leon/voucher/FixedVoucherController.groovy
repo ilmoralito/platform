@@ -267,6 +267,43 @@ class FixedVoucherController {
         )
     }
 
+    def report(final Integer year) {
+        respond ([results: fixedVoucherService.getReport()], model: [yearList: fixedVoucherService.getYearList()])
+    }
+
+    def reportSummary(final Integer month, final Integer year) {
+        List<FixedVoucher> fixedVouchers = year ? fixedVoucherService.getReportSummary(month, year) : fixedVoucherService.getReportSummary(month)
+        List<Map> coordinationSummary = getSummary(fixedVouchers, 'coordination')
+        List<Map> employeeSummary = getSummary(fixedVouchers, 'employee')
+        List<Map> areaSummary = getSummary(fixedVouchers, 'area')
+
+        respond (
+            [fixedVoucherList: getFixedVoucherList(fixedVouchers)],
+            model: [
+                coordinationSummary: coordinationSummary,
+                employeeSummary: employeeSummary,
+                areaSummary: areaSummary
+            ]
+        )
+    }
+
+    private List<Map> getSummary(final List<FixedVoucher> fixedVoucherList, final String pivot) {
+        final Map group = fixedVoucherList.groupBy { pivot == 'area' ? it.coordination.area : pivot == 'employee' ? it.employee : it.coordination }
+        final List<Map> results = group.collect { a ->
+            [
+                label: pivot == 'area' ? coordination.area([area: a.key]) : pivot == 'employee' ? a.key.fullName : a.key.name,
+                quantity: a.value.size(),
+                price: a.value.price.sum(),
+                breakfast: a.value.breakfast.findAll { it }.size(),
+                lunch: a.value.lunch.findAll { it }.size(),
+                dinner: a.value.dinner.findAll { it }.size(),
+                others: a.value.others.findAll { it }.size(),
+            ]
+        }
+
+        results.sort { -it.quantity }
+    }
+
     private List<Employee> getEmployeeListToFilter(final List<FixedVoucher> fixedVoucherList) {
         fixedVoucherList.employee.unique().sort { it.fullName }
     }

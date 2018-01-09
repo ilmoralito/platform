@@ -39,6 +39,12 @@
                                                 Actividades
                                             </g:link>
                                         </li>
+
+                                        <li class="${controllerName == 'fixedVoucher' && actionName in ['report'] ? 'active' : ''}">
+                                            <g:link resource="fixedVoucher" action="report" method="GET">
+                                                Vales fijos
+                                            </g:link>
+                                        </li>
                                     </sec:ifAllGranted>
                                 </ul>
                             </li>
