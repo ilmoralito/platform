@@ -13,16 +13,16 @@
 
         <div class="col-md-8">
             <g:pageProperty name="page.main"/>
+        </div>
+
+        <div class="col-md-2">
+            <g:pageProperty name="page.right"/>
 
             <g:if test="${flash?.message}">
                 <div class="alert alert-info">
                     ${flash.message}
                 </div>
             </g:if>
-        </div>
-
-        <div class="col-md-2">
-            <g:pageProperty name="page.right"/>
         </div>
     </body>
 </html>

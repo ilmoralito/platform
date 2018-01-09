@@ -49,6 +49,7 @@ class UrlMappings {
         get '/fixed/vouchers/filter'(controller: 'fixedVoucher', action: 'filter')
         get "/fixed/vouchers/report/$year?"(controller: 'fixedVoucher', action: 'report')
         get "/fixed/vouchers/report/$month/summary/$year?"(controller: 'fixedVoucher', action: 'reportSummary')
+        get "/fixed/vouchers/send/report/$month/summary/$year?"(controller: 'fixedVoucher', action: 'sendReport')
 
         // VOUCHER
         get "/employees/$employeeId/activities/$activityId/vouchers/$type" {

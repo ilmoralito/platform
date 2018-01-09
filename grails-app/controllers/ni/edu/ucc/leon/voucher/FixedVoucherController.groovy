@@ -273,18 +273,30 @@ class FixedVoucherController {
 
     def reportSummary(final Integer month, final Integer year) {
         List<FixedVoucher> fixedVouchers = year ? fixedVoucherService.getReportSummary(month, year) : fixedVoucherService.getReportSummary(month)
-        List<Map> coordinationSummary = getSummary(fixedVouchers, 'coordination')
-        List<Map> employeeSummary = getSummary(fixedVouchers, 'employee')
-        List<Map> areaSummary = getSummary(fixedVouchers, 'area')
 
-        respond (
-            [fixedVoucherList: getFixedVoucherList(fixedVouchers)],
-            model: [
-                coordinationSummary: coordinationSummary,
-                employeeSummary: employeeSummary,
-                areaSummary: areaSummary
+        respond ([fixedVoucherList: getFixedVoucherList(fixedVouchers)], model: [model: makeReportSummary(fixedVouchers)])
+    }
+
+    def sendReport(final Integer month, final Integer year) {
+        List<String> recipients = fixedVoucherService.getRecipients()
+
+        List<FixedVoucher> fixedVouchers = year ? fixedVoucherService.getReportSummary(month, year) : fixedVoucherService.getReportSummary(month)
+        ReportSummary reportSummary = makeReportSummary(fixedVouchers)
+
+        sendMail {
+            from 'mario.martinez@ucc.edu.ni'
+            to recipients[0].email
+            cc recipients[1].email
+            html view: 'mails/report', model: [
+                year: year,
+                month: month,
+                fixedVoucherList: getFixedVoucherList(fixedVouchers),
+                model: makeReportSummary(fixedVouchers)
             ]
-        )
+        }
+
+        flash.message = 'Reporte enviado'
+        redirect uri: request.getHeader('referer'), method: 'GET'
     }
 
     private List<Map> getSummary(final List<FixedVoucher> fixedVoucherList, final String pivot) {
@@ -359,4 +371,18 @@ class FixedVoucherController {
     private List<FixedVoucher> getFixedVoucherListInDate(final Date date) {
         FixedVoucher.where { date == date }.list()
     }
+
+    private ReportSummary makeReportSummary(final List<FixedVoucher> fixedVouchers) {
+        new ReportSummary (
+            coordinationSummary: getSummary(fixedVouchers, 'coordination'),
+            employeeSummary: getSummary(fixedVouchers, 'employee'),
+            areaSummary: getSummary(fixedVouchers, 'area')
+        )
+    }
+}
+
+class ReportSummary {
+    List<Map> coordinationSummary
+    List<Map> employeeSummary
+    List<Map> areaSummary
 }

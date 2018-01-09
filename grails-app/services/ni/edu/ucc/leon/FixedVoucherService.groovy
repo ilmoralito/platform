@@ -26,6 +26,8 @@ interface IFixedVoucherService {
 
     @Where({ month(date) == month })
     List<FixedVoucher> getReportSummary(final Integer month)
+
+    List<String> getRecipients()
 }
 
 @Service(FixedVoucher)
@@ -91,6 +93,37 @@ abstract class FixedVoucherService implements IFixedVoucherService {
             ) s
             LEFT JOIN (vouchers v) ON (s.m = MONTH(v.date)) AND v.class = 'ni.edu.ucc.leon.FixedVoucher'
             GROUP BY 1, 2 ORDER BY pivot DESC"""
+        final sqlQuery = session.createSQLQuery(queryString)
+        final result = sqlQuery.with {
+            resultTransformer = AliasToEntityMapResultTransformer.INSTANCE
+
+            list()
+        }
+
+        result
+    }
+
+    @Override
+    List<String> getRecipients() {
+        final session = sessionFactory.currentSession
+        final String queryString = """
+            SELECT
+                u.email
+            FROM users u
+            INNER JOIN user_role ur
+                ON u.id = ur.user_id
+            INNER JOIN roles r
+                ON r.id = ur.role_id
+            WHERE r.authority = 'ROLE_ACADEMIC_DIRECTOR'
+            UNION ALL
+            SELECT
+                u.email
+            FROM users u
+            INNER JOIN user_role ur
+                ON u.id = ur.user_id
+            INNER JOIN roles r
+                ON r.id = ur.role_id
+            WHERE r.authority = 'ROLE_HEAD_OFFICE_DELEGATE'"""
         final sqlQuery = session.createSQLQuery(queryString)
         final result = sqlQuery.with {
             resultTransformer = AliasToEntityMapResultTransformer.INSTANCE

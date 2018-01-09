@@ -5,49 +5,19 @@
 
     <content tag="main">
         <g:if test="${fixedVoucherList}">
-            <table class="table table-hover table-bordered">
-                <col width="25%">
-                <col width="10%">
-                <col width="65%">
-
-                <thead>
-                    <tr>
-                        <th>Empleado</th>
-                        <th>Precio</th>
-                        <th>Servicios</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <g:each in="${fixedVoucherList}" var="list">
-                        <tr>
-                            <td colspan="3">
-                                <b>${list.date}</b>
-                            </td>
-                        </tr>
-
-                        <g:each in="${list.fixedVoucherList}" var="fixedVoucher">
-                            <tr>
-                                <td>${fixedVoucher.employee.fullName}</td>
-                                <td>${fixedVoucher.price}</td>
-                                <td>${fixedVoucher.serviceList}</td>
-                            </tr>
-                        </g:each>
-                    </g:each>
-                </tbody>
-            </table>
+            <g:render template="report" model="[fixedVoucherList: fixedVoucherList]"/>
 
             <g:render
                 template="summary"
-                model="[caption: 'Sumario por area', label: 'Area', summaryList: areaSummary]"/>
+                model="[caption: 'Sumario por area', label: 'Area', summaryList: model.areaSummary]"/>
 
             <g:render
                 template="summary"
-                model="[caption: 'Sumario por coordinacion', label: 'Coordinacion', summaryList: coordinationSummary]"/>
+                model="[caption: 'Sumario por coordinacion', label: 'Coordinacion', summaryList: model.coordinationSummary]"/>
 
             <g:render
                 template="summary"
-                model="[caption: 'Sumario por empleado', label: 'Empleado', summaryList: employeeSummary]"/>
+                model="[caption: 'Sumario por empleado', label: 'Empleado', summaryList: model.employeeSummary]"/>
         </g:if>
         <g:else>
             <p>Sin datos que mostrar</p>
@@ -55,6 +25,15 @@
     </content>
 
     <content tag="right">
-        <g:link class="btn btn-primary btn-block">Compartir</g:link>
+        <p class="alert alert-info">Este reporte se enviara al director administrativo y delegado de la sede</p>
+
+        <g:link
+            resource="fixedVoucher"
+            action="sendReport"
+            params="${params.year ? [year: params.year, month: params.month] : [month: params.month]}"
+            method="GET"
+            class="btn btn-primary btn-block">
+            <span class="glyphicon glyphicon-send" aria-hidden="true"></span> Compartir
+        </g:link>
     </content>
 </g:applyLayout>
