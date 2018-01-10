@@ -4,12 +4,6 @@
     </head>
 
     <content tag="main">
-        <div class="clearfix">
-            <g:link resource="fixedVoucher" action="filter" method="GET" class="btn btn-sm btn-default pull-right">
-                <span class="glyphicon glyphicon-filter" aria-hidden="true"></span> Filtrar por fecha
-            </g:link>
-        </div>
-
         <g:if test="${fixedVoucherList}">
             <table class="table table-hover table-bordered">
                 <col width="1%">
@@ -76,6 +70,12 @@
     </content>
 
     <content tag="right">
+        <div class="clearfix">
+            <g:link resource="fixedVoucher" action="filter" method="GET" class="btn btn-sm btn-default pull-right">
+                <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
+            </g:link>
+        </div>
+
         <g:form resource="fixedVoucher" action="create" method="GET" autocomplete="off">
             <div class="form-group">
                 <label for="date">Fecha</label>
