@@ -21,7 +21,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     <sec:ifLoggedIn>
                         <sec:ifAnyGranted roles='ROLE_ADMIN, ROLE_PROTOCOL'>
-                            <li class="dropdown ${controllerName == 'report' || controllerName == 'activity' && actionName in ['reportSummary', 'summaryReportDetail'] ? 'active' : ''}">
+                            <li class="dropdown ${controllerName in ['report', 'activity', 'fixedVoucher'] && actionName in ['report', 'reportSummary', 'summaryReportDetail'] ? 'active' : ''}">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reportes</a>
 
                                 <ul class="dropdown-menu">
