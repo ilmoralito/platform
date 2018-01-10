@@ -5,7 +5,7 @@
 
     <content tag="main">
         <g:if test="${model.employeeVoucherList || model.guestVoucherList}">
-            <table class="table table-hover">
+            <table class="table table-hover table-bordered">
                 <col width="25%">
                 <col width="5%">
                 <col width="69%">

@@ -56,10 +56,12 @@
                                         </td>
                                     </tr>
 
-                                    <tr>
-                                        <td>Botellas de agua</td>
-                                        <td>${location.waterBottles}</td>
-                                    </tr>
+                                    <g:if test="${location.waterBottles}">
+                                        <tr>
+                                            <td>Botellas de agua</td>
+                                            <td>${location.waterBottles}</td>
+                                        </tr>
+                                    </g:if>
 
                                     <g:if test="${location.quantity}">
                                         <tr>

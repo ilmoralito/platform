@@ -8,14 +8,14 @@
 
         <g:if test="${activityList}">
             <table class="table table-bordered table-hover">
-                <col width="55%">
+                <col width="42%">
                 <col width="5%">
                 <col width="10%">
                 <col width="10%">
                 <col width="8%">
                 <col width="10%">
-                <col width="1%">
-                <col width="1%">
+                <col width="10%">
+                <col width="5%">
 
                 <thead>
                     <tr>
@@ -25,12 +25,8 @@
                         <th class="text-center">Confirmado</th>
                         <th class="text-center">Aprobado</th>
                         <th class="text-center">Autorizado</th>
-                        <th>
-                            <span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span>
-                        </th>
-                        <th>
-                            <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
-                        </th>
+                        <th class="text-center">Ubicaciones</th>
+                        <th class="text-center">Vales</th>
                     </tr>
                 </thead>
 
@@ -75,7 +71,12 @@
                                     method="GET">${activity.locations ?: ''}</g:link>
                             </td>
                             <td class="text-center">
-                                ${activity.vouchers}
+                                <g:link
+                                    resource="employee/activity/voucher"
+                                    action="index"
+                                    params="[employeeId: params.employeeId, activityId: activity.id, type: 'employee']"
+                                    method="GET">
+                                    ${activity.vouchers}</g:link>
                             </td>
                         </tr>
                     </g:each>

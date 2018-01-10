@@ -20,6 +20,11 @@
             </div>
         </div>
 
-        <asset:javascript src="application.js"/>
+        <g:if test="${controllerName == 'user' && actionName == 'profile'}">
+            <asset:javascript src="updateProfile.js"/>
+        </g:if>
+        <g:else>
+            <asset:javascript src="application.js"/>
+        </g:else>
     </body>
 </html>

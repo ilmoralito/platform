@@ -8,9 +8,9 @@
 
         <g:if test="${activityListByOrganizer}">
             <table class="table table-hover table-bordered">
-                <col width="98%">
-                <col width="1%">
-                <col width="1%">
+                <col width="85%">
+                <col width="10%">
+                <col width="5%">
 
                 <thead>
                     <tr>
