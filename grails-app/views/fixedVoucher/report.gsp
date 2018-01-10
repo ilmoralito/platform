@@ -21,11 +21,16 @@
 
                     <tr>
                         <td class="text-center">
-                            <g:link
-                                resource="fixedVoucher"
-                                action="reportSummary"
-                                params="${p}"
-                                method="GET">${result.month}</g:link>
+                            <g:if test="${result.total}">
+                                <g:link
+                                    resource="fixedVoucher"
+                                    action="reportSummary"
+                                    params="${p}"
+                                    method="GET">${result.month}</g:link>
+                            </g:if>
+                            <g:else>
+                                ${result.month}
+                            </g:else>
                         </td>
                         <td>${result.total}</td>
                     </tr>
