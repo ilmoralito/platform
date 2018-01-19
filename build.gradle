@@ -99,7 +99,7 @@ assets {
     minifyCss = true
     minifyOptions = [
        languageMode: 'ES6',
-       targetLanguage: 'ES5',
+       targetLanguage: 'ES6',
        optimizationLevel: 'SIMPLE'
     ]
 }
