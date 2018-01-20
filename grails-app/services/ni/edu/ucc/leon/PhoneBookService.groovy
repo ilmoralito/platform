@@ -21,7 +21,8 @@ class PhoneBookService {
                         employee_coordinations ec ON e.id = ec.employee_id
                     WHERE
                         ec.position = 'manager'
-                            AND ec.coordination_id = c.id
+                            AND e.enabled = true
+                                AND ec.coordination_id = c.id
                 ) manager,
                 (
                     SELECT
@@ -32,7 +33,8 @@ class PhoneBookService {
                         employee_coordinations ec ON e.id = ec.employee_id
                     WHERE
                         ec.position = 'assistant'
-                            AND ec.coordination_id = c.id
+                            AND e.enabled = true
+                                AND ec.coordination_id = c.id
                 ) assistants
             FROM
                 coordinations c
