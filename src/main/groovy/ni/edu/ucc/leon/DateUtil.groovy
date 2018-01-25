@@ -19,4 +19,16 @@ class DateUtil {
     public Date getLastDayOfTheWeek() {
         getFirstDayOfTheWeek() + 6
     }
+
+    public Integer getCurrentMonth() {
+        Date date = new Date()
+
+        date[MONTH] + 1
+    }
+
+    public Integer getCurrentDay() {
+        Date date = new Date()
+
+        date[DAY_OF_MONTH]
+    }
 }

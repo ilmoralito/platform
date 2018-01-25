@@ -7,13 +7,10 @@ class BirthdayController {
     BirthdayService birthdayService
 
     def index() {
-        List<Map> birthday = birthdayService.listBirthdayInMonth().groupBy { it.day }.collect {
+        List<Map> birthday = birthdayService.birthdaysOfTheMonth().groupBy { it.day }.collect {
             [day: it.key, birthdayList: it.value.fullName]
         }
 
-        [
-            birthday: birthday,
-            birthdayOfTheToday: birthdayService.listBirthdayOfTheDay()
-        ]
+        respond ([], model: [birthday: birthday, birthdaysOfTheDay: birthdayService.birthdaysOfTheDay()])
     }
 }

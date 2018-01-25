@@ -81,7 +81,7 @@ class PlatformTagLib {
     }
 
     def areThereAnyBirthdayPartiesToday = { attrs, body ->
-        if (birthdayService.listBirthdayOfTheDay()) {
+        if (birthdayService.birthdaysOfTheDay()) {
             out << body()
         }
     }

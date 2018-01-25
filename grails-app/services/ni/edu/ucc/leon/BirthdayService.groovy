@@ -3,15 +3,15 @@ package ni.edu.ucc.leon
 import org.hibernate.transform.AliasToEntityMapResultTransformer
 import org.hibernate.SessionFactory
 import static java.util.Calendar.*
+import ni.edu.ucc.leon.DateUtil
 
 class BirthdayService {
 
     @Autowired SessionFactory sessionFactory
+    DateUtil dateUtil
 
-    List<Map<String, Object>> listBirthdayInMonth() {
+    List<Map> birthdaysOfTheMonth() {
         final session = sessionFactory.currentSession
-        final Date today = new Date()
-        final Integer month = today[Calendar.MONTH] + 1
         final String query = """
             SELECT
                 e.full_name fullName,
@@ -20,12 +20,13 @@ class BirthdayService {
                 employees e
             WHERE
                 MONTH(STR_TO_DATE(SUBSTR(e.identity_card, 5, 6), '%d%m%Y')) = :month
+                    AND e.enabled = true
             ORDER BY 2 DESC"""
         final sqlQuery = session.createSQLQuery(query)
         final results = sqlQuery.with {
             resultTransformer = AliasToEntityMapResultTransformer.INSTANCE
 
-            setLong('month', month)
+            setInteger('month', dateUtil.getCurrentMonth())
 
             list()
         }
@@ -33,53 +34,24 @@ class BirthdayService {
         results
     }
 
-    List<Map<String, Object>> listBirthdayOfTheDay() {
+    List<Map> birthdaysOfTheDay() {
         final session = sessionFactory.currentSession
-        final Date today = new Date()
-        final Integer month = today[Calendar.MONTH] + 1
-        final Integer dayOfMonth = today[Calendar.DAY_OF_MONTH]
         final String query = """
-            SELECT 
-                e.full_name fullName
+            SELECT
+                e.full_name fullName,
+                u.email email
             FROM
-                employees e
+                employees e INNER JOIN users u on e.user_id = u.id
             WHERE
                 DAY(STR_TO_DATE(SUBSTR(e.identity_card, 5, 6), '%d%m%Y')) = :dayOfMonth
-                    AND MONTH(STR_TO_DATE(SUBSTR(e.identity_card, 5, 6), '%d%m%Y')) = :month"""
+                    AND MONTH(STR_TO_DATE(SUBSTR(e.identity_card, 5, 6), '%d%m%Y')) = :month
+                        AND e.enabled = true"""
         final sqlQuery = session.createSQLQuery(query)
         final results = sqlQuery.with {
             resultTransformer = AliasToEntityMapResultTransformer.INSTANCE
 
-            setLong('dayOfMonth', dayOfMonth)
-            setLong('month', month)
-
-            list()
-        }
-
-        results
-    }
-
-    List<Map<String, Object>> getBirthdayOfTheDay() {
-        final session = sessionFactory.currentSession
-        final Date today = new Date()
-        final Integer month = today[Calendar.MONTH] + 1
-        final Integer dayOfMonth = today[Calendar.DAY_OF_MONTH]
-        final String query = """
-            SELECT 
-                e.full_name fullName, u.email email
-            FROM
-                employees e
-                    INNER JOIN
-                users u ON e.user_id = u.id
-            WHERE
-                DAY(STR_TO_DATE(SUBSTR(e.identity_card, 5, 6), '%d%m%Y')) = :dayOfMonth
-                    AND MONTH(STR_TO_DATE(SUBSTR(e.identity_card, 5, 6), '%d%m%Y')) = :month"""
-        final sqlQuery = session.createSQLQuery(query)
-        final results = sqlQuery.with {
-            resultTransformer = AliasToEntityMapResultTransformer.INSTANCE
-
-            setLong('dayOfMonth', dayOfMonth)
-            setLong('month', month)
+            setInteger('dayOfMonth', dateUtil.getCurrentDay())
+            setInteger('month', dateUtil.getCurrentMonth())
 
             list()
         }

@@ -5,16 +5,18 @@
 
     <content tag="main">
         <g:if test="${birthday}">
-            <g:if test="${birthdayOfTheToday}">
+            <g:if test="${birthdaysOfTheDay}">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        Cumpleañero del dia
+                        Cumpleañeros del dia
                     </div>
 
                     <div class="panel-body">
-                        <g:each in="${birthdayOfTheToday}" var="b">
-                            <p>${b.fullName}</p>
-                        </g:each>
+                        <ul style="margin-bottom: 0;">
+                            <g:each in="${birthdaysOfTheDay}" var="birthday">
+                                <li>${birthday.fullName}</li>
+                            </g:each>
+                        </ul>
                     </div>
                 </div>
             </g:if>
