@@ -20,7 +20,7 @@ class SaveFixedVoucher implements grails.validation.Validateable {
     Boolean others
 
     static constraints = {
-        date validator: { date -> date >= new Date() }
+        date validator: { date -> date >= new Date().clearTime() }
         price min: 1
         breakfast nullable: true
         lunch nullable: true

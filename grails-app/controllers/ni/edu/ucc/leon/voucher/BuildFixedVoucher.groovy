@@ -8,6 +8,6 @@ class BuildFixedVoucher implements grails.validation.Validateable {
     Date date
 
     static constraints = {
-        date nullable: false, validator: { date -> date >= new Date() }
+        date nullable: false, validator: { date -> date >= new Date().clearTime() }
     }
 }
