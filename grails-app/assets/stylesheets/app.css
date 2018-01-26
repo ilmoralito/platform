@@ -14,57 +14,43 @@ textarea {
 
 textarea.vertical-only { resize: vertical; }
 
-input[readonly]{
-    background-color: transparent !important;
-}
+input[readonly] { background-color: transparent !important; }
 
 .well {
     background: #FEFEFE;
     margin-bottom: 5px;
 }
 
-.alert {
-    margin: 10px 0;
-}
+.alert { margin: 10px 0; }
 
-table {
-    margin-top: 10px;
-}
+table { margin-top: 10px; }
 
 .table th {
     font-weight: normal;
     text-transform: uppercase;
 }
 
-.nav-tabs {
-    margin-bottom: 15px;
+.nav-tabs { margin-bottom: 15px; }
+
+.panel table {
+    margin-top: 0;
 }
 
-.panel > .panel-heading {
-    background: #F6F6F6;
-}
+.panel > .panel-heading { background: #F6F6F6; }
 
-.border-less > tbody > tr:first-child > td {
-    border: none;
-}
+.border-less > tbody > tr:first-child > td { border: none; }
 
-details {
-    margin-bottom: 10px;
-}
+details { margin-bottom: 10px; }
 
-summary {
-    display: block;
-}
+summary { display: block; }
 
-summary::-webkit-details-marker {
-    display: none;
-}
+summary::-webkit-details-marker { display: none; }
 
 summary::before {
     content: '\25B6';
     padding-right: 0.5em;
 }
 
-details[open] > summary::before {
-    content: '\25BC';
-}
+details[open] > summary::before { content: '\25BC'; }
+
+.triggers { cursor: pointer; }

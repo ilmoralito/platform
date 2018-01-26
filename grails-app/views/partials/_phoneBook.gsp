@@ -1,8 +1,12 @@
 <table class="table table-hover table-bordered" style="margin-top: 0;">
     <col width="2%">
-    <col width:="25">
-    <col width:="25">
-    <col width:="48">
+    <col width="25%">
+    <col width="25%">
+    <col width="48%">
+
+    <g:if test="${controllerName == 'phoneBook'}">
+        <caption>Haz clic sobre el número de extensión para marcar la fila</caption>
+    </g:if>
 
     <thead>
         <tr>
@@ -16,9 +20,13 @@
     <tbody>
         <g:each in="${phoneBook}" var="pb" status="index">
             <g:each in="${pb.coordinations}" var="coordination" status="status">
-                <tr class="pb_${index}">
+                <tr id="pb_${pb.extensionNumber}">
                     <g:if test="${status == 0}">
-                        <td rowspan="${pb.coordinations.size()}" id="${status}" class="text-center triggers" style="vertical-align: middle;">
+                        <td
+                            id="${status}"
+                            rowspan="${pb.coordinations.size()}"
+                            class="text-center triggers"
+                            style="vertical-align: middle;">
                             ${pb.extensionNumber}
                         </td>
                     </g:if>

@@ -1,14 +1,14 @@
-<g:applyLayout name="oneColumn">
+<!DOCTYPE html>
+<html lang="en">
     <head>
-        <title>Guia telefonica</title>
+        <meta charset="UTF-8">
     </head>
-
-    <content tag="main">
+    <body>
         <g:if test="${phoneBook}">
             <g:render template="/partials/phoneBook" model="[phoneBook: phoneBook]"/>
         </g:if>
         <g:else>
             <p>Sin datos que mostrar</p>
         </g:else>
-    </content>
-</g:applyLayout>
+    </body>
+</html>

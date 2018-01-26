@@ -1,9 +1,9 @@
-<g:applyLayout name="oneColumn">
+<!DOCTYPE html>
+<html lang="en">
     <head>
-        <title>Cumpleañeros del mes</title>
+        <meta charset="UTF-8">
     </head>
-
-    <content tag="main">
+    <body>
         <g:if test="${birthday}">
             <g:if test="${birthdaysOfTheDay}">
                 <div class="panel panel-primary">
@@ -50,5 +50,6 @@
         <g:else>
             <p>Sin datos que mostrar</p>
         </g:else>
-    </content>
-</g:applyLayout>
+    </body>
+</html>
+
