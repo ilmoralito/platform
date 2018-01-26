@@ -147,6 +147,10 @@
             <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-block">Confirmar</button>
             </div>
+
+            <g:hasErrors bean="${errors}">
+                <g:renderErrors bean="${errors}"/>
+            </g:hasErrors>
         </g:form>
     </content>
 </g:applyLayout>

@@ -65,9 +65,7 @@ class FixedVoucherController {
 
     def save(SaveFixedVoucher command) {
         if (command.hasErrors()) {
-            respond (
-                [errors: command.errors],
-                view: 'create',
+            respond ([errors: command.errors], view: 'create',
                 model:[
                     date: command.date,
                     fixedVoucherList: buildFixedVoucherList(getFixedVoucherListInDate(command.date)),
@@ -79,29 +77,26 @@ class FixedVoucherController {
             return
         }
 
-        FixedVoucher voucher = new FixedVoucher(
-            date: command.date,
-            coffeeShop: command.coffeeShop,
-            coordination: command.coordination,
-            price: command.price,
-            breakfast: command.breakfast,
-            lunch: command.lunch,
-            dinner: command.dinner,
-            others: command.others,
-            employee: command.employee
-        )
+        try {
+            FixedVoucher fixedVoucher = fixedVoucherService.save(command)
+            flash.message = 'Vale creado'
 
-        voucher.save(flush: true)
-
-        flash.message = 'Vale creado'
-        respond (
-            [fixedVoucherList: buildFixedVoucherList(getFixedVoucherListInDate(command.date))],
-            model: [
-                date: command.date,
+            respond (
+                [fixedVoucherList: buildFixedVoucherList(getFixedVoucherListInDate(command.date))],
+                model: [
+                    date: command.date,
+                    employeeList: getEmployeeListInDate(command.date),
+                    coffeeShopList: coffeeShopService.findAll()
+                ], view: 'create'
+            )
+        } catch(Exception e) {
+            respond ([errors: e.errors], model: [
+                date: e.errors,
+                fixedVoucherList: buildFixedVoucherList(getFixedVoucherListInDate(command.date)),
                 employeeList: getEmployeeListInDate(command.date),
-                coffeeShopList: coffeeShopService.findAll()
-            ], view: 'create'
-        )
+                coffeeShopList: coffeeShopList.findAll()
+            ], view: 'create')
+        }
     }
 
     def show(final Long id) {

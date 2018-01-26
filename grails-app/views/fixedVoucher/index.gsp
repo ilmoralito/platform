@@ -88,23 +88,24 @@
             </div>
         </g:form>
 
-        <div class="form-group">
-            <label>Filtrar por empleados</label>
+        <g:if test="${employeeList}">
+            <div class="form-group">
+                <label>Filtrar por empleados</label>
 
-            <g:each in="${employeeList}" var="employee" status="index">
-                <div class="checkbox" style="${index == 0 ? 'margin-top: 0;' : ''}">
-                    <label>
-                        <g:checkBox
-                            id="employee${employee.id}"
-                            name="employees"
-                            value="${employee.id}"
-                            class="employees"/> ${employee.fullName}
-                    </label>
-                </div>
-            </g:each>
-        </div>
+                <g:each in="${employeeList}" var="employee" status="index">
+                    <div class="checkbox" style="${index == 0 ? 'margin-top: 0;' : ''}">
+                        <label>
+                            <g:checkBox
+                                id="employee${employee.id}"
+                                name="employees"
+                                value="${employee.id}"
+                                class="employees"/> ${employee.fullName}
+                        </label>
+                    </div>
+                </g:each>
+            </div>
+        </g:if>
 
-        <br>
         <g:hasErrors bean="${errors}">
             <g:renderErrors bean="${errors}"/>
         </g:hasErrors>

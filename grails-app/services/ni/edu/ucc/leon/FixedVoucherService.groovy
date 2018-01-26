@@ -6,14 +6,17 @@ import grails.gorm.services.Service
 import grails.gorm.services.Where
 
 import ni.edu.ucc.leon.voucher.UpdateFixedVoucher
+import ni.edu.ucc.leon.voucher.SaveFixedVoucher
 
 interface IFixedVoucherService {
 
     FixedVoucher find(final Serializable id)
 
-    FixedVoucher delete(final Serializable id)
+    FixedVoucher save(final SaveFixedVoucher command)
 
     FixedVoucher update(final UpdateFixedVoucher command)
+
+    FixedVoucher delete(final Serializable id)
 
     List<FixedVoucher> filter(final Date sinceDate, final Date tillDate)
 
@@ -35,6 +38,27 @@ abstract class FixedVoucherService implements IFixedVoucherService {
 
     @Autowired
     org.hibernate.SessionFactory sessionFactory
+
+    @Override
+    FixedVoucher save(final SaveFixedVoucher command) {
+        FixedVoucher fixedVoucher = new FixedVoucher()
+
+        fixedVoucher.with {
+            date = command.date
+            coffeeShop = command.coffeeShop
+            employee = command.employee
+            coordination = command.coordination
+            price = command.price
+            breakfast = command.breakfast
+            lunch = command.lunch
+            dinner = command.dinner
+            others = command.others
+
+            save(flush: true, failOnError: true)
+        }
+
+        fixedVoucher
+    }
 
     @Override
     FixedVoucher update(final UpdateFixedVoucher command) {
