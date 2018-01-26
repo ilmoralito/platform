@@ -246,7 +246,7 @@ class FixedVoucherController {
 
     def filter() {}
 
-    def applyFilter(ApplyFilter command) {
+    def applyFilter(final ApplyFilter command) {
         if (command.hasErrors()) {
             respond ([errors: command.errors], view: 'filter')
 
@@ -255,8 +255,7 @@ class FixedVoucherController {
 
         List<FixedVoucher> fixedVoucherList = fixedVoucherService.filter(command.sinceDate, command.tillDate)
 
-        respond (
-            [fixedVoucherList: getFixedVoucherList(fixedVoucherList)],
+        respond ([fixedVoucherList: getFixedVoucherList(fixedVoucherList)],
             model: [employeeList: getEmployeeListToFilter(fixedVoucherList)],
             view: 'index'
         )

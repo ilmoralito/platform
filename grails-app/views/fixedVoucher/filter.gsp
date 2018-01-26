@@ -4,25 +4,17 @@
     </head>
 
     <content tag="main">
-        <h4 class="text-center">Filtrar vales vijos</h4>
+        <g:form resource="fixedVoucher" action="applyFilter" method="POST" autocomplete="off">
+            <div class="form-group">
+                <label for="sinceDate">Desde la fecha</label>
 
-        <form action="${createLink(controller: 'fixedVoucher', action: 'applyFilter')}" method="get" autocomplete="off">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="sinceDate">Desde la fecha</label>
+                <g:textField name="sinceDate" class="form-control"/>
+            </div>
 
-                        <g:textField name="sinceDate" class="form-control"/>
-                    </div>
-                </div>
+            <div class="form-group">
+                <label for="tillDate">Hasta la fecha</label>
 
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="tillDate">Hasta la fecha</label>
-
-                        <g:textField name="tillDate" class="form-control"/>
-                    </div>
-                </div>
+                <g:textField name="tillDate" class="form-control"/>
             </div>
 
             <div class="form-group">
@@ -30,7 +22,7 @@
 
                 <g:link resource="fixedVoucher" action="index" class="btn btn-default">Regresar</g:link>
             </div>
-        </form>
+        </g:form>
 
         <g:hasErrors bean="${errors}">
             <g:renderErrors bean="${errors}"/>

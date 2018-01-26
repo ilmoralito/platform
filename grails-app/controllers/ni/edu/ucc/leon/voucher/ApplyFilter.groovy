@@ -12,6 +12,6 @@ class ApplyFilter implements grails.validation.Validateable {
 
     static constraints = {
         sinceDate nullable: false
-        tillDate nullable: false
+        tillDate nullable: false, validator: { tillDate, obj -> tillDate >= obj.sinceDate }
     }
 }
